@@ -14,6 +14,7 @@ import com.example.cw.screens.home.HomeScreen
 import com.example.cw.screens.home.HomeViewModel
 import com.example.cw.ui.theme.CwTheme
 import com.google.firebase.FirebaseApp
+import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 
@@ -31,12 +32,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             CwTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    val homeViewModel: HomeViewModel = get()
                     Column(
                         modifier = Modifier.padding(
                             innerPadding
                         )
                     ) {
-                        HomeScreen(viewModel = HomeViewModel())
+                        HomeScreen(viewModel = homeViewModel)
                     }
                 }
             }
