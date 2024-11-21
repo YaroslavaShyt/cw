@@ -1,6 +1,7 @@
 package com.example.cw
 
 import androidx.lifecycle.ViewModel
+import com.example.cw.data.plants.Plant
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainViewModel : ViewModel(){

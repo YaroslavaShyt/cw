@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.cw.Plant
+import com.example.cw.data.plants.Plant
 import com.example.cw.ui.theme.CwTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

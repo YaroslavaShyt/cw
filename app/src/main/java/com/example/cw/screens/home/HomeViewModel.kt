@@ -1,7 +1,7 @@
 package com.example.cw.screens.home
 
 import androidx.lifecycle.ViewModel
-import com.example.cw.Plant
+import com.example.cw.data.plants.Plant
 import com.example.cw.domain.plants.IPlantsRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

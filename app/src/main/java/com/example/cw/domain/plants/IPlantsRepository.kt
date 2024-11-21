@@ -1,6 +1,6 @@
 package com.example.cw.domain.plants
 
-import com.example.cw.Plant
+import com.example.cw.data.plants.Plant
 import org.koin.core.component.KoinComponent
 
 interface IPlantsRepository: KoinComponent {
