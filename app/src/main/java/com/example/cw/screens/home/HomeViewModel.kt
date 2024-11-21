@@ -26,7 +26,7 @@ class HomeViewModel : ViewModel(), KoinComponent {
         fetchPlants()
     }
 
-    fun fetchPlants() {
+    private fun fetchPlants() {
         _loading.value = true
         _error.value = null
 
