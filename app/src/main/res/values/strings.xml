@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">cw</string>
+    <string name="app_name">GreenLife</string>
+
+    <string name="GreenLife">GreenLife</string>
 </resources>
