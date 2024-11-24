@@ -22,7 +22,6 @@ private val fontFamily = FontFamily(
     Font(
         googleFont = fontName,
         fontProvider = provider,
-        weight = FontWeight.Bold,
     )
 )
 
@@ -33,11 +32,22 @@ val mainTypography = Typography(
     ),
     bodyLarge = TextStyle(
         fontFamily = fontFamily,
-        fontWeight = FontWeight.W200,
+        fontWeight = FontWeight.Bold,
         fontSize = 30.sp
     ),
     headlineMedium = TextStyle(
-        fontFamily = fontFamily, fontWeight = FontWeight.SemiBold/*...*/
+        fontFamily = fontFamily, fontWeight = FontWeight.SemiBold
     ),
-    /*...*/
+
+    titleLarge = TextStyle(
+        fontFamily = fontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 20.sp
+    ),
+
+    titleSmall = TextStyle(
+        fontFamily = fontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
+    ),
 )

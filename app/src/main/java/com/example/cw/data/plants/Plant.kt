@@ -4,6 +4,7 @@ private const val nameString: String = "name"
 private const val nameDescription: String = "description"
 private const val imageString: String = "image"
 private const val priceString: String = "price"
+private const val categoryString: String = "category"
 
 
 data class Plant(
@@ -11,6 +12,7 @@ data class Plant(
     var description: String = "",
     var image: String = "",
     var price: String = "",
+    var category: String = ""
 ) {
     companion object {
         fun fromMap(data: Map<String, Any>): Plant {
@@ -19,6 +21,7 @@ data class Plant(
                 description = data[nameDescription] as? String ?: "",
                 image = data[imageString] as? String ?: "",
                 price = data[priceString] as? String ?: "",
+                category = data[categoryString] as? String ?: "",
             )
         }
     }

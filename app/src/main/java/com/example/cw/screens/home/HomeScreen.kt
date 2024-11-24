@@ -1,6 +1,5 @@
 package com.example.cw.screens.home
 
-import android.content.res.Resources.Theme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -9,29 +8,35 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.*
-import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
+
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cw.R
-import com.example.cw.data.plants.Plant
-import com.example.cw.screens.widgets.NetworkImage
+import com.example.cw.screens.home.widgets.CategoriesRow
+import com.example.cw.screens.home.widgets.PlantItem
+import com.example.cw.screens.home.widgets.SearchField
 import com.example.cw.ui.theme.CwTheme
 import com.example.cw.ui.theme.icon
 import com.example.cw.ui.theme.lightGreen
-import com.example.cw.ui.theme.mainCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
     val plantsState = viewModel.plants.collectAsState()
+    val plantsFilteredState = viewModel.plantsFiltered.collectAsState()
+    val searchQuery = remember { mutableStateOf(TextFieldValue("")) }
+    val categoriesState = viewModel.categories.collectAsState()
+    val selectedCategoryState = viewModel.selectedCategory.collectAsState()
     val loadingState = viewModel.loading.collectAsState()
     val errorState = viewModel.error.collectAsState()
 
@@ -42,13 +47,11 @@ fun HomeScreen(viewModel: HomeViewModel) {
                     Text(
                         stringResource(id = R.string.GreenLife),
                         color = lightGreen,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.W600)
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = {
-
-                    }) {
+                    IconButton(onClick = {}) {
                         Icon(
                             Icons.Outlined.Menu,
                             contentDescription = "Menu",
@@ -84,12 +87,31 @@ fun HomeScreen(viewModel: HomeViewModel) {
 
                 }
 
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.fillMaxSize()
+
+                Column(
+                    modifier = Modifier.padding(20.dp)
                 ) {
-                    items(plantsState.value) { plant ->
-                        PlantItem(plant)
+                    SearchField(
+                        searchQuery = searchQuery,
+                        onValueChange = { query ->
+                            searchQuery.value = TextFieldValue(text = query)
+                            viewModel.onSearchInputted(searchQuery.value.text)
+                        }
+                    )
+
+                    CategoriesRow(
+                        categories = categoriesState.value,
+                        selectedCategory = selectedCategoryState.value,
+                        onTap = { viewModel.onCategorySelected(it) }
+                    )
+
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(plantsFilteredState.value) { plant ->
+                            PlantItem(plant)
+                        }
                     }
                 }
 
@@ -97,43 +119,6 @@ fun HomeScreen(viewModel: HomeViewModel) {
             }
         }
     )
-}
-
-@Composable
-fun PlantItem(plant: Plant) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .height(200.dp),
-        colors = CardColors(
-            containerColor = mainCard,
-            disabledContainerColor = mainCard,
-            contentColor = mainCard,
-            disabledContentColor = mainCard,
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxHeight(),
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp)
-            ) {
-                NetworkImage(url = plant.image)
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Text(text = plant.name, modifier = Modifier.align(Alignment.CenterHorizontally))
-            Text(text = plant.price, modifier = Modifier.align(Alignment.CenterHorizontally))
-        }
-    }
 }
 
 

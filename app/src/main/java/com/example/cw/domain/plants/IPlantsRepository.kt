@@ -5,4 +5,7 @@ import org.koin.core.component.KoinComponent
 
 interface IPlantsRepository: KoinComponent {
     suspend fun getAllPlants(): List<Plant>
+
+    suspend fun getPlantsCategories(): List<String>
+
 }
