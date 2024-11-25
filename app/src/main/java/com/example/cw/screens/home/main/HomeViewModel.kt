@@ -1,4 +1,4 @@
-package com.example.cw.screens.home
+package com.example.cw.screens.home.main
 
 import androidx.lifecycle.ViewModel
 import com.example.cw.data.plants.Plant
@@ -33,6 +33,8 @@ class HomeViewModel : ViewModel(), KoinComponent {
     private val _selectedCategory = MutableStateFlow<String>("All")
     val selectedCategory: StateFlow<String> = _selectedCategory
 
+    private var searchQuery: String = ""
+
     init {
         fetchPlants()
     }
@@ -61,23 +63,27 @@ class HomeViewModel : ViewModel(), KoinComponent {
         if (newCategory != "All") {
             _plantsFiltered.value = _plants.value.filter { plant ->
                 plant.category.lowercase(Locale.ROOT) == newCategory.lowercase(Locale.ROOT)
-
-
             }
         } else {
             _plantsFiltered.value = _plants.value
         }
-
+        if(searchQuery.isNotEmpty()){
+            _plantsFiltered.value = _plantsFiltered.value.filter { plant ->
+                plant.name.lowercase(Locale.ROOT) == searchQuery.lowercase()
+            }
+        }
     }
 
     fun onSearchInputted(request: String) {
+        searchQuery = request
         if (request.isEmpty()) {
             _plantsFiltered.value = _plants.value
         } else {
             _plantsFiltered.value =
                 _plants.value.filter { plant ->
                     plant.name.lowercase(Locale.ROOT)
-                        .contains(request.lowercase()) && _selectedCategory.value.lowercase() == plant.category.lowercase()
+                        .contains(request.lowercase()) &&
+                            _selectedCategory.value.lowercase() == plant.category.lowercase()
                 }
         }
 

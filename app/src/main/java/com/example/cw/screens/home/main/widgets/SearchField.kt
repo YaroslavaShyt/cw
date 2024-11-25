@@ -1,4 +1,4 @@
-package com.example.cw.screens.home.widgets
+package com.example.cw.screens.home.main.widgets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

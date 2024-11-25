@@ -72,6 +72,10 @@ dependencies {
     implementation(libs.androidx.foundation.layout)
     implementation(libs.ui)
     implementation (libs.androidx.ui.text.google.fonts)
+    implementation (libs.androidx.ui.v100)
+    implementation (libs.androidx.material)
+    implementation (libs.androidx.navigation.compose)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

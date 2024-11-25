@@ -1,4 +1,4 @@
-package com.example.cw.screens.home.widgets
+package com.example.cw.screens.home.main.widgets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -36,11 +35,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cw.data.plants.Plant
-import com.example.cw.screens.home.HomeScreen
-import com.example.cw.screens.home.HomeViewModel
 import com.example.cw.screens.widgets.NetworkImage
 import com.example.cw.ui.theme.CwTheme
-import com.example.cw.ui.theme.like
 import com.example.cw.ui.theme.mainCard
 import com.example.cw.ui.theme.mainText
 import com.example.cw.ui.theme.mainWhite

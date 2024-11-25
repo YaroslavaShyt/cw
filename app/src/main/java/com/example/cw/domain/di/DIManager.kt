@@ -4,7 +4,7 @@ import com.example.cw.data.networking.NetworkingClient
 import com.example.cw.data.plants.PlantsRepository
 import com.example.cw.domain.networking.INetworkingClient
 import com.example.cw.domain.plants.IPlantsRepository
-import com.example.cw.screens.home.HomeViewModel
+import com.example.cw.screens.home.main.HomeViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

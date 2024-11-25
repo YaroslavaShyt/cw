@@ -30,3 +30,6 @@ val mainText = Color(0xff101828)
 
 // RED
 val like = Color(0xfffe1010)
+
+// BLACK
+val black = Color(0xff000000)
