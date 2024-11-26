@@ -9,10 +9,18 @@ import org.koin.core.component.KoinComponent
 class NetworkingClient(private val firebaseFireStore: FirebaseFirestore) : INetworkingClient,
     KoinComponent {
 
-
-    override suspend fun get(endpoint: String): List<Map<String, Any>> {
+    override suspend fun get(
+        endpoint: String,
+        conditions: Map<String, Any>?
+    ): List<Map<String, Any>> {
         return try {
-            val result: QuerySnapshot = firebaseFireStore.collection(endpoint).get().await()
+            val query = firebaseFireStore.collection(endpoint).apply {
+                conditions?.forEach { (field, value) ->
+                    this.whereEqualTo(field, value)
+                }
+            }
+
+            val result: QuerySnapshot = query.get().await()
 
             result.documents.map { document ->
                 document.data ?: emptyMap()

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.ModalDrawer
@@ -31,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.example.cw.domain.di.appModule
 import com.example.cw.screens.home.main.widgets.BottomNavigationBar
+import com.example.cw.screens.home.widgets.DrawerContent
 import com.example.cw.screens.routing.NavigationApp
 import com.example.cw.ui.theme.icon
 import com.example.cw.ui.theme.lightGreen
@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
                     drawerState = drawerState,
                     gesturesEnabled = drawerState.isOpen,
                     drawerContent = {
-                        Text(text = "Drawer Content")
+                        DrawerContent()
                     },
                     content = {
                         Scaffold(modifier = Modifier.fillMaxSize(),
@@ -119,7 +119,8 @@ class MainActivity : ComponentActivity() {
                                 NavigationApp(navController = navController)
                             }
                         }
-                    })
+                    }
+                )
             }
         }
     }
