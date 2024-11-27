@@ -32,6 +32,7 @@ import com.example.cw.domain.di.appModule
 import com.example.cw.screens.home.main.widgets.BottomNavigationBar
 import com.example.cw.screens.home.widgets.DrawerContent
 import com.example.cw.screens.routing.NavigationApp
+import com.example.cw.screens.routing.addressesRoute
 import com.example.cw.ui.theme.icon
 import com.example.cw.ui.theme.lightGreen
 import com.example.cw.ui.theme.mainTypography
@@ -64,7 +65,12 @@ class MainActivity : ComponentActivity() {
                     drawerState = drawerState,
                     gesturesEnabled = drawerState.isOpen,
                     drawerContent = {
-                        DrawerContent()
+                        DrawerContent(
+                            onAddressClick = {
+                                coroutineScope.launch { drawerState.close() }
+                                navController.navigate(route = addressesRoute)
+                            }
+                        )
                     },
                     content = {
                         Scaffold(modifier = Modifier.fillMaxSize(),

@@ -1,5 +1,6 @@
 package com.example.cw.screens.home.widgets
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,7 +36,9 @@ import com.example.cw.ui.theme.mainWhite
 import com.example.cw.ui.theme.olive
 
 @Composable
-fun DrawerContent() {
+fun DrawerContent(
+    onAddressClick: () -> Unit = {}
+) {
     var isChecked by remember { mutableStateOf(false) }
 
     Column {
@@ -55,7 +59,10 @@ fun DrawerContent() {
             HorizontalDivider()
             DrawerItem(title = "Language", widget = { })
             HorizontalDivider()
-            DrawerItem(title = "My shipping address")
+            DrawerItem(
+                title = "My shipping address",
+                onItemClick = onAddressClick,
+            )
             HorizontalDivider()
             DrawerItem(title = "Logout")
             HorizontalDivider()
@@ -118,7 +125,11 @@ private fun UserNameAndImageRow() {
 }
 
 @Composable
-private fun DrawerItem(title: String, widget: @Composable (() -> Unit)? = null) {
+private fun DrawerItem(
+    title: String,
+    widget: @Composable (() -> Unit)? = null,
+    onItemClick: () -> Unit = {}
+) {
     Box(
         modifier = Modifier
             .height(100.dp)
@@ -130,6 +141,11 @@ private fun DrawerItem(title: String, widget: @Composable (() -> Unit)? = null) 
                 .padding(start = 20.dp)
                 .height(100.dp)
                 .fillMaxWidth()
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onTap = { onItemClick() }
+                    )
+                }
         ) {
             Text(
                 text = title,

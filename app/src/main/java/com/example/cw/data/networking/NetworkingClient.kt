@@ -29,4 +29,17 @@ class NetworkingClient(private val firebaseFireStore: FirebaseFirestore) : INetw
             emptyList()
         }
     }
+
+    override suspend fun update(
+        endpoint: String,
+        id: String,
+        updatedData: Map<String, Any>
+    ) {
+        try {
+            val documentRef = firebaseFireStore.collection(endpoint).document(id)
+            documentRef.update(updatedData).await()
+        } catch (e: Exception) {
+            throw Exception("Error updating document: ${e.localizedMessage}")
+        }
+    }
 }

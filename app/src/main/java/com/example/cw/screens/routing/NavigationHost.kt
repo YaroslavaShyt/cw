@@ -9,6 +9,8 @@ import androidx.navigation.compose.composable
 import com.example.cw.screens.home.favorite.FavoriteScreen
 import com.example.cw.screens.home.main.HomeScreen
 import com.example.cw.screens.home.main.HomeViewModel
+import com.example.cw.screens.shippingAddresses.ShippingAddressesScreen
+import com.example.cw.screens.shippingAddresses.ShippingAddressesViewModel
 
 
 @Composable
@@ -16,6 +18,7 @@ fun NavigationApp(navController: NavHostController){
     NavHost(navController = navController, startDestination = BottomNavItem.Home.route){
         composable(BottomNavItem.Home.route) {  HomeFactory(navController)}
         composable(BottomNavItem.Favorite.route) { FavoriteFactory(navController) }
+        composable(addressesRoute) { AddressesFactory(navController = navController)}
     }
 }
 
@@ -27,7 +30,12 @@ fun HomeFactory(navController: NavHostController){
 
 @Composable
 fun FavoriteFactory(navController: NavHostController){
-    val homeViewModel: HomeViewModel = viewModel()
    FavoriteScreen()
+}
+
+@Composable
+fun AddressesFactory(navController: NavHostController){
+    val addressesViewModel: ShippingAddressesViewModel = viewModel()
+    ShippingAddressesScreen(viewModel = addressesViewModel)
 }
 

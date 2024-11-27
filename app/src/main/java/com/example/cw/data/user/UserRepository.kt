@@ -7,18 +7,31 @@ import com.example.cw.domain.networking.userEnd
 import com.example.cw.domain.user.IUserRepository
 import org.koin.core.component.KoinComponent
 
-private const val  addressString: String = "address"
+private const val addressString: String = "address"
 
 class UserRepository(private val networkingClient: INetworkingClient) : IUserRepository,
     KoinComponent {
 
-    override suspend fun getUserAddresses(field: String, value: Any): List<Address> {
-        val conditions = mapOf(field to value)
-        val addressesData = networkingClient.get(userEnd, conditions)[0][addressString]
-                as List<Map<String, String>>
+    override suspend fun getUser(id: String): User {
+        val conditions = mapOf("id" to id)
 
-        return addressesData.map { addressData ->
-            Address.fromMap(addressData)
-        }
+        val userData = networkingClient.get(userEnd, conditions).firstOrNull()
+            ?: throw Exception("User not found")
+
+        return User.fromMap(userData)
+    }
+
+    override suspend fun addUserAddress(
+        address: Map<String, String>
+    ) {
+
+    }
+
+    override suspend fun updateUserAddress(address: Address) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteUserAddress(address: Address) {
+        TODO()
     }
 }
