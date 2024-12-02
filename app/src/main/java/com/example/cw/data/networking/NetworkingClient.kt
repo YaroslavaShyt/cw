@@ -21,7 +21,6 @@ class NetworkingClient(private val firebaseFireStore: FirebaseFirestore) : INetw
             }
 
             val result: QuerySnapshot = query.get().await()
-
             result.documents.map { document ->
                 document.data ?: emptyMap()
             }

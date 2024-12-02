@@ -20,11 +20,11 @@ data class Address(
             )
         }
 
-        fun toMap(country: String, city: String, street: String): Map<String, Any> {
+        fun Address.toMap(): Map<String, String> {
             return mapOf(
-                countryString to country,
-                cityString to city,
-                streetString to street
+                countryString to this.country,
+                cityString to this.city,
+                streetString to this.street
             )
         }
     }

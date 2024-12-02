@@ -7,7 +7,7 @@ private const val addressString: String = "address"
 
 data class User(
     val id: String = "",
-    val addresses: List<Address> = emptyList()
+    var addresses: List<Address> = emptyList()
 ) {
     companion object {
         fun fromMap(data: Map<String, Any>): User {

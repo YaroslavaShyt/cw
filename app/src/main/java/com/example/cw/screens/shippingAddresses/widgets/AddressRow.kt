@@ -1,5 +1,6 @@
 package com.example.cw.screens.shippingAddresses.widgets
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,19 +19,33 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cw.data.user.Address
 
 @Composable
-fun AddressRow(isSelected: Boolean, address: Address) {
+fun AddressRow(
+    isSelected: Boolean,
+    address: Address,
+    onAddressSelected: (Address) -> Unit,
+    onDeleteAddress: (Address) -> Unit,
+    onEditAddress: (Address) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 10.dp),
+            .padding(bottom = 10.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = { _ ->
+                        onAddressSelected(address)
+                    }
+                )
+            },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        RadioButton(selected = isSelected, onClick = { /*TODO*/ })
+        RadioButton(selected = isSelected, onClick = { onAddressSelected(address) })
         Column {
             Text(
                 text = address.country,
@@ -46,12 +61,15 @@ fun AddressRow(isSelected: Boolean, address: Address) {
             )
 
         }
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(imageVector = Icons.Outlined.Edit, contentDescription = null)
+        if (isSelected) {
+            IconButton(onClick = { onEditAddress(address) }) {
+                Icon(imageVector = Icons.Outlined.Edit, contentDescription = null)
+            }
+            IconButton(onClick = { onDeleteAddress(address) }) {
+                Icon(imageVector = Icons.Outlined.Delete, contentDescription = null)
+            }
         }
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(imageVector = Icons.Outlined.Delete, contentDescription = null)
-        }
+
     }
 }
 

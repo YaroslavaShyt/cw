@@ -28,7 +28,7 @@ private val fontFamily = FontFamily(
 
 val mainTypography = Typography(
     bodyMedium = TextStyle(
-        fontFamily = fontFamily, fontWeight = FontWeight.Normal, fontSize = 12.sp
+        fontFamily = fontFamily, fontWeight = FontWeight.Normal, fontSize = 20.sp
     ),
     bodyLarge = TextStyle(
         fontFamily = fontFamily,

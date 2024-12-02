@@ -21,17 +21,13 @@ class UserRepository(private val networkingClient: INetworkingClient) : IUserRep
         return User.fromMap(userData)
     }
 
-    override suspend fun addUserAddress(
-        address: Map<String, String>
+
+    override suspend fun updateUserAddress(
+        id: String,
+        addresses: List<Map<String, Any>>
     ) {
-
+        networkingClient.update(userEnd, id, mapOf("address" to  addresses))
     }
 
-    override suspend fun updateUserAddress(address: Address) {
-        TODO("Not yet implemented")
-    }
 
-    override suspend fun deleteUserAddress(address: Address) {
-        TODO()
-    }
 }
