@@ -5,9 +5,12 @@ private const val nameDescription: String = "description"
 private const val imageString: String = "image"
 private const val priceString: String = "price"
 private const val categoryString: String = "category"
+private const val idString: String = "id"
+private const val dataString: String = "data"
 
 
 data class Plant(
+    var id: String = "",
     var name: String = "",
     var description: String = "",
     var image: String = "",
@@ -16,12 +19,15 @@ data class Plant(
 ) {
     companion object {
         fun fromMap(data: Map<String, Any>): Plant {
+            val dataMap = data[dataString] as? Map<String, Any> ?: emptyMap()
+
             return Plant(
-                name = data[nameString] as? String ?: "",
-                description = data[nameDescription] as? String ?: "",
-                image = data[imageString] as? String ?: "",
-                price = data[priceString] as? String ?: "",
-                category = data[categoryString] as? String ?: "",
+                id = data[idString] as? String ?: "",
+                name = dataMap[nameString] as? String ?: "",
+                description = dataMap[nameDescription] as? String ?: "",
+                image = dataMap[imageString] as? String ?: "",
+                price = dataMap[priceString] as? String?: "",
+                category = dataMap[categoryString] as? String ?: "",
             )
         }
     }

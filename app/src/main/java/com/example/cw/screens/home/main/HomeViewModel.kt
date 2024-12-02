@@ -6,6 +6,7 @@ import com.example.cw.domain.plants.IPlantsRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import androidx.lifecycle.viewModelScope
+import com.example.cw.domain.services.IUserService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -13,6 +14,7 @@ import java.util.Locale
 
 
 class HomeViewModel : ViewModel(), KoinComponent {
+    private val userService: IUserService by inject()
     private val plantsRepository: IPlantsRepository by inject()
 
     private val _plants = MutableStateFlow<List<Plant>>(emptyList())
@@ -36,6 +38,9 @@ class HomeViewModel : ViewModel(), KoinComponent {
     private var searchQuery: String = ""
 
     init {
+        viewModelScope.launch {
+            userService.getUserData()
+        }
         fetchPlants()
     }
 

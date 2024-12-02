@@ -16,14 +16,20 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.cw.screens.home.favorite.FavoriteViewModel
 import com.example.cw.screens.home.main.widgets.CategoriesRow
 import com.example.cw.screens.home.main.widgets.PlantItem
 import com.example.cw.screens.home.main.widgets.SearchField
 
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController) {
+fun HomeScreen(
+    viewModel: HomeViewModel,
+    favoriteViewModel: FavoriteViewModel,
+    navController: NavHostController
+) {
     val plantsFilteredState = viewModel.plantsFiltered.collectAsState()
+    val likedPlants = favoriteViewModel.likedPlants.collectAsState()
     val searchQuery = remember { mutableStateOf(TextFieldValue("")) }
     val categoriesState = viewModel.categories.collectAsState()
     val selectedCategoryState = viewModel.selectedCategory.collectAsState()
@@ -66,7 +72,10 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController) {
                 modifier = Modifier.fillMaxSize()
             ) {
                 items(plantsFilteredState.value) { plant ->
-                    PlantItem(plant)
+                    PlantItem(plant,
+                        isLiked = likedPlants.value.contains(plant),
+                        onLikeTapped = {favoriteViewModel.onLikeTapped(plant)}
+                    )
                 }
             }
         }

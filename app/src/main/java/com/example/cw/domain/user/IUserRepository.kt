@@ -11,4 +11,9 @@ interface IUserRepository : KoinComponent {
         id: String,
         addresses: List<Map<String, Any>>
     )
+
+    suspend fun updateUserFavorites(
+        id: String,
+        favorites: List<String>
+    )
 }

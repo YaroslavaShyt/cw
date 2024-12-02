@@ -1,33 +1,61 @@
 package com.example.cw.data.networking
 
 import com.example.cw.domain.networking.INetworkingClient
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
 import org.koin.core.component.KoinComponent
+
+private const val idString: String = "id"
+private const val dataString: String = "data"
 
 class NetworkingClient(private val firebaseFireStore: FirebaseFirestore) : INetworkingClient,
     KoinComponent {
 
     override suspend fun get(
         endpoint: String,
-        conditions: Map<String, Any>?
+        conditions: Map<String, Any>?,
+        ids: List<String>?
     ): List<Map<String, Any>> {
         return try {
-            val query = firebaseFireStore.collection(endpoint).apply {
-                conditions?.forEach { (field, value) ->
-                    this.whereEqualTo(field, value)
-                }
-            }
+            if (!ids.isNullOrEmpty()) {
+                val result = firebaseFireStore.collection(endpoint)
+                    .whereIn(FieldPath.documentId(), ids)
+                    .get()
+                    .await()
 
-            val result: QuerySnapshot = query.get().await()
-            result.documents.map { document ->
-                document.data ?: emptyMap()
+                result.documents.map { document ->
+                    val documentData = document.data ?: emptyMap()
+                    val documentId = document.id
+                    mapOf(idString to documentId, dataString to documentData)
+                }
+            } else {
+                conditions?.let {
+                    val query = firebaseFireStore.collection(endpoint).apply {
+                        it.forEach { (field, value) ->
+                            this.whereEqualTo(field, value)
+                        }
+                    }
+                    val result = query.get().await()
+                    result.documents.map { document ->
+                        val documentData = document.data ?: emptyMap()
+                        val documentId = document.id
+                        mapOf(idString to documentId, dataString to documentData)
+                    }
+                } ?: run {
+                    val documents = firebaseFireStore.collection(endpoint).get().await()
+                    documents.map { document ->
+                        val documentData = document.data
+                        val documentId = document.id
+                        mapOf(idString to documentId, dataString to documentData)
+                    }
+                }
             }
         } catch (e: Exception) {
             emptyList()
         }
     }
+
 
     override suspend fun update(
         endpoint: String,

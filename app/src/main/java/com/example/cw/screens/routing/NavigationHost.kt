@@ -7,6 +7,7 @@ import com.example.cw.screens.home.main.widgets.BottomNavItem
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.cw.screens.home.favorite.FavoriteScreen
+import com.example.cw.screens.home.favorite.FavoriteViewModel
 import com.example.cw.screens.home.main.HomeScreen
 import com.example.cw.screens.home.main.HomeViewModel
 import com.example.cw.screens.shippingAddresses.ShippingAddressesScreen
@@ -14,27 +15,48 @@ import com.example.cw.screens.shippingAddresses.ShippingAddressesViewModel
 
 
 @Composable
-fun NavigationApp(navController: NavHostController){
-    NavHost(navController = navController, startDestination = BottomNavItem.Home.route){
-        composable(BottomNavItem.Home.route) {  HomeFactory(navController)}
-        composable(BottomNavItem.Favorite.route) { FavoriteFactory(navController) }
-        composable(addressesRoute) { AddressesFactory(navController = navController)}
+fun NavigationApp(navController: NavHostController) {
+    val homeViewModel: HomeViewModel = viewModel()
+    val favoriteViewModel: FavoriteViewModel = viewModel()
+
+    NavHost(navController = navController, startDestination = BottomNavItem.Home.route) {
+        composable(BottomNavItem.Home.route) {
+            HomeFactory(
+                homeViewModel,
+                favoriteViewModel,
+                navController
+            )
+        }
+        composable(BottomNavItem.Favorite.route) {
+            FavoriteFactory(
+                favoriteViewModel,
+                navController
+            )
+        }
+        composable(addressesRoute) { AddressesFactory(navController = navController) }
     }
 }
 
 @Composable
-fun HomeFactory(navController: NavHostController){
-    val homeViewModel: HomeViewModel = viewModel()
-    HomeScreen(viewModel = homeViewModel, navController = navController)
+fun HomeFactory(
+    homeViewModel: HomeViewModel,
+    favoriteViewModel: FavoriteViewModel,
+    navController: NavHostController
+) {
+    HomeScreen(
+        viewModel = homeViewModel,
+        favoriteViewModel = favoriteViewModel,
+        navController = navController
+    )
 }
 
 @Composable
-fun FavoriteFactory(navController: NavHostController){
-   FavoriteScreen()
+fun FavoriteFactory(favoriteViewModel: FavoriteViewModel, navController: NavHostController) {
+    FavoriteScreen(viewModel = favoriteViewModel)
 }
 
 @Composable
-fun AddressesFactory(navController: NavHostController){
+fun AddressesFactory(navController: NavHostController) {
     val addressesViewModel: ShippingAddressesViewModel = viewModel()
     ShippingAddressesScreen(viewModel = addressesViewModel)
 }

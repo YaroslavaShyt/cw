@@ -3,6 +3,8 @@ package com.example.cw.data.user
 private const val countryString: String = "country"
 private const val cityString: String = "city"
 private const val streetString: String = "street"
+private const val dataString: String = "data"
+private const val idString: String = "id"
 
 
 data class Address(
@@ -13,10 +15,13 @@ data class Address(
 ) {
     companion object {
         fun fromMap(data: Map<String, Any>): Address {
+            val dataMap = data[dataString] as? Map<String, Any> ?: emptyMap()
+
             return Address(
-                country = data[countryString] as? String ?: "",
-                city = data[cityString] as? String ?: "",
-                street = data[streetString] as? String ?: "",
+                id = data[idString] as? String ?: "",
+                country = dataMap[countryString] as? String ?: "",
+                city = dataMap[cityString] as? String ?: "",
+                street = dataMap[streetString] as? String ?: "",
             )
         }
 

@@ -8,6 +8,8 @@ import com.example.cw.domain.user.IUserRepository
 import org.koin.core.component.KoinComponent
 
 private const val addressString: String = "address"
+private const val favoritesString: String = "favorite"
+
 
 class UserRepository(private val networkingClient: INetworkingClient) : IUserRepository,
     KoinComponent {
@@ -26,7 +28,11 @@ class UserRepository(private val networkingClient: INetworkingClient) : IUserRep
         id: String,
         addresses: List<Map<String, Any>>
     ) {
-        networkingClient.update(userEnd, id, mapOf("address" to  addresses))
+        networkingClient.update(userEnd, id, mapOf(addressString to addresses))
+    }
+
+    override suspend fun updateUserFavorites(id: String, favorites: List<String>) {
+        networkingClient.update(userEnd, id, mapOf(favoritesString to favorites))
     }
 
 

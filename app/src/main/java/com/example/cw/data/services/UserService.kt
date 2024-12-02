@@ -24,4 +24,13 @@ class UserService(private val userRepository: IUserRepository) : KoinComponent, 
             user.addresses.map { address -> address.toMap() }
         )
     }
+
+    override suspend fun updateUserFavorites(favorites: List<String>) {
+        user.favorite = favorites
+
+        userRepository.updateUserFavorites(
+            "Oz1zPY0QPS6tKdQzbdsP",
+            user.favorite,
+        )
+    }
 }

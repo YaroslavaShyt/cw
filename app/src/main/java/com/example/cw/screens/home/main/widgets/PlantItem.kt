@@ -2,6 +2,7 @@ package com.example.cw.screens.home.main.widgets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import com.example.cw.data.plants.Plant
 import com.example.cw.screens.widgets.NetworkImage
 import com.example.cw.ui.theme.CwTheme
+import com.example.cw.ui.theme.like
 import com.example.cw.ui.theme.mainCard
 import com.example.cw.ui.theme.mainText
 import com.example.cw.ui.theme.mainWhite
@@ -45,7 +48,7 @@ import com.example.cw.ui.theme.olive
 import com.example.cw.ui.theme.unlike
 
 @Composable
-fun PlantItem(plant: Plant) {
+fun PlantItem(plant: Plant, isLiked: Boolean = false, onLikeTapped: () -> Unit = {}) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -77,8 +80,16 @@ fun PlantItem(plant: Plant) {
                 Icon(
                     imageVector = Icons.Outlined.Favorite,
                     contentDescription = "favorite",
-                    tint = unlike,
-                    modifier = Modifier.padding(4.dp)
+                    tint = if (isLiked) like else unlike,
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onTap = { _ ->
+                                    onLikeTapped()
+                                },
+                            )
+                        }
                 )
             }
         }
@@ -151,29 +162,3 @@ fun PlantItem(plant: Plant) {
 
 
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewHomeScreen() {
-    CwTheme {
-        Scaffold { paddingValues ->
-            Column(modifier = Modifier.padding(paddingValues)) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(10) { plant ->
-                        PlantItem(
-                            plant = Plant(
-                                name = "kjhsd",
-                                price = "100",
-                                image = "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTEwL3Jhd3BpeGVsX29mZmljZV8zMl9waG90b19vZl9hX3BsYW50X2luX2hvbWVfaXNvbGF0ZWRfb25fd2hpdGVfYl83YmViOTc1OC0wYjJlLTQzYmUtYWYxZi03YjljODA3ZjI3MzRfMS5wbmc.png"
-                            )
-                        )
-                    }
-                }
-
-            }
-
-        }
-    }
-}

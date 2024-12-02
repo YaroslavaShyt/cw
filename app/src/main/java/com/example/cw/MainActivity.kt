@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.example.cw.domain.di.appModule
+import com.example.cw.domain.services.IUserService
 import com.example.cw.screens.home.main.widgets.BottomNavigationBar
 import com.example.cw.screens.home.widgets.DrawerContent
 import com.example.cw.screens.routing.NavigationApp
@@ -39,10 +40,13 @@ import com.example.cw.ui.theme.mainTypography
 import com.google.firebase.FirebaseApp
 import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.Koin
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.koin.core.context.GlobalContext.startKoin
 
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), KoinComponent{
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +57,7 @@ class MainActivity : ComponentActivity() {
             androidContext(this@MainActivity)
             modules(appModule)
         }
+
         setContent {
             MaterialTheme(
                 typography = mainTypography,

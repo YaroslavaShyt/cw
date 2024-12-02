@@ -69,7 +69,6 @@ class ShippingAddressesViewModel : ViewModel(), KoinComponent {
 
         viewModelScope.launch {
             try {
-                userService.getUserData()
                 _addresses.value = userService.user.addresses
 
             } catch (e: Exception) {

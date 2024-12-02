@@ -8,4 +8,6 @@ interface IUserService: KoinComponent {
     var user: User
     suspend fun getUserData()
     suspend fun updateUserAddresses(addresses: List<Address>)
+    suspend fun updateUserFavorites(favorites: List<String>)
+
 }
