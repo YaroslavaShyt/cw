@@ -1,0 +1,45 @@
+package com.example.cw.screens.home.cart
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.cw.data.plants.Plant
+import com.example.cw.domain.plants.IPlantsRepository
+import com.example.cw.domain.services.IUserService
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+
+class CartViewModel() : ViewModel(), KoinComponent {
+    private val userService: IUserService by inject()
+    private val plantsRepository: IPlantsRepository by inject()
+    private val _loading = MutableStateFlow(false)
+    val loading: StateFlow<Boolean> = _loading
+
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error
+
+    private val _plants = MutableStateFlow<List<Plant>>(emptyList())
+    val plants: StateFlow<List<Plant>> = _plants
+
+    init {
+        getCartContent()
+    }
+
+    private fun getCartContent() {
+        _loading.value = true
+        _error.value = null
+
+        viewModelScope.launch {
+            try {
+                val plantsList = plantsRepository.getPlantsById(userService.user.cart)
+                _plants.value = plantsList
+            } catch (e: Exception) {
+                _error.value = e.localizedMessage
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+}

@@ -16,4 +16,9 @@ interface IUserRepository : KoinComponent {
         id: String,
         favorites: List<String>
     )
+
+    suspend fun updateUserCart(
+        id: String,
+        cart: List<String>
+    )
 }

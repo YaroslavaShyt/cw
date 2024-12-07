@@ -33,4 +33,13 @@ class UserService(private val userRepository: IUserRepository) : KoinComponent, 
             user.favorite,
         )
     }
+
+    override suspend fun updateUserCart(cart: List<String>) {
+        user.cart = cart
+
+        userRepository.updateUserCart(
+            "Oz1zPY0QPS6tKdQzbdsP",
+            user.cart,
+        )
+    }
 }

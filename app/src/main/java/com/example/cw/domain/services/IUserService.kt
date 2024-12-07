@@ -9,5 +9,5 @@ interface IUserService: KoinComponent {
     suspend fun getUserData()
     suspend fun updateUserAddresses(addresses: List<Address>)
     suspend fun updateUserFavorites(favorites: List<String>)
-
+    suspend fun updateUserCart(cart: List<String>)
 }

@@ -6,6 +6,8 @@ import androidx.navigation.NavHostController
 import com.example.cw.screens.home.main.widgets.BottomNavItem
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.cw.screens.home.cart.CartScreen
+import com.example.cw.screens.home.cart.CartViewModel
 import com.example.cw.screens.home.favorite.FavoriteScreen
 import com.example.cw.screens.home.favorite.FavoriteViewModel
 import com.example.cw.screens.home.main.HomeScreen
@@ -34,6 +36,8 @@ fun NavigationApp(navController: NavHostController) {
             )
         }
         composable(addressesRoute) { AddressesFactory(navController = navController) }
+        composable(cartRoute) { CartFactory(navController = navController) }
+
     }
 }
 
@@ -59,5 +63,11 @@ fun FavoriteFactory(favoriteViewModel: FavoriteViewModel, navController: NavHost
 fun AddressesFactory(navController: NavHostController) {
     val addressesViewModel: ShippingAddressesViewModel = viewModel()
     ShippingAddressesScreen(viewModel = addressesViewModel)
+}
+
+@Composable
+fun CartFactory(navController: NavHostController) {
+    val cartViewModel : CartViewModel = viewModel()
+    CartScreen(viewModel = cartViewModel)
 }
 

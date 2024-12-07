@@ -9,6 +9,8 @@ import org.koin.core.component.KoinComponent
 
 private const val addressString: String = "address"
 private const val favoritesString: String = "favorite"
+private const val cartString: String = "cart"
+
 
 
 class UserRepository(private val networkingClient: INetworkingClient) : IUserRepository,
@@ -33,6 +35,10 @@ class UserRepository(private val networkingClient: INetworkingClient) : IUserRep
 
     override suspend fun updateUserFavorites(id: String, favorites: List<String>) {
         networkingClient.update(userEnd, id, mapOf(favoritesString to favorites))
+    }
+
+    override suspend fun updateUserCart(id: String, cart: List<String>) {
+        networkingClient.update(userEnd, id, mapOf(cartString to cart))
     }
 
 

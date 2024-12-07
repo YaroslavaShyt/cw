@@ -4,4 +4,9 @@
     <string name="GreenLife">GreenLife</string>
 
     <string name="search_here">Search here</string>
+
+    <string name="cart">Cart</string>
+    <string name="total">Total</string>
+
+
 </resources>

@@ -34,6 +34,7 @@ import com.example.cw.screens.home.main.widgets.BottomNavigationBar
 import com.example.cw.screens.home.widgets.DrawerContent
 import com.example.cw.screens.routing.NavigationApp
 import com.example.cw.screens.routing.addressesRoute
+import com.example.cw.screens.routing.cartRoute
 import com.example.cw.ui.theme.icon
 import com.example.cw.ui.theme.lightGreen
 import com.example.cw.ui.theme.mainTypography
@@ -46,7 +47,7 @@ import org.koin.core.component.inject
 import org.koin.core.context.GlobalContext.startKoin
 
 
-class MainActivity : ComponentActivity(), KoinComponent{
+class MainActivity : ComponentActivity(), KoinComponent {
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,6 +110,7 @@ class MainActivity : ComponentActivity(), KoinComponent{
                                     },
                                     actions = {
                                         IconButton(onClick = {
+                                            navController.navigate(cartRoute)
                                         }) {
                                             Icon(
                                                 Icons.Outlined.ShoppingCart,
