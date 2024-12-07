@@ -8,5 +8,8 @@
     <string name="cart">Cart</string>
     <string name="total">Total</string>
 
+    <string name="ordersHistory">Orders history</string>
+
+
 
 </resources>

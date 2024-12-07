@@ -11,9 +11,12 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class CartViewModel() : ViewModel(), KoinComponent {
-    private val userService: IUserService by inject()
-    private val plantsRepository: IPlantsRepository by inject()
+class CartViewModel(plantsRepository: IPlantsRepository, userService: IUserService) : ViewModel(),
+    KoinComponent {
+
+    private val _plantsRepository: IPlantsRepository = plantsRepository
+    private val _userService: IUserService = userService
+
     private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading
 
@@ -33,7 +36,7 @@ class CartViewModel() : ViewModel(), KoinComponent {
 
         viewModelScope.launch {
             try {
-                val plantsList = plantsRepository.getPlantsById(userService.user.cart)
+                val plantsList = _plantsRepository.getPlantsById(_userService.user.cart)
                 _plants.value = plantsList
             } catch (e: Exception) {
                 _error.value = e.localizedMessage

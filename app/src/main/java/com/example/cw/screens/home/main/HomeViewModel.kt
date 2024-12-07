@@ -4,18 +4,24 @@ import androidx.lifecycle.ViewModel
 import com.example.cw.data.plants.Plant
 import com.example.cw.domain.plants.IPlantsRepository
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import androidx.lifecycle.viewModelScope
 import com.example.cw.domain.services.IUserService
+import com.example.cw.screens.home.favorite.FavoriteViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.util.Locale
 
 
-class HomeViewModel : ViewModel(), KoinComponent {
-    private val userService: IUserService by inject()
-    private val plantsRepository: IPlantsRepository by inject()
+class HomeViewModel(
+    userService: IUserService,
+    plantsRepository: IPlantsRepository,
+    favoriteViewModel: FavoriteViewModel
+) : ViewModel(), KoinComponent {
+    private val _plantsRepository: IPlantsRepository = plantsRepository
+
+    private val _favoriteViewModel: FavoriteViewModel = favoriteViewModel
+    val favoriteViewModel: FavoriteViewModel = _favoriteViewModel
 
     private val _plants = MutableStateFlow<List<Plant>>(emptyList())
     val plants: StateFlow<List<Plant>> = _plants
@@ -32,7 +38,7 @@ class HomeViewModel : ViewModel(), KoinComponent {
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
-    private val _selectedCategory = MutableStateFlow<String>("All")
+    private val _selectedCategory = MutableStateFlow("All")
     val selectedCategory: StateFlow<String> = _selectedCategory
 
     private var searchQuery: String = ""
@@ -50,8 +56,8 @@ class HomeViewModel : ViewModel(), KoinComponent {
 
         viewModelScope.launch {
             try {
-                val plantList = plantsRepository.getAllPlants()
-                val categories = plantsRepository.getPlantsCategories()
+                val plantList = _plantsRepository.getAllPlants()
+                val categories = _plantsRepository.getPlantsCategories()
                 _plants.value = plantList
                 _plantsFiltered.value = _plants.value
                 _categories.value = categories
@@ -72,7 +78,7 @@ class HomeViewModel : ViewModel(), KoinComponent {
         } else {
             _plantsFiltered.value = _plants.value
         }
-        if(searchQuery.isNotEmpty()){
+        if (searchQuery.isNotEmpty()) {
             _plantsFiltered.value = _plantsFiltered.value.filter { plant ->
                 plant.name.lowercase(Locale.ROOT) == searchQuery.lowercase()
             }

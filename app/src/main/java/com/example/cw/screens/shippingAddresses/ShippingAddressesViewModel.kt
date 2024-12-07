@@ -13,8 +13,8 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 
-class ShippingAddressesViewModel : ViewModel(), KoinComponent {
-    private val userService: IUserService by inject()
+class ShippingAddressesViewModel(userService: IUserService) : ViewModel(), KoinComponent {
+    private val _userService: IUserService = userService
 
     private val _selectedAddress: MutableStateFlow<Address> = MutableStateFlow(Address())
     val selectedAddress: StateFlow<Address> = _selectedAddress
@@ -41,7 +41,7 @@ class ShippingAddressesViewModel : ViewModel(), KoinComponent {
     fun onAddAddressPressed(country: String, city: String, street: String) {
         viewModelScope.launch {
             _addresses.value += Address(country = country, city = city, street = street)
-            userService.updateUserAddresses(_addresses.value)
+            _userService.updateUserAddresses(_addresses.value)
         }
 
     }
@@ -49,7 +49,7 @@ class ShippingAddressesViewModel : ViewModel(), KoinComponent {
     fun onDeleteAddressPressed(address: Address) {
         viewModelScope.launch {
             _addresses.value -= address
-            userService.updateUserAddresses(_addresses.value)
+            _userService.updateUserAddresses(_addresses.value)
         }
 
     }
@@ -59,7 +59,7 @@ class ShippingAddressesViewModel : ViewModel(), KoinComponent {
         viewModelScope.launch {
             _addresses.value -= _selectedAddress.value
             _addresses.value += Address(country = country, city = city, street = street)
-            userService.updateUserAddresses(_addresses.value)
+            _userService.updateUserAddresses(_addresses.value)
         }
     }
 
@@ -69,7 +69,7 @@ class ShippingAddressesViewModel : ViewModel(), KoinComponent {
 
         viewModelScope.launch {
             try {
-                _addresses.value = userService.user.addresses
+                _addresses.value = _userService.user.addresses
 
             } catch (e: Exception) {
                 _error.value = e.localizedMessage

@@ -11,9 +11,10 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class FavoriteViewModel : ViewModel(), KoinComponent {
-    private val userService: IUserService by inject()
-    private val plantsRepository: IPlantsRepository by inject()
+class FavoriteViewModel(userService: IUserService, plantsRepository: IPlantsRepository) :
+    ViewModel(), KoinComponent {
+    private val _userService: IUserService = userService
+    private val _plantsRepository: IPlantsRepository = plantsRepository
 
     private val _likedPlants = MutableStateFlow<List<Plant>>(emptyList())
     val likedPlants: StateFlow<List<Plant>> = _likedPlants
@@ -27,7 +28,8 @@ class FavoriteViewModel : ViewModel(), KoinComponent {
     init {
         viewModelScope.launch {
             if (userService.user.favorite.isNotEmpty()) {
-                _likedPlants.value = plantsRepository.getPlantsById(ids = userService.user.favorite)
+                _likedPlants.value =
+                    _plantsRepository.getPlantsById(ids = userService.user.favorite)
             }
         }
     }
@@ -39,7 +41,7 @@ class FavoriteViewModel : ViewModel(), KoinComponent {
             _likedPlants.value += plant
         }
         viewModelScope.launch {
-            userService.updateUserFavorites(_likedPlants.value.map { plant ->
+            _userService.updateUserFavorites(_likedPlants.value.map { plant ->
                 plant.id
             })
         }

@@ -25,11 +25,9 @@ import com.example.cw.screens.home.main.widgets.SearchField
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
-    favoriteViewModel: FavoriteViewModel,
-    navController: NavHostController
 ) {
     val plantsFilteredState = viewModel.plantsFiltered.collectAsState()
-    val likedPlants = favoriteViewModel.likedPlants.collectAsState()
+    val likedPlants = viewModel.favoriteViewModel.likedPlants.collectAsState()
     val searchQuery = remember { mutableStateOf(TextFieldValue("")) }
     val categoriesState = viewModel.categories.collectAsState()
     val selectedCategoryState = viewModel.selectedCategory.collectAsState()
@@ -74,7 +72,7 @@ fun HomeScreen(
                 items(plantsFilteredState.value) { plant ->
                     PlantItem(plant,
                         isLiked = likedPlants.value.contains(plant),
-                        onLikeTapped = {favoriteViewModel.onLikeTapped(plant)}
+                        onLikeTapped = { viewModel.favoriteViewModel.onLikeTapped(plant) }
                     )
                 }
             }
