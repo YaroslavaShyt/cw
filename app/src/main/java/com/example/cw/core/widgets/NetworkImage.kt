@@ -1,4 +1,4 @@
-package com.example.cw.screens.widgets
+package com.example.cw.core.widgets
 
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable

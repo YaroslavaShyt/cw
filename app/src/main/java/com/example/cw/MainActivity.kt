@@ -32,18 +32,16 @@ import com.example.cw.domain.di.appModule
 import com.example.cw.domain.services.IUserService
 import com.example.cw.screens.home.main.widgets.BottomNavigationBar
 import com.example.cw.screens.home.widgets.DrawerContent
-import com.example.cw.screens.routing.NavigationApp
-import com.example.cw.screens.routing.addressesRoute
-import com.example.cw.screens.routing.cartRoute
+import com.example.cw.core.routing.NavigationApp
+import com.example.cw.core.routing.addressesRoute
+import com.example.cw.core.routing.cartRoute
 import com.example.cw.ui.theme.icon
 import com.example.cw.ui.theme.lightGreen
 import com.example.cw.ui.theme.mainTypography
 import com.google.firebase.FirebaseApp
 import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.Koin
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import org.koin.core.context.GlobalContext.startKoin
 
 

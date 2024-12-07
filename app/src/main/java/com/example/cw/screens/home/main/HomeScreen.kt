@@ -1,5 +1,6 @@
 package com.example.cw.screens.home.main
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -11,11 +12,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.input.TextFieldValue
 
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.cw.core.routing.plantDetailsRoute
 import com.example.cw.screens.home.favorite.FavoriteViewModel
 import com.example.cw.screens.home.main.widgets.CategoriesRow
 import com.example.cw.screens.home.main.widgets.PlantItem
@@ -33,7 +37,6 @@ fun HomeScreen(
     val selectedCategoryState = viewModel.selectedCategory.collectAsState()
     val loadingState = viewModel.loading.collectAsState()
     val errorState = viewModel.error.collectAsState()
-
 
     Column(
         modifier = Modifier
@@ -70,10 +73,18 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 items(plantsFilteredState.value) { plant ->
-                    PlantItem(plant,
-                        isLiked = likedPlants.value.contains(plant),
-                        onLikeTapped = { viewModel.favoriteViewModel.onLikeTapped(plant) }
-                    )
+                    Box(modifier = Modifier.pointerInput(Unit) {
+                        detectTapGestures(
+                            onTap = { _ ->
+                                viewModel.onPlantTapped(plant.id)
+                            }
+                        )
+                    }) {
+                        PlantItem(plant,
+                            isLiked = likedPlants.value.contains(plant),
+                            onLikeTapped = { viewModel.favoriteViewModel.onLikeTapped(plant) }
+                        )
+                    }
                 }
             }
         }

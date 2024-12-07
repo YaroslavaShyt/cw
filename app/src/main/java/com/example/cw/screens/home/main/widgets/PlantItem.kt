@@ -37,7 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cw.data.plants.Plant
-import com.example.cw.screens.widgets.NetworkImage
+import com.example.cw.core.widgets.NetworkImage
 import com.example.cw.ui.theme.CwTheme
 import com.example.cw.ui.theme.like
 import com.example.cw.ui.theme.mainCard

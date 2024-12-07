@@ -5,6 +5,7 @@ import com.example.cw.data.plants.Plant
 import com.example.cw.domain.plants.IPlantsRepository
 import org.koin.core.component.KoinComponent
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import com.example.cw.domain.services.IUserService
 import com.example.cw.screens.home.favorite.FavoriteViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,8 +17,10 @@ import java.util.Locale
 class HomeViewModel(
     userService: IUserService,
     plantsRepository: IPlantsRepository,
-    favoriteViewModel: FavoriteViewModel
+    favoriteViewModel: FavoriteViewModel,
+    navHostController: NavHostController
 ) : ViewModel(), KoinComponent {
+    private val _navHostController: NavHostController = navHostController
     private val _plantsRepository: IPlantsRepository = plantsRepository
 
     private val _favoriteViewModel: FavoriteViewModel = favoriteViewModel
@@ -48,6 +51,10 @@ class HomeViewModel(
             userService.getUserData()
         }
         fetchPlants()
+    }
+
+    fun onPlantTapped(plantId: String){
+        _navHostController.navigate("plantDetails/$plantId")
     }
 
     private fun fetchPlants() {

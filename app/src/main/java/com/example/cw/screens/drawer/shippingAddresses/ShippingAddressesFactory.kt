@@ -1,4 +1,4 @@
-package com.example.cw.screens.shippingAddresses
+package com.example.cw.screens.drawer.shippingAddresses
 
 import androidx.compose.runtime.Composable
 import com.example.cw.domain.services.IUserService

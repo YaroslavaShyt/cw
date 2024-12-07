@@ -1,4 +1,4 @@
-package com.example.cw.screens.shippingAddresses
+package com.example.cw.screens.drawer.shippingAddresses
 
 import android.provider.Telephony.Mms.Addr
 import androidx.lifecycle.ViewModel

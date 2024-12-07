@@ -1,4 +1,4 @@
-package com.example.cw.screens.shippingAddresses
+package com.example.cw.screens.drawer.shippingAddresses
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,7 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.cw.screens.shippingAddresses.widgets.AddressRow
+import com.example.cw.screens.drawer.shippingAddresses.widgets.AddressRow
 import com.example.cw.ui.theme.mainWhite
 import com.example.cw.ui.theme.neatGreen
 import com.example.cw.ui.theme.olive

@@ -1,4 +1,4 @@
-package com.example.cw.screens.ordersHistory
+package com.example.cw.screens.drawer.ordersHistory
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text

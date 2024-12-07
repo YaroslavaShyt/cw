@@ -1,4 +1,4 @@
-package com.example.cw.screens.shippingAddresses.widgets
+package com.example.cw.screens.drawer.shippingAddresses.widgets
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
