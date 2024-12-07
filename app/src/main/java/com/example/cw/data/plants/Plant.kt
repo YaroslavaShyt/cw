@@ -1,12 +1,21 @@
 package com.example.cw.data.plants
 
-private const val nameString: String = "name"
-private const val nameDescription: String = "description"
-private const val imageString: String = "image"
-private const val priceString: String = "price"
-private const val categoryString: String = "category"
-private const val idString: String = "id"
-private const val dataString: String = "data"
+class PlantStrings {
+    companion object {
+        const val NAME: String = "name"
+        const val DESCRIPTION: String = "description"
+        const val IMAGE: String = "image"
+        const val PRICE: String = "price"
+        const val CATEGORY: String = "category"
+        const val ID: String = "id"
+        const val DATA: String = "data"
+        const val ABOUT: String = "about"
+        const val CARE: String = "care"
+        const val WATER: String = "water"
+        const val LIGHT: String = "light"
+        const val FERTILIZER: String = "fertilizer"
+    }
+}
 
 
 data class Plant(
@@ -15,19 +24,31 @@ data class Plant(
     var description: String = "",
     var image: String = "",
     var price: String = "",
-    var category: String = ""
+    var category: String = "",
+    var about: String = "",
+    var water: String = "",
+    var light: String = "",
+    var fertilizer: String = "",
 ) {
     companion object {
         fun fromMap(data: Map<String, Any>): Plant {
-            val dataMap = data[dataString] as? Map<String, Any> ?: emptyMap()
+            val dataMap = data[PlantStrings.DATA] as? Map<String, Any> ?: emptyMap()
 
             return Plant(
-                id = data[idString] as? String ?: "",
-                name = dataMap[nameString] as? String ?: "",
-                description = dataMap[nameDescription] as? String ?: "",
-                image = dataMap[imageString] as? String ?: "",
-                price = dataMap[priceString] as? String?: "",
-                category = dataMap[categoryString] as? String ?: "",
+                id = data[PlantStrings.ID] as? String ?: "",
+                name = dataMap[PlantStrings.NAME] as? String ?: "",
+                description = dataMap[PlantStrings.DESCRIPTION] as? String ?: "",
+                image = dataMap[PlantStrings.IMAGE] as? String ?: "",
+                price = dataMap[PlantStrings.PRICE] as? String ?: "",
+                category = dataMap[PlantStrings.CATEGORY] as? String ?: "",
+                about = dataMap[PlantStrings.ABOUT] as? String ?: "",
+                water = (dataMap[PlantStrings.CARE] as? Map<String, String>?)?.get(PlantStrings.WATER)
+                    ?: "",
+                light = (dataMap[PlantStrings.CARE] as? Map<String, String>?)?.get(PlantStrings.LIGHT)
+                    ?: "",
+                fertilizer = (dataMap[PlantStrings.CARE] as? Map<String, String>?)?.get(PlantStrings.FERTILIZER)
+                    ?: ""
+
             )
         }
     }

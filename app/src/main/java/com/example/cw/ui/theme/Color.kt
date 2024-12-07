@@ -25,3 +25,6 @@ val like = Color(0xfffe1010)
 
 // BLACK
 val black = Color(0xff000000)
+
+// PINK
+val pink = Color(0xffFCF0F0)

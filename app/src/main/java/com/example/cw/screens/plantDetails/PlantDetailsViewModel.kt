@@ -16,11 +16,25 @@ class PlantDetailsViewModel(
     private val _plant = MutableStateFlow<Plant?>(null)
     val plant: StateFlow<Plant?> = _plant
 
+    private val _quantity = MutableStateFlow<Int>(1)
+    val quantity: StateFlow<Int> =_quantity
+
+
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
     private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading
+
+    fun onQuantityPlusTapped(){
+        _quantity.value += 1
+    }
+
+    fun onQuantityMinusTapped(){
+        if(_quantity.value > 1){
+            _quantity.value -= 1
+        }
+    }
 
 
     init {
