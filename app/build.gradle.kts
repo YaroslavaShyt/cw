@@ -64,6 +64,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.coil.compose)
     implementation(libs.firebase.firestore)
+    implementation(libs.play.services.auth)
     implementation (libs.kotlinx.coroutines.android)
     implementation (libs.koin.android)
     implementation (libs.koin.core)
@@ -75,6 +76,8 @@ dependencies {
     implementation (libs.androidx.ui.v100)
     implementation (libs.androidx.material)
     implementation (libs.androidx.navigation.compose)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.androidx.runtime.livedata)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

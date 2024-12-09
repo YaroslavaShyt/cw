@@ -28,3 +28,9 @@ val black = Color(0xff000000)
 
 // PINK
 val pink = Color(0xffFCF0F0)
+val Salmon = Color(0xFFFDC8BC)
+
+val DarkGrey = Color(0xFF505050)
+val HintGrey = Color(0xff98A2B3)
+val FieldGrey = Color(0xFFF2F4F7)
+val Green = Color(0xff34A853)

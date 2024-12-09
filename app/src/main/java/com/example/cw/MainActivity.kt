@@ -1,14 +1,22 @@
 package com.example.cw
 
+import androidx.compose.runtime.livedata.observeAsState
+import android.app.Instrumentation
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.ModalDrawer
 import androidx.compose.material.icons.Icons
@@ -22,8 +30,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,11 +49,21 @@ import com.example.cw.screens.home.widgets.DrawerContent
 import com.example.cw.core.routing.NavigationApp
 import com.example.cw.core.routing.addressesRoute
 import com.example.cw.core.routing.cartRoute
+import com.example.cw.screens.HomeFactory
+import com.example.cw.screens.auth.AuthScreen
 import com.example.cw.ui.theme.icon
 import com.example.cw.ui.theme.lightGreen
 import com.example.cw.ui.theme.mainTypography
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.context.GlobalContext.startKoin
@@ -61,78 +85,17 @@ class MainActivity : ComponentActivity(), KoinComponent {
             MaterialTheme(
                 typography = mainTypography,
             ) {
+
                 val navController = rememberNavController()
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                 val coroutineScope = rememberCoroutineScope()
-                ModalDrawer(
-                    drawerShape = RoundedCornerShape(20.dp),
-                    drawerState = drawerState,
-                    gesturesEnabled = drawerState.isOpen,
-                    drawerContent = {
-                        DrawerContent(
-                            onAddressClick = {
-                                coroutineScope.launch { drawerState.close() }
-                                navController.navigate(route = addressesRoute)
-                            }
-                        )
-                    },
-                    content = {
-                        Scaffold(modifier = Modifier.fillMaxSize(),
-                            topBar = {
-                                CenterAlignedTopAppBar(
-                                    title = {
-                                        Text(
-                                            stringResource(id = R.string.GreenLife),
-                                            color = lightGreen,
-                                            style = MaterialTheme.typography.bodyLarge.copy(
-                                                fontWeight = FontWeight.W600
-                                            )
-                                        )
-                                    },
-                                    navigationIcon = {
-                                        IconButton(onClick = {
-                                            coroutineScope.launch {
-                                                if (drawerState.isOpen) {
-                                                    drawerState.close()
-                                                } else {
-                                                    drawerState.open()
-                                                }
-                                            }
-                                        }) {
-                                            Icon(
-                                                Icons.Outlined.Menu,
-                                                contentDescription = "Menu",
-                                                tint = icon
-                                            )
-                                        }
-                                    },
-                                    actions = {
-                                        IconButton(onClick = {
-                                            navController.navigate(cartRoute)
-                                        }) {
-                                            Icon(
-                                                Icons.Outlined.ShoppingCart,
-                                                contentDescription = "Cart",
-                                                tint = icon
-                                            )
-                                        }
-                                    },
-                                    modifier = Modifier.fillMaxWidth()
-                                )
-                            },
-                            bottomBar = { BottomNavigationBar(navController = navController) }
-                        ) { innerPadding ->
-                            Column(
-                                modifier = Modifier.padding(
-                                    innerPadding
-                                )
-                            ) {
-                                NavigationApp(navController = navController)
-                            }
-                        }
-                    }
-                )
+                HomeFactory().build()
+
+
+
+                //AuthScreen()
             }
         }
     }
 }
+
