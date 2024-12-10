@@ -12,6 +12,17 @@ private const val dataString: String = "data"
 class NetworkingClient(private val firebaseFireStore: FirebaseFirestore) : INetworkingClient,
     KoinComponent {
 
+    override suspend fun add(
+        endpoint: String,
+        newData: Map<String, Any>
+    ) {
+        try {
+            firebaseFireStore.collection(endpoint).add(newData).await()
+        } catch (e: Exception) {
+            throw Exception("Error adding document: ${e.localizedMessage}")
+        }
+    }
+
     override suspend fun get(
         endpoint: String,
         conditions: Map<String, Any>?,

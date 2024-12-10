@@ -1,6 +1,7 @@
 package com.example.cw.data.user
 
 import com.example.cw.data.plants.Plant
+import com.example.cw.data.user.User.Companion.toMap
 import com.example.cw.domain.networking.INetworkingClient
 import com.example.cw.domain.networking.plantsEnd
 import com.example.cw.domain.networking.userEnd
@@ -15,6 +16,10 @@ private const val cartString: String = "cart"
 
 class UserRepository(private val networkingClient: INetworkingClient) : IUserRepository,
     KoinComponent {
+
+    override suspend fun addUser(user: User) {
+        networkingClient.add(userEnd, newData = user.toMap())
+    }
 
     override suspend fun getUser(id: String): User {
         val conditions = mapOf("id" to id)

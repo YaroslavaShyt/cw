@@ -1,4 +1,4 @@
-package com.example.cw.screens.base.widgets
+package com.example.cw.screens.base.drawer
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -9,14 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Switch
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,24 +22,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cw.core.widgets.NetworkImage
 import com.example.cw.ui.theme.icon
 import com.example.cw.ui.theme.lightGray
-import com.example.cw.ui.theme.lightGreen
 import com.example.cw.ui.theme.mainWhite
 import com.example.cw.ui.theme.olive
 
 @Composable
 fun DrawerContent(
+    userName: String, photo: String,
     onAddressClick: () -> Unit = {}
 ) {
     var isChecked by remember { mutableStateOf(false) }
 
     Column {
-        UserNameAndImageRow()
+        UserNameAndImageRow(userName, photo)
         Column(
             modifier = Modifier.padding(horizontal = 20.dp)
         ) {
@@ -90,7 +90,7 @@ private fun MainSwitch(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
 }
 
 @Composable
-private fun UserNameAndImageRow() {
+private fun UserNameAndImageRow(userName: String, photo: String) {
     Box(
         modifier = Modifier
             .height(200.dp)
@@ -102,22 +102,19 @@ private fun UserNameAndImageRow() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Icon(
-                imageVector = Icons.Outlined.Person,
-                contentDescription = null,
-                modifier = Modifier
+            NetworkImage(
+                url = photo, modifier = Modifier
                     .height(100.dp)
                     .width(80.dp)
                     .padding(end = 10.dp)
+                    .clip(CircleShape)
             )
             Column {
                 Text(
-                    "Yaroslava",
-                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Normal)
-                )
-                Text(
-                    "Shyt",
-                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Normal)
+                    userName,
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Normal),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 2,
                 )
             }
         }

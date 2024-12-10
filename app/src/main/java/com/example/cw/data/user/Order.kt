@@ -26,5 +26,14 @@ data class Order(
                 plants = data[OrderStrings.PLANTS] as? List<String> ?: emptyList(),
             )
         }
+
+        fun Order.toMap() : Map<String, Any>{
+            return mapOf(
+                OrderStrings.CODE to code,
+                OrderStrings.DATE to date,
+                OrderStrings.STATUS to status,
+                OrderStrings.PLANTS to plants,
+            )
+        }
     }
 }

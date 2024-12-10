@@ -14,4 +14,9 @@ interface INetworkingClient : KoinComponent {
         id: String,
         updatedData: Map<String, Any>
     )
+
+    suspend fun add(
+        endpoint: String,
+        newData: Map<String, Any>
+    )
 }
