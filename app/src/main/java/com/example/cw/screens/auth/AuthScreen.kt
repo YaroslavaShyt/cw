@@ -26,7 +26,7 @@ import com.example.cw.ui.theme.DarkGrey
 import com.example.cw.ui.theme.Salmon
 
 @Composable
-fun AuthScreen() {
+fun AuthScreen(viewModel: AuthViewModel) {
     Scaffold { innerPadding ->
         Column(
             modifier = Modifier
@@ -86,7 +86,7 @@ fun AuthScreen() {
                             modifier = Modifier.padding(horizontal = 70.dp, vertical = 20.dp)
                         ) {
                             GoogleSignInButton {
-
+                                viewModel.onSignInButtonPressed()
                             }
                         }
                     }
