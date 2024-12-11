@@ -104,8 +104,8 @@ private fun UserNameAndImageRow(userName: String, photo: String) {
         ) {
             NetworkImage(
                 url = photo, modifier = Modifier
-                    .height(100.dp)
-                    .width(80.dp)
+                    .height(70.dp)
+                    .width(70.dp)
                     .padding(end = 10.dp)
                     .clip(CircleShape)
             )

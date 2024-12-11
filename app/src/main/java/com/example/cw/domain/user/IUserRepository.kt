@@ -6,7 +6,7 @@ import org.koin.core.component.KoinComponent
 interface IUserRepository : KoinComponent {
     suspend fun addUser(user: User)
 
-    suspend fun getUser(id: String): User
+    suspend fun getUser(id: String): User?
 
     suspend fun updateUserAddress(
         id: String,

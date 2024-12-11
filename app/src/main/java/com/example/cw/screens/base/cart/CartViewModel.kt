@@ -33,16 +33,18 @@ class CartViewModel(plantsRepository: IPlantsRepository, userService: IUserServi
     private fun getCartContent() {
         _loading.value = true
         _error.value = null
-
-        viewModelScope.launch {
-            try {
-                val plantsList = _plantsRepository.getPlantsById(_userService.user.cart)
-                _plants.value = plantsList
-            } catch (e: Exception) {
-                _error.value = e.localizedMessage
-            } finally {
-                _loading.value = false
+        if (_userService.user != null) {
+            viewModelScope.launch {
+                try {
+                    val plantsList = _plantsRepository.getPlantsById(_userService.user!!.cart)
+                    _plants.value = plantsList
+                } catch (e: Exception) {
+                    _error.value = e.localizedMessage
+                } finally {
+                    _loading.value = false
+                }
             }
         }
+
     }
 }

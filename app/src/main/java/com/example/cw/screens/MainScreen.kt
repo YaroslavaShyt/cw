@@ -21,6 +21,7 @@ fun MainScreen(viewModel: MainViewModel, navHostController: NavHostController) {
             viewModel.getSignInClient(token, context)?.let { launcher.launch(it.signInIntent) }
         }
     } else {
+        viewModel.onAuthSuccess(user.value!!)
         BaseFactory().Build(navHostController = navHostController)
     }
 }

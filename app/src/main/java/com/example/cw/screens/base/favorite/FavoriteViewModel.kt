@@ -26,12 +26,15 @@ class FavoriteViewModel(userService: IUserService, plantsRepository: IPlantsRepo
     val error: StateFlow<String?> = _error
 
     init {
-        viewModelScope.launch {
-            if (userService.user.favorite.isNotEmpty()) {
-                _likedPlants.value =
-                    _plantsRepository.getPlantsById(ids = userService.user.favorite)
+        if (userService.user != null) {
+            viewModelScope.launch {
+                if (userService.user!!.favorite.isNotEmpty()) {
+                    _likedPlants.value =
+                        _plantsRepository.getPlantsById(ids = userService.user!!.favorite)
+                }
             }
         }
+
     }
 
     fun onLikeTapped(plant: Plant) {

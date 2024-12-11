@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import com.example.cw.data.user.User
 import com.example.cw.domain.services.IAuthService
+import com.example.cw.domain.services.IUserService
 import com.example.cw.domain.user.IUserRepository
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -23,7 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import org.koin.core.component.KoinComponent
 
-class AuthService(private val userRepository: IUserRepository) : IAuthService, KoinComponent {
+class AuthService(private val userService: IUserService) : IAuthService, KoinComponent {
     private var _user: FirebaseUser? = Firebase.auth.currentUser
     private var _googleSignInClient: GoogleSignInClient? = null
 
@@ -60,13 +61,7 @@ class AuthService(private val userRepository: IUserRepository) : IAuthService, K
                     val authResult = Firebase.auth.signInWithCredential(credential).await()
                     if (authResult.user != null) {
                         _user = authResult.user
-                        userRepository.addUser(
-                            User(
-                                id = _user!!.uid,
-                                name = _user!!.displayName.toString(),
-                                photo = _user!!.photoUrl.toString()
-                            )
-                        )
+                        userService.initUser(_user!!.uid, _user)
                         onAuthSuccess(_user!!)
                     } else {
                         onAuthFailure()

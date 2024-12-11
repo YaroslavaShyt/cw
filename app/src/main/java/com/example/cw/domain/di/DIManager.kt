@@ -22,5 +22,5 @@ val appModule = module {
     factory<IUserRepository> { UserRepository(get<INetworkingClient>()) }
 
     single<IUserService> { UserService(get<IUserRepository>()) }
-    single<IAuthService> { AuthService() }
+    single<IAuthService> { AuthService(get<IUserService>()) }
 }

@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cw.domain.services.IAuthService
+import com.example.cw.domain.services.IUserService
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,17 +17,21 @@ import org.koin.core.component.KoinComponent
 import kotlinx.coroutines.launch
 
 
-class MainViewModel(private val _authService: IAuthService) : ViewModel(), KoinComponent {
+class MainViewModel(private val _authService: IAuthService, private val _userService: IUserService) : ViewModel(), KoinComponent {
     private val _user = MutableStateFlow(_authService.user)
     val user: StateFlow<FirebaseUser?> = _user
+
 
     @Composable
     fun getAuthFlow(): ManagedActivityResultLauncher<Intent, ActivityResult> {
         return _authService.authFlow(onAuthSuccess = { onAuthSuccess(it) }, onAuthFailure = {})
     }
 
-    private fun onAuthSuccess(user: FirebaseUser) {
+    fun onAuthSuccess(user: FirebaseUser) {
         _user.value = user
+        viewModelScope.launch {
+            _user.value?.let { _userService.initUser(it.uid) }
+        }
     }
 
 

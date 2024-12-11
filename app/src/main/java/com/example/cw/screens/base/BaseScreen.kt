@@ -21,7 +21,7 @@ import com.example.cw.screens.base.drawer.DrawerContent
 import kotlinx.coroutines.launch
 
 @Composable
-fun BaseScreen(navController: NavHostController) {
+fun BaseScreen(viewModel: BaseViewModel, navController: NavHostController) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
     ModalDrawer(
@@ -29,21 +29,28 @@ fun BaseScreen(navController: NavHostController) {
         drawerState = drawerState,
         gesturesEnabled = drawerState.isOpen,
         drawerContent = {
-            DrawerContent(
-                onAddressClick = {
-                    coroutineScope.launch { drawerState.close() }
-                    navController.navigate(route = addressesRoute)
-                }
-            )
+            if (viewModel.userName != null && viewModel.userPhoto != null) {
+                DrawerContent(
+                    userName = viewModel.userName!!,
+                    photo = viewModel.userPhoto!!,
+                    onAddressClick = {
+                        coroutineScope.launch { drawerState.close() }
+                        navController.navigate(route = addressesRoute)
+                    }
+                )
+            }
+
         }) {
         Scaffold(
             topBar = {
                 MainTopBar(onMenuIconTapped = {
-                    coroutineScope.launch {
-                        if (drawerState.isOpen) {
-                            drawerState.close()
-                        } else {
-                            drawerState.open()
+                    if (viewModel.userName != null && viewModel.userPhoto != null) {
+                        coroutineScope.launch {
+                            if (drawerState.isOpen) {
+                                drawerState.close()
+                            } else {
+                                drawerState.open()
+                            }
                         }
                     }
                 }, onCartIconTapped = {

@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 
-class OrdersHistoryViewModel(userService: IUserService): ViewModel(), KoinComponent{
+class OrdersHistoryViewModel(userService: IUserService) : ViewModel(), KoinComponent {
     private val _orders = MutableStateFlow<List<Order>>(emptyList())
     val orders: StateFlow<List<Order>> = _orders
 
@@ -21,10 +21,13 @@ class OrdersHistoryViewModel(userService: IUserService): ViewModel(), KoinCompon
     val error: StateFlow<String?> = _error
 
     init {
-        viewModelScope.launch {
-            if (userService.user.ordersHistory.isNotEmpty()) {
-                _orders.value = userService.user.ordersHistory
+        if (userService.user != null) {
+            viewModelScope.launch {
+                if (userService.user!!.ordersHistory.isNotEmpty()) {
+                    _orders.value = userService.user!!.ordersHistory
+                }
             }
         }
+
     }
 }
