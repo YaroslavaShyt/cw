@@ -21,10 +21,10 @@ class OrdersHistoryViewModel(userService: IUserService) : ViewModel(), KoinCompo
     val error: StateFlow<String?> = _error
 
     init {
-        if (userService.user != null) {
+        if (userService.user.value != null) {
             viewModelScope.launch {
-                if (userService.user!!.ordersHistory.isNotEmpty()) {
-                    _orders.value = userService.user!!.ordersHistory
+                if (userService.user.value!!.ordersHistory.isNotEmpty()) {
+                    _orders.value = userService.user.value!!.ordersHistory
                 }
             }
         }

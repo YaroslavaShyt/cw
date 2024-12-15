@@ -19,8 +19,7 @@ class UserRepository(private val networkingClient: INetworkingClient) : IUserRep
     }
 
     override suspend fun getUser(id: String): User? {
-        val conditions = mapOf("id" to id)
-        val userData = networkingClient.get(userEnd, conditions).firstOrNull()
+        val userData = networkingClient.getOneById(userEnd, id)
         return if (userData != null) User.fromMap(userData) else null
     }
 

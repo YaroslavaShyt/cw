@@ -67,10 +67,10 @@ class ShippingAddressesViewModel(userService: IUserService) : ViewModel(), KoinC
         _loading.value = true
         _error.value = null
 
-        if (_userService.user != null) {
+        if (_userService.user.value != null) {
             viewModelScope.launch {
                 try {
-                    _addresses.value = _userService.user!!.addresses
+                    _addresses.value = _userService.user.value!!.addresses
 
                 } catch (e: Exception) {
                     _error.value = e.localizedMessage

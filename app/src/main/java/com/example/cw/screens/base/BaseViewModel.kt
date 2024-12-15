@@ -1,15 +1,50 @@
 package com.example.cw.screens.base
 
+import android.content.Context
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cw.data.handlers.LocalizationHandler
+import com.example.cw.domain.handler.ILocalizationHandler
+import com.example.cw.domain.services.IAuthService
 import com.example.cw.domain.services.IUserService
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 
-class BaseViewModel(userService: IUserService) : ViewModel(), KoinComponent{
-    var userName : String? = userService.user?.name
-    var userPhoto : String? = userService.user?.photo
+class BaseViewModel(userService: IUserService, authService: IAuthService, context: Context) : ViewModel(),
+    KoinComponent {
+    private val languageHandler: ILocalizationHandler = LocalizationHandler(context)
+    val currentLanguage = languageHandler.getSavedLanguage()
 
 
+    private val _userName = MutableStateFlow<String?>(null)
+    val userName: StateFlow<String?> = _userName
+
+    private val _userPhoto = MutableStateFlow<String?>(null)
+    val userPhoto: StateFlow<String?> = _userPhoto
+
+
+    init {
+        viewModelScope.launch {
+            authService.user.value?.let { userService.initUser(it.uid) }
+            _userName.value = userService.user.value?.name
+            _userPhoto.value = userService.user.value?.photo
+        }
+    }
+
+    fun changeLanguage(language: String) {
+        languageHandler.changeLanguage(language)
+    }
+
+    fun setLocale() {
+        languageHandler.setLocale(currentLanguage)
+    }
+
+    fun cleanData() {
+        _userName.value = null
+        _userPhoto.value = null
+    }
 
 }

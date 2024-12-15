@@ -1,72 +1,78 @@
 package com.example.cw.data.services
 
-import android.util.Log
 import com.example.cw.data.user.Address
 import com.example.cw.data.user.Address.Companion.toMap
 import com.example.cw.data.user.User
 import com.example.cw.domain.services.IUserService
 import com.example.cw.domain.user.IUserRepository
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import org.koin.core.component.KoinComponent
 
 class UserService(private val userRepository: IUserRepository) : KoinComponent, IUserService {
-    override var user: User? = null
+    private var _user = MutableStateFlow<User?>(null)
+    override var user: StateFlow<User?> = _user
 
     override suspend fun initUser(id: String, firebaseUser: FirebaseUser?) {
-        user = userRepository.getUser(id)
-        if (user == null && firebaseUser != null) {
+        _user.value = userRepository.getUser(id)
+        if (_user.value == null && firebaseUser != null) {
             val newUser =
                 User(
                     id = firebaseUser.uid,
                     name = firebaseUser.displayName.toString(),
                     photo = firebaseUser.photoUrl.toString()
                 )
-            user = newUser
+            _user.value = newUser
             userRepository.addUser(newUser)
         }
     }
 
 
     override suspend fun getUserData() {
-        if (user != null) {
-            user = userRepository.getUser(user!!.id)
+        if (_user.value != null) {
+            _user.value = userRepository.getUser(_user.value!!.id)
         }
 
     }
 
     override suspend fun updateUserAddresses(addresses: List<Address>) {
-        if (user != null) {
-            user!!.addresses = addresses
+        if (_user.value != null) {
+            _user.value!!.addresses = addresses
 
             userRepository.updateUserAddress(
-                user!!.id,
-                user!!.addresses.map { address -> address.toMap() }
+                _user.value!!.id,
+                _user.value!!.addresses.map { address -> address.toMap() }
             )
         }
 
     }
 
     override suspend fun updateUserFavorites(favorites: List<String>) {
-        if (user != null) {
-            user!!.favorite = favorites
+        if (_user.value != null) {
+            _user.value!!.favorite = favorites
 
             userRepository.updateUserFavorites(
-                user!!.id,
-                user!!.favorite,
+                _user.value!!.id,
+                _user.value!!.favorite,
             )
         }
 
     }
 
     override suspend fun updateUserCart(cart: List<String>) {
-        if (user != null) {
-            user!!.cart = cart
+        if (_user.value != null) {
+            _user.value!!.cart = cart
 
             userRepository.updateUserCart(
-                "Oz1zPY0QPS6tKdQzbdsP",
-                user!!.cart,
+                _user.value!!.id,
+                _user.value!!.cart,
             )
         }
-
     }
+
+    override fun cleanData() {
+        _user.value = null
+    }
+
 }

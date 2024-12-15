@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GreenLife</string>
+
+    <string name="GreenLife">GreenLife</string>
+
+    <string name="search_here">Шукайте тут</string>
+
+    <string name="cart">Кошик</string>
+
+    <string name="total">Загальна сума</string>
+
+    <string name="ordersHistory">Історія замовлень</string>
+
+    <string name="language">Мова</string>
+
+    <string name="default_web_client_id">611156907554-6cbvpkfdsakoo05qo92bs66ba9h94q0e.apps.googleusercontent.com</string>
+
+</resources>

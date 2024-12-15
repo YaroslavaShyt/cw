@@ -15,7 +15,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.context.GlobalContext.startKoin
 
 
-class MainActivity : ComponentActivity(), KoinComponent {
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,5 +36,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
             }
         }
     }
+
+
 }
 

@@ -10,28 +10,31 @@ import androidx.lifecycle.viewModelScope
 import com.example.cw.domain.services.IAuthService
 import com.example.cw.domain.services.IUserService
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.auth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.koin.core.component.KoinComponent
 import kotlinx.coroutines.launch
 
 
-class MainViewModel(private val _authService: IAuthService, private val _userService: IUserService) : ViewModel(), KoinComponent {
-    private val _user = MutableStateFlow(_authService.user)
+class MainViewModel(
+    private val _authService: IAuthService,
+) : ViewModel(), KoinComponent {
+    private val _user = MutableStateFlow(Firebase.auth.currentUser)
     val user: StateFlow<FirebaseUser?> = _user
 
 
     @Composable
     fun getAuthFlow(): ManagedActivityResultLauncher<Intent, ActivityResult> {
-        return _authService.authFlow(onAuthSuccess = { onAuthSuccess(it) }, onAuthFailure = {})
+        return _authService.authFlow(onAuthSuccess = { onAuthSuccess(it) }, onAuthFailure = {
+            System.out.println("on auth failure")
+        })
     }
 
     fun onAuthSuccess(user: FirebaseUser) {
         _user.value = user
-        viewModelScope.launch {
-            _user.value?.let { _userService.initUser(it.uid) }
-        }
     }
 
 
@@ -42,7 +45,7 @@ class MainViewModel(private val _authService: IAuthService, private val _userSer
     fun onLogout() {
         viewModelScope.launch {
             _authService.signOut()
-            _user.value = null
         }
+        _user.value = null
     }
 }

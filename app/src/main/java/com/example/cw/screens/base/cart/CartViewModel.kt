@@ -33,10 +33,10 @@ class CartViewModel(plantsRepository: IPlantsRepository, userService: IUserServi
     private fun getCartContent() {
         _loading.value = true
         _error.value = null
-        if (_userService.user != null) {
+        if (_userService.user.value != null) {
             viewModelScope.launch {
                 try {
-                    val plantsList = _plantsRepository.getPlantsById(_userService.user!!.cart)
+                    val plantsList = _plantsRepository.getPlantsById(_userService.user.value!!.cart)
                     _plants.value = plantsList
                 } catch (e: Exception) {
                     _error.value = e.localizedMessage

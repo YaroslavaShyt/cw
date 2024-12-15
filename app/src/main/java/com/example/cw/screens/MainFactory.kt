@@ -9,13 +9,12 @@ import org.koin.core.component.inject
 
 class MainFactory : KoinComponent {
     private val authService: IAuthService by inject()
-    private val userService: IUserService by inject()
 
     @Composable
     fun Build(navHostController: NavHostController) {
         MainScreen(
             navHostController = navHostController,
-            viewModel = MainViewModel(_authService = authService, userService)
+            viewModel = MainViewModel(_authService = authService)
         )
     }
 }

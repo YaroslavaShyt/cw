@@ -9,6 +9,11 @@ interface INetworkingClient : KoinComponent {
         ids: List<String>? = null,
     ): List<Map<String, Any>>
 
+    suspend fun getOneById(
+        endpoint: String,
+        id: String,
+    ): Map<String, Any>?
+
     suspend fun update(
         endpoint: String,
         id: String,

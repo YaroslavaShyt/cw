@@ -8,10 +8,8 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import com.example.cw.data.user.User
 import com.example.cw.domain.services.IAuthService
 import com.example.cw.domain.services.IUserService
-import com.example.cw.domain.user.IUserRepository
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -20,15 +18,18 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import okhttp3.internal.wait
 import org.koin.core.component.KoinComponent
 
 class AuthService(private val userService: IUserService) : IAuthService, KoinComponent {
-    private var _user: FirebaseUser? = Firebase.auth.currentUser
+    private var _user = MutableStateFlow(Firebase.auth.currentUser)
     private var _googleSignInClient: GoogleSignInClient? = null
 
-    override var user: FirebaseUser? = _user
+    override var user: StateFlow<FirebaseUser?> = _user
 
     override fun signInWithGoogle(token: String, context: Context): GoogleSignInClient? {
         val gso =
@@ -42,7 +43,9 @@ class AuthService(private val userService: IUserService) : IAuthService, KoinCom
 
     override suspend fun signOut() {
         Firebase.auth.signOut()
-        _googleSignInClient?.signOut()
+        _googleSignInClient?.signOut()?.await()
+        _user.value = null
+        System.out.println(user.value?.uid)
     }
 
     @Composable
@@ -59,10 +62,11 @@ class AuthService(private val userService: IUserService) : IAuthService, KoinCom
                 val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
                 scope.launch {
                     val authResult = Firebase.auth.signInWithCredential(credential).await()
+                    System.out.println("in auth result: ${authResult.user}")
                     if (authResult.user != null) {
-                        _user = authResult.user
-                        userService.initUser(_user!!.uid, _user)
-                        onAuthSuccess(_user!!)
+                        _user.value = authResult.user
+                        userService.initUser(_user.value!!.uid, _user.value)
+                        onAuthSuccess(_user.value!!)
                     } else {
                         onAuthFailure()
                     }

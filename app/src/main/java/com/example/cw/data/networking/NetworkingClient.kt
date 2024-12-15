@@ -67,6 +67,27 @@ class NetworkingClient(private val firebaseFireStore: FirebaseFirestore) : INetw
         }
     }
 
+    override suspend fun getOneById(
+        endpoint: String,
+        id: String
+    ): Map<String, Any>? {
+        val firestore = FirebaseFirestore.getInstance()
+        try {
+            val result = firestore.collection(endpoint)
+                .whereEqualTo("id", id)
+                .get()
+                .await()
+
+            if (result.isEmpty) {
+                return null
+            }
+
+            val documentSnapshot = result.documents.first()
+            return documentSnapshot.data
+        } catch (e: Exception) {
+            return null
+        }
+    }
 
     override suspend fun update(
         endpoint: String,

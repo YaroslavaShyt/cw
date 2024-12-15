@@ -9,6 +9,10 @@ private const val addressString: String = "address"
 private const val favoriteString: String = "favorite"
 private const val dataString: String = "data"
 private const val cartString: String = "cart"
+private const val nameString: String = "name"
+private const val photoString: String = "photo"
+
+
 private const val ordersHistoryString: String = "ordersHistory"
 
 
@@ -27,6 +31,8 @@ data class User(
 
             return User(
                 id = data[idString] as? String ?: "",
+                name = dataMap[nameString] as? String ?: "",
+                photo = dataMap[photoString] as? String ?: "",
                 favorite = dataMap[favoriteString] as List<String>,
                 addresses = (dataMap[addressString] as? List<Map<String, Any>>)?.map {
                     Address.fromMap(it)
@@ -42,6 +48,8 @@ data class User(
             return mapOf(
                 idString to this.id,
                 dataString to mapOf(
+                    nameString to this.name,
+                    photoString to this.photo,
                     favoriteString to this.favorite,
                     addressString to this.addresses.map { it.toMap() },
                     cartString to this.cart,
