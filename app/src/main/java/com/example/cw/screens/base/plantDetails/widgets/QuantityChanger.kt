@@ -2,6 +2,7 @@ package com.example.cw.screens.base.plantDetails.widgets
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -28,18 +29,16 @@ fun QuantityChanger(
 ) {
     Box(
         modifier = Modifier
-            .padding(20.dp)
-            .clip(RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(30.dp))
             .width(
-                100.dp
+                110.dp
             )
             .background(Color(0xffF0F4EF))
     ) {
         Row(
-
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp),
+                .padding(top = 8.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround
         ) {
@@ -48,7 +47,7 @@ fun QuantityChanger(
                 contentColor = Color(0xFF667085),
                 onQuantityTapped = onQuantityMinusTapped
             )
-            Text(text = quantity.toString(), fontSize = 20.sp)
+            Text(text = quantity.toString(), fontSize = 18.sp)
             RoundButton(
                 content = "+",
                 contentColor = Color.White,
@@ -69,14 +68,17 @@ private fun RoundButton(content: String, contentColor: Color, onQuantityTapped: 
                 Color(0xFFB5C9AD),
             )
             .pointerInput(Unit) {
-                onQuantityTapped()
+                detectTapGestures {
+                    onQuantityTapped()
+
+                }
             }
 
     ) {
         Text(
             text = content,
             color = contentColor,
-            fontSize = 20.sp,
+            fontSize = 16.sp,
             modifier = Modifier.align(Alignment.Center)
         )
     }

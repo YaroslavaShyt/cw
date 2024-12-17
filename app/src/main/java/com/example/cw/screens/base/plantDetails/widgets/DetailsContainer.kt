@@ -19,56 +19,74 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cw.R
 import com.example.cw.data.plants.Plant
+import com.example.cw.ui.theme.mainText
 
 @Composable
 fun DetailsContainer(
     plant: Plant,
     quantity: Int,
     onQuantityPlusTapped: () -> Unit,
-    onQuantityMinusTapped: () -> Unit
+    onQuantityMinusTapped: () -> Unit,
 ) {
-
     Column(
-
         modifier = Modifier
-            .height((LocalConfiguration.current.screenHeightDp / 1).dp)
             .background(Color.White)
             .clip(RoundedCornerShape(20.dp))
             .padding(10.dp)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier
+                .padding(start = 20.dp, top = 20.dp, end = 20.dp)
+                .height(700.dp)
         ) {
-            Column {
-                Text(text = plant.name, fontSize = 30.sp, fontWeight = FontWeight.Bold)
-                Text(
-                    text = plant.price + "$",
-                    color = Color(0xFF475E3E),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.W400
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        bottom = 20.dp
+                    )
+            ) {
+                Column {
+                    Text(text = plant.name, fontSize = 30.sp, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = plant.price + "$",
+                        color = Color(0xFF475E3E),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.W400
+                    )
+                }
+                QuantityChanger(
+                    quantity = quantity,
+                    onQuantityPlusTapped,
+                    onQuantityMinusTapped
                 )
             }
-            QuantityChanger(
-                quantity = quantity,
-                onQuantityPlusTapped,
-                onQuantityMinusTapped
+            Text(
+                text = "Care",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.W500,
+                color = mainText,
+                modifier = Modifier.padding(bottom = 10.dp)
             )
+            Row(
+                horizontalArrangement = Arrangement.SpaceAround,
+                modifier = Modifier.padding(bottom = 10.dp)
+            ) {
+                CareComponent(label = "WATER", value = plant.water, image = R.drawable.drop)
+                CareComponent(label = "LIGHT", value = plant.light, image = R.drawable.sun)
+                CareComponent(
+                    label = "FERTILIZER",
+                    value = plant.fertilizer,
+                    image = R.drawable.fertilizer
+                )
+            }
+            AboutWidget(description = plant.about)
         }
-        Text(
-            text = "About plant",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.W400,
-            color = Color.Black
-        )
-        Text(
-            text = plant.about,
-            fontSize = 15.sp,
-            fontWeight = FontWeight.W400,
-            color = Color.Gray
-        )
+
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier

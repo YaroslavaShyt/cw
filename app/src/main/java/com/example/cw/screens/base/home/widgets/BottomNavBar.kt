@@ -6,6 +6,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -16,8 +18,8 @@ import com.example.cw.ui.theme.icon
 import com.example.cw.ui.theme.mainWhite
 
 sealed class BottomNavItem(val route: String, val icon: ImageVector, val label: String) {
-    data object Home : BottomNavItem("home", Icons.Outlined.Home, "Home")
-    data object Favorite : BottomNavItem("favorite", Icons.Outlined.Favorite, "Favorite")
+    data object Home : BottomNavItem("home", Icons.Rounded.Home, "Home")
+    data object Favorite : BottomNavItem("favorite", Icons.Rounded.Favorite, "Favorite")
 }
 
 @Composable

@@ -41,7 +41,7 @@ fun HomeScreen(
     val errorState = viewModel.error.collectAsState()
 
     val scrollState = rememberLazyGridState()
-    val bannerVisible = remember { mutableStateOf(true) } // стан видимості банера
+    val bannerVisible = remember { mutableStateOf(true) }
 
     LaunchedEffect(remember { derivedStateOf { scrollState.firstVisibleItemIndex } }) {
         bannerVisible.value =

@@ -28,7 +28,7 @@ fun NavigationApp(navController: NavHostController) {
             arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id") ?: ""
-            PlantDetailsFactory().build(plantId = id)
+            PlantDetailsFactory(navHostController = navController).build(plantId = id)
         }
     }
 }

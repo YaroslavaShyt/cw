@@ -12,7 +12,10 @@ import kotlinx.coroutines.launch
 class PlantDetailsViewModel(
     plantId: String,
     plantRepository: IPlantsRepository,
+    navHostController: NavHostController,
 ) : ViewModel() {
+    private val _navHostController = navHostController
+
     private val _plant = MutableStateFlow<Plant?>(null)
     val plant: StateFlow<Plant?> = _plant
 
@@ -51,5 +54,9 @@ class PlantDetailsViewModel(
                 }
             }
         }
+    }
+
+    fun onBackButtonTapped(){
+        _navHostController.navigateUp()
     }
 }
