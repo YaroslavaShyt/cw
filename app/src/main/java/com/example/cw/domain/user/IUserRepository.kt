@@ -20,6 +20,6 @@ interface IUserRepository : KoinComponent {
 
     suspend fun updateUserCart(
         id: String,
-        cart: List<String>
+        cart: Map<String, Any>
     )
 }

@@ -18,11 +18,12 @@ private const val ordersHistoryString: String = "ordersHistory"
 
 data class User(
     val id: String = "",
+    val documentId: String = "",
     val name: String = "",
     val photo: String = "",
     var addresses: List<Address> = emptyList(),
     var favorite: List<String> = emptyList(),
-    var cart: List<String> = emptyList(),
+    var cart: Map<String, Int> = emptyMap(),
     var ordersHistory: List<Order> = emptyList()
 ) {
     companion object {
@@ -37,7 +38,7 @@ data class User(
                 addresses = (dataMap[addressString] as? List<Map<String, Any>>)?.map {
                     Address.fromMap(it)
                 } ?: emptyList(),
-                cart = dataMap[cartString] as List<String>,
+                cart = dataMap[cartString] as Map<String, Int>,
                 ordersHistory = (dataMap[ordersHistoryString] as List<Map<String, Any>>).map {
                     Order.fromMap(it)
                 },

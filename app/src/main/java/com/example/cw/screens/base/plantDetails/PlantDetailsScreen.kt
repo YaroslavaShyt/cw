@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
@@ -22,11 +22,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.example.cw.core.widgets.NetworkImage
+import com.example.cw.screens.base.plantDetails.widgets.AddToCartButton
 import com.example.cw.screens.base.plantDetails.widgets.DetailsContainer
 import com.example.cw.screens.base.widgets.MainBackButton
+import com.example.cw.ui.theme.mainWhite
 import com.example.cw.ui.theme.pink
 
 @Composable
@@ -35,9 +39,12 @@ fun PlantDetailsScreen(viewModel: PlantDetailsViewModel) {
     val quantity = viewModel.quantity.collectAsState()
     val loadingState = viewModel.loading.collectAsState()
     val errorState = viewModel.error.collectAsState()
-
-    var containerHeight by remember { mutableStateOf(300.dp) }
+    var isAddedToCart by remember {
+        mutableStateOf(false)
+    }
+    var containerHeight by remember { mutableStateOf(400.dp) }
     val maxHeight = 500.dp
+    val minHeight = 400.dp
 
     Column(
         modifier = Modifier
@@ -78,7 +85,7 @@ fun PlantDetailsScreen(viewModel: PlantDetailsViewModel) {
                         detectDragGestures { _, dragAmount ->
                             containerHeight =
                                 (containerHeight - dragAmount.y.dp).coerceIn(
-                                    300.dp,
+                                    minHeight,
                                     maxHeight
                                 )
                         }
@@ -87,23 +94,62 @@ fun PlantDetailsScreen(viewModel: PlantDetailsViewModel) {
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
-                        .height(containerHeight) // Тут використовуємо змінну висоти
+                        .height(containerHeight)
                 ) {
                     DetailsContainer(
                         plant.value!!,
                         quantity = quantity.value,
                         onQuantityPlusTapped = { viewModel.onQuantityPlusTapped() },
                         onQuantityMinusTapped = { viewModel.onQuantityMinusTapped() }
+
                     )
                 }
             }
         }
     }
 
-    Box(modifier = Modifier.padding(20.dp)) {
+    Column(
+        verticalArrangement = Arrangement.Bottom,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            mainWhite,
+                        ),
+                    )
+                )
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Bottom,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 10.dp)
+            ) {
+                AddToCartButton(
+                    isAddedToCart = isAddedToCart,
+                    onPressed = {
+                        if (isAddedToCart) viewModel.onToCartButtonPressed() else
+                            viewModel
+                                .onAddToCartButtonPressed()
+                        isAddedToCart = !isAddedToCart
+
+                    })
+            }
+        }
+    }
+
+    Box(modifier = Modifier.padding(start = 20.dp)) {
         MainBackButton {
             viewModel.onBackButtonTapped()
         }
     }
+
 }
 

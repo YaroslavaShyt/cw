@@ -16,8 +16,9 @@ interface INetworkingClient : KoinComponent {
 
     suspend fun update(
         endpoint: String,
-        id: String,
-        updatedData: Map<String, Any>
+        updatedData: Map<String, Any>,
+        id: String? = null,
+        condition: ((Map<String, Any>) -> Boolean)? = null
     )
 
     suspend fun add(

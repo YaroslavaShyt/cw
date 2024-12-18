@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.Card
@@ -32,6 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,122 +46,166 @@ import com.example.cw.ui.theme.like
 import com.example.cw.ui.theme.mainCard
 import com.example.cw.ui.theme.mainText
 import com.example.cw.ui.theme.mainWhite
+import com.example.cw.ui.theme.moreGray
 import com.example.cw.ui.theme.neatGreen
 import com.example.cw.ui.theme.olive
 import com.example.cw.ui.theme.unlike
 
 @Composable
 fun CartPlantComponent(plant: Plant, isLiked: Boolean = false, onLikeTapped: () -> Unit = {}) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .height(260.dp)
-            .width(160.dp),
-        colors = CardColors(
-            containerColor = mainCard,
-            disabledContainerColor = mainCard,
-            contentColor = mainText,
-            disabledContentColor = mainText,
-        )
-    ) {
-        Box(
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Card(
             modifier = Modifier
-                .padding(8.dp)
-                .align(Alignment.End)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(30.dp)
-                    .background(
-                        color = neatGreen,
-                        shape = CircleShape
-                    )
-                    .border(2.dp, neatGreen, shape = CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Favorite,
-                    contentDescription = "favorite",
-                    tint = if (isLiked) like else unlike,
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .pointerInput(Unit) {
-                            detectTapGestures(
-                                onTap = { _ ->
-                                    onLikeTapped()
-                                },
-                            )
-                        }
-                )
-            }
-        }
-
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxHeight(),
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp)
-            ) {
-                NetworkImage(url = plant.image)
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Text(
-                text = plant.name,
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.W400,
-                    fontSize = 16.sp
-                )
+                .width(320.dp)
+                .padding(6.dp)
+                .height(170.dp),
+            colors = CardColors(
+                containerColor = mainCard,
+                disabledContainerColor = mainCard,
+                contentColor = mainText,
+                disabledContentColor = mainText,
             )
-
+        ) {
             Box(
                 modifier = Modifier
-                    .width(130.dp)
-                    .background(
-                        color = mainWhite,
-                        shape = RoundedCornerShape(18.dp)
-                    )
-                    .border(2.dp, mainWhite, shape = RoundedCornerShape(18.dp)),
-                contentAlignment = Alignment.Center
+                    .padding(8.dp)
+                    .align(Alignment.End)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                Box(
+                    modifier = Modifier
+                        .size(30.dp)
+                        .background(
+                            color = neatGreen,
+                            shape = CircleShape
+                        )
+                        .border(2.dp, neatGreen, shape = CircleShape),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = "$ " + plant.price,
-                        style = MaterialTheme.typography.titleLarge.copy(color = olive),
-                        modifier = Modifier.padding(end = 10.dp),
-                    )
-                    Box(
-                        modifier = Modifier
-                            .size(20.dp)
-                            .background(
-                                color = neatGreen,
-                                shape = CircleShape
-                            )
-                            .border(2.dp, neatGreen, shape = CircleShape),
-                        contentAlignment = Alignment.Center
+                    Column(
+                        Modifier.fillMaxHeight(),
+                        verticalArrangement = Arrangement.Bottom
                     ) {
                         Icon(
-                            imageVector = Icons.Outlined.ShoppingCart, contentDescription = "buy",
-                            tint = olive,
-                            modifier = Modifier.padding(2.dp)
+                            imageVector = Icons.Outlined.Favorite,
+                            contentDescription = "favorite",
+                            tint = if (isLiked) like else unlike,
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .pointerInput(Unit) {
+                                    detectTapGestures(
+                                        onTap = { _ ->
+                                            onLikeTapped()
+                                        },
+                                    )
+                                }
                         )
                     }
                 }
             }
+
+            Row(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxHeight()
+                    .fillMaxWidth(
+
+                    ),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .height(150.dp)
+                ) {
+                    NetworkImage(url = plant.image)
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                PlantDescription(plant = plant)
+
+            }
         }
+        DeleteButton()
+
     }
 }
 
 
+@Composable
+private fun PlantDescription(plant: Plant) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+
+    ) {
+        Text(
+            text = plant.name,
+            style = MaterialTheme.typography.titleLarge.copy(
+                fontWeight = FontWeight.W400,
+                fontSize = 16.sp
+            )
+        )
+
+        Box(
+            modifier = Modifier
+                .width(130.dp)
+                .background(
+                    color = mainWhite,
+                    shape = RoundedCornerShape(18.dp)
+                )
+                .border(2.dp, mainWhite, shape = RoundedCornerShape(18.dp)),
+            contentAlignment = Alignment.Center
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "$ " + plant.price,
+                    style = MaterialTheme.typography.titleLarge.copy(color = olive),
+                    modifier = Modifier.padding(end = 10.dp),
+                )
+                Box(
+                    modifier = Modifier
+                        .size(20.dp)
+                        .background(
+                            color = neatGreen,
+                            shape = CircleShape
+                        )
+                        .border(2.dp, neatGreen, shape = CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.ShoppingCart,
+                        contentDescription = "buy",
+                        tint = olive,
+                        modifier = Modifier.padding(2.dp)
+                    )
+                }
+            }
+        }
+
+    }
+}
+
+
+@Composable
+private fun DeleteButton() {
+    Box(modifier = Modifier.padding(start = 6.dp)) {
+        Box(
+            modifier = Modifier
+                .size(36.dp)
+                .padding(4.dp)
+                .background(moreGray)
+                .clip(CircleShape)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Delete,
+                contentDescription = null,
+                tint = mainText.copy(alpha = 0.6f),
+                modifier = Modifier.size(30.dp)
+            )
+        }
+    }
+}
 

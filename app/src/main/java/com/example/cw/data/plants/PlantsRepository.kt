@@ -20,11 +20,14 @@ class PlantsRepository(private val networkingClient: INetworkingClient) : IPlant
     }
 
     override suspend fun getPlantsById(ids: List<String>): List<Plant> {
-        val plantsData = networkingClient.get(plantsEnd, ids = ids)
+        if(ids.isNotEmpty()){
+            val plantsData = networkingClient.get(plantsEnd, ids = ids)
 
-        return plantsData.map { plantData ->
-            Plant.fromMap(plantData)
+            return plantsData.map { plantData ->
+                Plant.fromMap(plantData)
+            }
         }
+        return emptyList()
     }
 
     override suspend fun getPlantsCategories(): List<String> {

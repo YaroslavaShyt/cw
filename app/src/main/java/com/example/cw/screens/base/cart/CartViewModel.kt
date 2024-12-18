@@ -26,6 +26,9 @@ class CartViewModel(plantsRepository: IPlantsRepository, userService: IUserServi
     private val _plants = MutableStateFlow<List<Plant>>(emptyList())
     val plants: StateFlow<List<Plant>> = _plants
 
+    private var _sum = MutableStateFlow(0.0)
+    val sum: StateFlow<Double> = _sum
+
     init {
         getCartContent()
     }
@@ -36,8 +39,20 @@ class CartViewModel(plantsRepository: IPlantsRepository, userService: IUserServi
         if (_userService.user.value != null) {
             viewModelScope.launch {
                 try {
-                    val plantsList = _plantsRepository.getPlantsById(_userService.user.value!!.cart)
+                    val ids = _userService.user.value!!.cart.keys.toList()
+                    val plantsList =
+                        _plantsRepository.getPlantsById(ids = ids)
                     _plants.value = plantsList
+
+                    for (plant in plantsList) {
+                        var quantity = 1
+                        for (pair in _userService.user.value!!.cart) {
+                            if (pair.key == plant.id) {
+                                quantity = pair.value
+                            }
+                        }
+                        _sum.value += plant.price.toDouble() * quantity
+                    }
                 } catch (e: Exception) {
                     _error.value = e.localizedMessage
                 } finally {

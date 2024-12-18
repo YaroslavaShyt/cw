@@ -28,15 +28,19 @@ class UserRepository(private val networkingClient: INetworkingClient) : IUserRep
         id: String,
         addresses: List<Map<String, Any>>
     ) {
-        networkingClient.update(userEnd, id, mapOf(addressString to addresses))
+        networkingClient.update(userEnd, id = id, updatedData = mapOf(addressString to addresses))
     }
 
     override suspend fun updateUserFavorites(id: String, favorites: List<String>) {
-        networkingClient.update(userEnd, id, mapOf(favoritesString to favorites))
+        networkingClient.update(userEnd, id = id, updatedData = mapOf(favoritesString to favorites))
     }
 
-    override suspend fun updateUserCart(id: String, cart: List<String>) {
-        networkingClient.update(userEnd, id, mapOf(cartString to cart))
+    override suspend fun updateUserCart(id: String, cart: Map<String, Any>) {
+        networkingClient.update(
+            endpoint = userEnd,
+            updatedData = cart,
+            condition = { data -> data["id"] == id }
+        )
     }
 
 

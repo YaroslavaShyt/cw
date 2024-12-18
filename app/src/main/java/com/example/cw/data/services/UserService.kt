@@ -3,6 +3,7 @@ package com.example.cw.data.services
 import com.example.cw.data.user.Address
 import com.example.cw.data.user.Address.Companion.toMap
 import com.example.cw.data.user.User
+import com.example.cw.data.user.User.Companion.toMap
 import com.example.cw.domain.services.IUserService
 import com.example.cw.domain.user.IUserRepository
 import com.google.firebase.auth.FirebaseUser
@@ -60,13 +61,13 @@ class UserService(private val userRepository: IUserRepository) : KoinComponent, 
 
     }
 
-    override suspend fun updateUserCart(cart: List<String>) {
+    override suspend fun updateUserCart(cart: Map<String, Int>) {
         if (_user.value != null) {
-            _user.value!!.cart = cart
+            _user.value!!.cart += cart
 
             userRepository.updateUserCart(
                 _user.value!!.id,
-                _user.value!!.cart,
+                _user.value!!.toMap(),
             )
         }
     }

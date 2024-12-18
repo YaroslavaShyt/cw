@@ -91,14 +91,34 @@ class NetworkingClient(private val firebaseFireStore: FirebaseFirestore) : INetw
 
     override suspend fun update(
         endpoint: String,
-        id: String,
-        updatedData: Map<String, Any>
+        updatedData: Map<String, Any>,
+        id: String?,
+        condition: ((Map<String, Any>) -> Boolean)?
     ) {
         try {
-            val documentRef = firebaseFireStore.collection(endpoint).document(id)
-            documentRef.update(updatedData).await()
+            val collectionRef = FirebaseFirestore.getInstance().collection(endpoint)
+
+            if (id != null) {
+                val documentRef = collectionRef.document(id)
+                documentRef.update(updatedData).await()
+            } else if (condition != null) {
+                val querySnapshot = collectionRef.get().await()
+
+                for (document in querySnapshot) {
+                    val documentData = document.data
+                    if (condition(documentData)) {
+                        document.reference.update(updatedData).await()
+                    }
+                }
+            } else {
+                val querySnapshot = collectionRef.get().await()
+
+                for (document in querySnapshot) {
+                    document.reference.update(updatedData).await()
+                }
+            }
         } catch (e: Exception) {
-            throw Exception("Error updating document: ${e.localizedMessage}")
+            throw Exception("Error updating documents: ${e.localizedMessage}")
         }
     }
 }

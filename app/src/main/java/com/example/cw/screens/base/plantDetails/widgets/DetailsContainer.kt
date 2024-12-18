@@ -87,14 +87,6 @@ fun DetailsContainer(
             AboutWidget(description = plant.about)
         }
 
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        ) {
-            AddToCartButton()
-        }
     }
 
 }
