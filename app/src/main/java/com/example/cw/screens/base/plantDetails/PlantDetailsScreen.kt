@@ -39,9 +39,7 @@ fun PlantDetailsScreen(viewModel: PlantDetailsViewModel) {
     val quantity = viewModel.quantity.collectAsState()
     val loadingState = viewModel.loading.collectAsState()
     val errorState = viewModel.error.collectAsState()
-    var isAddedToCart by remember {
-        mutableStateOf(false)
-    }
+    val cartState = viewModel.isInCart.collectAsState()
     var containerHeight by remember { mutableStateOf(400.dp) }
     val maxHeight = 500.dp
     val minHeight = 400.dp
@@ -98,6 +96,7 @@ fun PlantDetailsScreen(viewModel: PlantDetailsViewModel) {
                 ) {
                     DetailsContainer(
                         plant.value!!,
+                        isAddedToCart = cartState.value,
                         quantity = quantity.value,
                         onQuantityPlusTapped = { viewModel.onQuantityPlusTapped() },
                         onQuantityMinusTapped = { viewModel.onQuantityMinusTapped() }
@@ -133,12 +132,11 @@ fun PlantDetailsScreen(viewModel: PlantDetailsViewModel) {
                     .padding(bottom = 10.dp)
             ) {
                 AddToCartButton(
-                    isAddedToCart = isAddedToCart,
+                    isAddedToCart = cartState.value,
                     onPressed = {
-                        if (isAddedToCart) viewModel.onToCartButtonPressed() else
+                        if (cartState.value) viewModel.onToCartButtonPressed() else
                             viewModel
                                 .onAddToCartButtonPressed()
-                        isAddedToCart = !isAddedToCart
 
                     })
             }

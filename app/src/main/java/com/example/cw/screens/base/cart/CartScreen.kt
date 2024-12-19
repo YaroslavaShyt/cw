@@ -39,7 +39,7 @@ fun CartScreen(viewModel: CartViewModel) {
                 )
             )
             Text(
-                text = stringResource(id = R.string.total) + ": " + sum.value.toString() + "$",
+                text = stringResource(id = R.string.total) + ": " + String.format("%.2f", sum.value) + "$",
                 style = MaterialTheme.typography.displayLarge.copy(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.W600
@@ -49,8 +49,22 @@ fun CartScreen(viewModel: CartViewModel) {
         }
 
         LazyColumn {
-            items(cartContent.value) { plant ->
-                CartPlantComponent(plant = plant)
+            items(cartContent.value.toList()) { plant ->
+                CartPlantComponent(
+                    plant = plant.first,
+                    quantity = plant.second,
+                    onQuantityPlusTapped = {
+                        viewModel.onQuantityPlusTapped(
+                            plant.first.id
+                        )
+                    },
+                    onQuantityMinusTapped = {
+                        viewModel.onQuantityMinusTapped(
+                            plant.first.id
+                        )
+                    },
+                    onDeleteButtonTapped = {viewModel.onDeleteButtonTapped(plant.first.id)}
+                )
             }
         }
     }

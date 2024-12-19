@@ -27,6 +27,7 @@ import com.example.cw.ui.theme.mainText
 fun DetailsContainer(
     plant: Plant,
     quantity: Int,
+    isAddedToCart: Boolean,
     onQuantityPlusTapped: () -> Unit,
     onQuantityMinusTapped: () -> Unit,
 ) {
@@ -59,11 +60,14 @@ fun DetailsContainer(
                         fontWeight = FontWeight.W400
                     )
                 }
-                QuantityChanger(
-                    quantity = quantity,
-                    onQuantityPlusTapped,
-                    onQuantityMinusTapped
-                )
+                if (!isAddedToCart) {
+                    QuantityChanger(
+                        quantity = quantity,
+                        onQuantityPlusTapped,
+                        onQuantityMinusTapped
+                    )
+                }
+
             }
             Text(
                 text = "Care",

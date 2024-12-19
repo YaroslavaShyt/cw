@@ -63,7 +63,13 @@ class UserService(private val userRepository: IUserRepository) : KoinComponent, 
 
     override suspend fun updateUserCart(cart: Map<String, Int>) {
         if (_user.value != null) {
-            _user.value!!.cart += cart
+            if (_user.value!!.cart.contains(cart.keys.first())) {
+                val mutMap = _user.value!!.cart.toMutableMap()
+                mutMap[cart.keys.first()] = cart.values.first()
+                _user.value!!.cart = mutMap
+            } else {
+                _user.value!!.cart += cart
+            }
 
             userRepository.updateUserCart(
                 _user.value!!.id,
@@ -71,6 +77,21 @@ class UserService(private val userRepository: IUserRepository) : KoinComponent, 
             )
         }
     }
+
+    override suspend fun removeFromCart(id: String) {
+        if (_user.value != null) {
+            if (_user.value!!.cart.contains(id)) {
+                val mutMap = _user.value!!.cart.toMutableMap()
+                mutMap.remove(id)
+                _user.value!!.cart = mutMap
+                userRepository.updateUserCart(
+                    _user.value!!.id,
+                    _user.value!!.toMap(),
+                )
+            }
+        }
+    }
+
 
     override fun cleanData() {
         _user.value = null

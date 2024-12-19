@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cw.data.plants.Plant
 import com.example.cw.core.widgets.NetworkImage
+import com.example.cw.screens.base.plantDetails.widgets.QuantityChanger
 import com.example.cw.ui.theme.CwTheme
 import com.example.cw.ui.theme.like
 import com.example.cw.ui.theme.mainCard
@@ -52,159 +53,196 @@ import com.example.cw.ui.theme.olive
 import com.example.cw.ui.theme.unlike
 
 @Composable
-fun CartPlantComponent(plant: Plant, isLiked: Boolean = false, onLikeTapped: () -> Unit = {}) {
-    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        Card(
-            modifier = Modifier
-                .width(320.dp)
-                .padding(6.dp)
-                .height(170.dp),
-            colors = CardColors(
-                containerColor = mainCard,
-                disabledContainerColor = mainCard,
-                contentColor = mainText,
-                disabledContentColor = mainText,
-            )
+fun CartPlantComponent(
+    plant: Plant,
+    quantity: Int,
+    isLiked: Boolean = false,
+    onLikeTapped: () -> Unit = {},
+    onQuantityPlusTapped: () -> Unit = {},
+    onQuantityMinusTapped: () -> Unit = {},
+    onDeleteButtonTapped: () -> Unit = {},
+) {
+    Row(
+        Modifier
+            .padding(vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        Box(
+            Modifier
+                .clip(RoundedCornerShape(20.dp))
+                .background(mainCard)
         ) {
-            Box(
-                modifier = Modifier
+            Row(
+                Modifier
                     .padding(8.dp)
-                    .align(Alignment.End)
+                    .width(300.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
+                BuildImage(plant = plant)
+
                 Box(
                     modifier = Modifier
-                        .size(30.dp)
-                        .background(
-                            color = neatGreen,
-                            shape = CircleShape
-                        )
-                        .border(2.dp, neatGreen, shape = CircleShape),
-                    contentAlignment = Alignment.Center
+                        .fillMaxHeight()
+                        .weight(1f)
+                        .width(130.dp)
                 ) {
                     Column(
-                        Modifier.fillMaxHeight(),
-                        verticalArrangement = Arrangement.Bottom
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .padding(top = 8.dp)
+                            .width(130.dp),
+                        horizontalAlignment = Alignment.End
                     ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Favorite,
-                            contentDescription = "favorite",
-                            tint = if (isLiked) like else unlike,
+
+                        Box(
                             modifier = Modifier
-                                .padding(4.dp)
-                                .pointerInput(Unit) {
-                                    detectTapGestures(
-                                        onTap = { _ ->
-                                            onLikeTapped()
-                                        },
-                                    )
-                                }
-                        )
+                                .align(Alignment.End)
+                        ) {
+                            QuantityChanger(
+                                quantity = quantity,
+                                onQuantityPlusTapped = { onQuantityPlusTapped() },
+                                onQuantityMinusTapped = { onQuantityMinusTapped() }
+                            )
+                        }
+
+                        Column(
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .fillMaxHeight()
+                                .width(130.dp),
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = plant.name,
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    fontWeight = FontWeight.W400,
+                                    fontSize = 16.sp
+                                )
+                            )
+                            BuildPrice(plant = plant)
+
+                        }
+                        BuildLikeButton(onLikeTapped = { onLikeTapped() }, isLiked = isLiked)
+
                     }
                 }
             }
-
-            Row(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxHeight()
-                    .fillMaxWidth(
-
-                    ),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier
-                        .height(150.dp)
-                ) {
-                    NetworkImage(url = plant.image)
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                PlantDescription(plant = plant)
-
-            }
         }
-        DeleteButton()
-
+        DeleteButton(onDeleteButtonTapped)
     }
 }
 
 
 @Composable
-private fun PlantDescription(plant: Plant) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-
-    ) {
-        Text(
-            text = plant.name,
-            style = MaterialTheme.typography.titleLarge.copy(
-                fontWeight = FontWeight.W400,
-                fontSize = 16.sp
-            )
-        )
-
-        Box(
-            modifier = Modifier
-                .width(130.dp)
-                .background(
-                    color = mainWhite,
-                    shape = RoundedCornerShape(18.dp)
-                )
-                .border(2.dp, mainWhite, shape = RoundedCornerShape(18.dp)),
-            contentAlignment = Alignment.Center
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = "$ " + plant.price,
-                    style = MaterialTheme.typography.titleLarge.copy(color = olive),
-                    modifier = Modifier.padding(end = 10.dp),
-                )
-                Box(
-                    modifier = Modifier
-                        .size(20.dp)
-                        .background(
-                            color = neatGreen,
-                            shape = CircleShape
-                        )
-                        .border(2.dp, neatGreen, shape = CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.ShoppingCart,
-                        contentDescription = "buy",
-                        tint = olive,
-                        modifier = Modifier.padding(2.dp)
-                    )
-                }
-            }
-        }
-
-    }
-}
-
-
-@Composable
-private fun DeleteButton() {
+private fun DeleteButton(onDeleteButtonTapped: () -> Unit) {
     Box(modifier = Modifier.padding(start = 6.dp)) {
         Box(
             modifier = Modifier
-                .size(36.dp)
-                .padding(4.dp)
-                .background(moreGray)
+                .size(40.dp)
                 .clip(CircleShape)
+                .background(moreGray)
+                .pointerInput(Unit) {
+                    detectTapGestures {
+                        onDeleteButtonTapped()
+                    }
+                }
         ) {
             Icon(
                 imageVector = Icons.Outlined.Delete,
                 contentDescription = null,
                 tint = mainText.copy(alpha = 0.6f),
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(6.dp)
             )
+        }
+    }
+}
+
+@Composable
+private fun BuildImage(plant: Plant) {
+    Box(
+        modifier = Modifier
+            .width(120.dp)
+            .height(170.dp)
+            .padding(end = 8.dp)
+    ) {
+        NetworkImage(url = plant.image)
+    }
+}
+
+@Composable
+private fun BuildPrice(plant: Plant) {
+    Box(
+        modifier = Modifier
+            .width(130.dp)
+            .background(
+                color = mainWhite,
+                shape = RoundedCornerShape(18.dp)
+            )
+            .border(2.dp, mainWhite, shape = RoundedCornerShape(18.dp)),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = "$ " + plant.price,
+                style = MaterialTheme.typography.titleLarge.copy(color = olive),
+                modifier = Modifier.padding(end = 10.dp),
+            )
+            Box(
+                modifier = Modifier
+                    .size(20.dp)
+                    .background(
+                        color = neatGreen,
+                        shape = CircleShape
+                    )
+                    .border(2.dp, neatGreen, shape = CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.ShoppingCart,
+                    contentDescription = "buy",
+                    tint = olive,
+                    modifier = Modifier.padding(2.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun BuildLikeButton(onLikeTapped: () -> Unit, isLiked: Boolean) {
+    Column {
+        Box(
+            modifier = Modifier
+                .align(Alignment.End)
+                .padding(8.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(30.dp)
+                    .background(
+                        color = neatGreen,
+                        shape = CircleShape
+                    )
+                    .border(2.dp, neatGreen, shape = CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Favorite,
+                    contentDescription = "favorite",
+                    tint = if (isLiked) like else unlike,
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .pointerInput(Unit) {
+                            detectTapGestures(onTap = { onLikeTapped() })
+                        }
+                )
+            }
         }
     }
 }

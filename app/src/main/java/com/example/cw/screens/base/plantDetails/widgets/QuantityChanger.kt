@@ -70,7 +70,6 @@ private fun RoundButton(content: String, contentColor: Color, onQuantityTapped: 
             .pointerInput(Unit) {
                 detectTapGestures {
                     onQuantityTapped()
-
                 }
             }
 

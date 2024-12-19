@@ -28,12 +28,15 @@ class PlantDetailsViewModel(
     private val _quantity = MutableStateFlow<Int>(1)
     val quantity: StateFlow<Int> = _quantity
 
-
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
     private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading
+
+    private val _isInCart = MutableStateFlow(false)
+    val isInCart: StateFlow<Boolean> = _isInCart
+
 
     fun onQuantityPlusTapped() {
         _quantity.value += 1
@@ -53,6 +56,7 @@ class PlantDetailsViewModel(
             viewModelScope.launch {
                 try {
                     _plant.value = plantRepository.getPlantsById(listOf(plantId)).first()
+                    _isInCart.value = userService.user.value?.cart?.containsKey(plantId) ?: false
                 } catch (e: Exception) {
                     _error.value = e.localizedMessage
                 } finally {
@@ -67,6 +71,7 @@ class PlantDetailsViewModel(
     }
 
     fun onAddToCartButtonPressed() {
+        _isInCart.value = true
         viewModelScope.launch {
             _userService.updateUserCart(mapOf(_plantId to _quantity.value))
         }
