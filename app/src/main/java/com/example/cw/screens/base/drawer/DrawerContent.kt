@@ -74,12 +74,8 @@ fun DrawerContent(
 ) {
     var isChecked by remember { mutableStateOf(false) }
     var expanded by remember { mutableStateOf(false) }
-    var selectedLanguage by remember {
-        mutableStateOf(currentLan)
-    }
     val languages = listOf("uk", "en")
 
-    val context = LocalContext.current
 
     Column {
         UserNameAndImageRow(userName, photo)
@@ -182,7 +178,6 @@ fun DrawerContent(
                             languages.forEach { language ->
                                 DropdownMenuItem(onClick = {
                                     onLanguageChanged(language)
-                                    selectedLanguage = language
                                     expanded = false
                                 }) {
                                     Text(

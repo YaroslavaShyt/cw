@@ -23,7 +23,7 @@ class BaseFactory : KoinComponent {
                 context = context
             ),
             mainViewModel = MainViewModel(
-                authService
+                authService,
             ),
             navController = navHostController
         )

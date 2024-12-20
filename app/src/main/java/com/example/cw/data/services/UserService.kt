@@ -99,25 +99,33 @@ class UserService(private val userRepository: IUserRepository) : KoinComponent, 
     }
 
 
-    override suspend fun updateUserSettings(theme: String?, locale: String?){
+    override suspend fun updateUserSettings(theme: String?, locale: String?, isOnlineUpdate: Boolean) {
         if (_user.value != null) {
             val settings = _user.value!!.settings.toMutableMap()
-            if(theme != null){
-                if(theme == darkTheme || theme == lightTheme){
+            if (theme != null) {
+                if (theme == darkTheme || theme == lightTheme) {
                     settings[themeString] = theme
+                } else {
+                    return
+
                 }
-                return
             }
-            if(locale != null){
-                if(locale == enLocale || locale == ukLocale){
+            if (locale != null) {
+                if (locale == enLocale || locale == ukLocale) {
                     settings[localeString] = locale
+                } else {
+                    return
+
                 }
-                return
             }
-            userRepository.updateUserSettings(
-                id = _user.value!!.id,
-                setting = settings
-            )
+            _user.value!!.settings = settings
+            if(isOnlineUpdate){
+                userRepository.updateUserSettings(
+                    id = _user.value!!.id,
+                    setting = _user.value!!.toMap()
+                )
+            }
+
         }
     }
 

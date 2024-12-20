@@ -27,14 +27,14 @@ import com.example.cw.screens.base.drawer.DrawerContent
 import kotlinx.coroutines.launch
 
 
-class BaseActivity(navController: NavHostController) : ComponentActivity(){
+class BaseActivity(navController: NavHostController) : ComponentActivity() {
     val _navController: NavHostController = navController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current
-            BaseFactory().Build(context=context, navHostController = _navController)
+            BaseFactory().Build(context = context, navHostController = _navController)
         }
     }
 
@@ -51,6 +51,9 @@ fun BaseScreen(
     val userPhoto = viewModel.userPhoto.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val language = viewModel.currentLanguage.collectAsState()
+
     ModalDrawer(
         drawerShape = RoundedCornerShape(20.dp),
         drawerState = drawerState,
@@ -58,14 +61,19 @@ fun BaseScreen(
         drawerContent = {
             if (userName.value != null && userPhoto.value != null) {
                 DrawerContent(
-                    user = user.value?.uid ?: "no",
+                    currentLan = language.value,
                     userName = userName.value!!,
                     photo = userPhoto.value!!,
                     onAddressClick = {
                         coroutineScope.launch { drawerState.close() }
                         navController.navigate(route = addressesRoute)
                     },
-                    context = LocalContext.current,
+                    onLanguageChanged = {
+                        viewModel.changeLanguage(
+                            context = context,
+                            language = it
+                        )
+                    },
                     onLogoutTapped = {
                         coroutineScope.launch { drawerState.close() }
                         mainViewModel.onLogout()

@@ -12,9 +12,11 @@ import com.example.cw.domain.handler.ILocalizationHandler
 import com.example.cw.domain.services.IUserService
 import java.util.Locale
 
-class LocalizationHandler(private val context: Context, private val userService: IUserService){
-    suspend fun changeLocale(context: Context, localeString: String) {
-        org.koin.core.context.GlobalContext.stopKoin()
+class LocalizationHandler(private val userService: IUserService) {
+    suspend fun changeLocale(context: Context, localeString: String, isOnlineUpdate: Boolean) {
+        if (isOnlineUpdate) {
+            org.koin.core.context.GlobalContext.stopKoin()
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             context.getSystemService(LocaleManager::class.java).applicationLocales =
@@ -23,6 +25,26 @@ class LocalizationHandler(private val context: Context, private val userService:
             AppCompatDelegate
                 .setApplicationLocales(LocaleListCompat.forLanguageTags(localeString))
         }
-        userService.updateUserSettings(theme = null, locale = localeString)
+        userService.updateUserSettings(theme = null, locale = localeString, isOnlineUpdate)
+        saveLanguagePreference(context, localeString)
+    }
+
+    private fun saveLanguagePreference(context: Context, languageCode: String) {
+        val sharedPreferences =
+            context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("language", languageCode)
+        editor.apply()
+    }
+
+    private fun getSavedLanguagePreference(context: Context): String? {
+        val sharedPreferences =
+            context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("language", "en")
+    }
+
+    suspend fun setLocale(context: Context, isOnlineUpdate: Boolean) {
+        val locale = getSavedLanguagePreference(context)
+        changeLocale(context, locale ?: "en", isOnlineUpdate)
     }
 }

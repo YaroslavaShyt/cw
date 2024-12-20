@@ -13,7 +13,9 @@ import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,37 +36,28 @@ import com.example.cw.R
 import com.example.cw.data.plants.Plant
 import com.example.cw.screens.base.cart.widgets.CartPlantComponent
 import com.example.cw.screens.base.cart.widgets.MakePurchaseButton
+import com.example.cw.screens.base.cart.widgets.bottomSheet.PurchaseBottomSheet
+import com.example.cw.ui.theme.mainWhite
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(viewModel: CartViewModel) {
+    val cartContent = viewModel.plants.collectAsState()
     var isBottomSheetOpen by remember { mutableStateOf(false) }
 
-    val bottomSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden
-    )
 
-    val scope = rememberCoroutineScope()
+    BaseContent(viewModel = viewModel)
+    PurchaseButton(viewModel = viewModel, onPressed = {isBottomSheetOpen = !isBottomSheetOpen})
 
-    val openBottomSheet: () -> Unit = {
-        scope.launch {
-            bottomSheetState.show()
+    if (isBottomSheetOpen) {
+        ModalBottomSheet(
+            containerColor = mainWhite,
+            onDismissRequest = { isBottomSheetOpen = !isBottomSheetOpen }) {
+            PurchaseBottomSheet(order = cartContent.value.keys.toList())
         }
     }
 
-    BottomSheetScaffold(
-
-        sheetContent = {
-            // This is where you define the content inside the bottom sheet
-            Box(modifier = Modifier.padding(16.dp)) {
-                Text("This is your Bottom Sheet content")
-            }
-        },
-        sheetElevation = 16.dp,
-        content = {
-            BaseContent(viewModel = viewModel)
-            PurchaseButton(viewModel, onPressed = openBottomSheet)
-        })
 
 }
 

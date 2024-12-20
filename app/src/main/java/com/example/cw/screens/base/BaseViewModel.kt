@@ -15,10 +15,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 
-class BaseViewModel(userService: IUserService, authService: IAuthService, context: Context) : ViewModel(),
+class BaseViewModel(userService: IUserService, authService: IAuthService, context: Context) :
+    ViewModel(),
     KoinComponent {
-    private val languageHandler  = LocalizationHandler(context, userService)
-    val currentLanguage = userService.user.value?.settings?.get(localeString)
+    private val languageHandler = LocalizationHandler(userService)
+    val currentLanguage =
+        MutableStateFlow("en")
 
     private val _userName = MutableStateFlow<String?>(null)
     val userName: StateFlow<String?> = _userName
@@ -29,19 +31,25 @@ class BaseViewModel(userService: IUserService, authService: IAuthService, contex
 
     init {
         viewModelScope.launch {
+            LocalizationHandler(userService).setLocale(
+                context,
+                false,
+            )
+
             authService.user.value?.let { userService.initUser(it.uid) }
             _userName.value = userService.user.value?.name
             _userPhoto.value = userService.user.value?.photo
+            currentLanguage.value = userService.user.value?.settings?.get(localeString) ?: "en"
         }
     }
 
-    fun changeLanguage(language: String) {
-        languageHandler.changeLanguage(language)
+    fun changeLanguage(context: Context, language: String) {
+        viewModelScope.launch {
+            languageHandler.changeLocale(context, language, true)
+            currentLanguage.value = language
+        }
     }
 
-    fun setLocale() {
-        languageHandler.setLocale(currentLanguage)
-    }
 
     fun cleanData() {
         _userName.value = null

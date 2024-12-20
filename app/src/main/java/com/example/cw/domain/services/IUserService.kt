@@ -14,7 +14,7 @@ interface IUserService: KoinComponent {
     suspend fun updateUserFavorites(favorites: List<String>)
     suspend fun updateUserCart(cart: Map<String, Int>)
     suspend fun removeFromCart(id: String)
-    suspend fun updateUserSettings(theme: String?, locale: String?)
+    suspend fun updateUserSettings(theme: String?, locale: String?, isOnlineUpdate: Boolean = true)
 
 
     fun cleanData()

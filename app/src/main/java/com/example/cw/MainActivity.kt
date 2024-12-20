@@ -5,7 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
+import com.example.cw.data.handlers.LocalizationHandler
 import com.example.cw.domain.di.appModule
 import com.example.cw.screens.MainFactory
 import com.example.cw.ui.theme.mainTypography

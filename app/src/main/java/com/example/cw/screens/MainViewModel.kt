@@ -5,8 +5,10 @@ import android.content.Intent
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cw.data.handlers.LocalizationHandler
 import com.example.cw.domain.services.IAuthService
 import com.example.cw.domain.services.IUserService
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
