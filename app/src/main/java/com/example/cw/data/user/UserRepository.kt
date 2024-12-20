@@ -43,5 +43,14 @@ class UserRepository(private val networkingClient: INetworkingClient) : IUserRep
         )
     }
 
+    override suspend fun updateUserSettings(
+        id: String,
+        setting: Map<String, Any>
+    ) {
+        networkingClient.update(
+            endpoint = userEnd,
+            updatedData = setting,
+            condition = { data -> data["id"] == id })
+    }
 
 }

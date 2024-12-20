@@ -5,6 +5,8 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cw.data.handlers.LocalizationHandler
+import com.example.cw.data.user.localeString
+import com.example.cw.data.user.themeString
 import com.example.cw.domain.handler.ILocalizationHandler
 import com.example.cw.domain.services.IAuthService
 import com.example.cw.domain.services.IUserService
@@ -15,9 +17,8 @@ import org.koin.core.component.KoinComponent
 
 class BaseViewModel(userService: IUserService, authService: IAuthService, context: Context) : ViewModel(),
     KoinComponent {
-    private val languageHandler: ILocalizationHandler = LocalizationHandler(context)
-    val currentLanguage = languageHandler.getSavedLanguage()
-
+    private val languageHandler  = LocalizationHandler(context, userService)
+    val currentLanguage = userService.user.value?.settings?.get(localeString)
 
     private val _userName = MutableStateFlow<String?>(null)
     val userName: StateFlow<String?> = _userName

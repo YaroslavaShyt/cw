@@ -22,4 +22,9 @@ interface IUserRepository : KoinComponent {
         id: String,
         cart: Map<String, Any>
     )
+
+    suspend fun updateUserSettings(
+        id: String,
+        setting: Map<String, Any>
+    )
 }

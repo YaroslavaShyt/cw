@@ -11,6 +11,13 @@ private const val dataString: String = "data"
 private const val cartString: String = "cart"
 private const val nameString: String = "name"
 private const val photoString: String = "photo"
+private const val settingsString: String = "settings"
+const val themeString: String = "theme"
+const val localeString: String = "locale"
+const val lightTheme: String = "LIGHT"
+const val darkTheme: String = "DARK"
+const val ukLocale: String = "uk"
+const val enLocale: String = "en"
 
 
 private const val ordersHistoryString: String = "ordersHistory"
@@ -24,7 +31,8 @@ data class User(
     var addresses: List<Address> = emptyList(),
     var favorite: List<String> = emptyList(),
     var cart: Map<String, Int> = emptyMap(),
-    var ordersHistory: List<Order> = emptyList()
+    var ordersHistory: List<Order> = emptyList(),
+    var settings: Map<String, String> = emptyMap()
 ) {
     companion object {
         fun fromMap(data: Map<String, Any>): User {
@@ -42,6 +50,7 @@ data class User(
                 ordersHistory = (dataMap[ordersHistoryString] as List<Map<String, Any>>).map {
                     Order.fromMap(it)
                 },
+                settings = dataMap[settingsString] as Map<String, String>,
             )
         }
 
@@ -54,7 +63,8 @@ data class User(
                     favoriteString to this.favorite,
                     addressString to this.addresses.map { it.toMap() },
                     cartString to this.cart,
-                    ordersHistoryString to this.ordersHistory.map { it.toMap() }
+                    ordersHistoryString to this.ordersHistory.map { it.toMap() },
+                    settingsString to this.settings
                 )
             )
         }

@@ -1,6 +1,10 @@
 package com.example.cw.screens.base.drawer
 
+import android.app.LocaleManager
 import android.content.Context
+import android.os.Build
+import android.os.LocaleList
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -40,12 +44,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.os.LocaleListCompat
 import com.example.cw.core.widgets.NetworkImage
 import com.example.cw.ui.theme.icon
 import com.example.cw.ui.theme.lightGray
@@ -61,18 +67,19 @@ import com.example.cw.ui.theme.neatGreen
 @Composable
 fun DrawerContent(
     userName: String, photo: String,
-    user: String,
     onAddressClick: () -> Unit = {},
     onLogoutTapped: () -> Unit = {},
-    context: Context,
+    currentLan: String,
+    onLanguageChanged: (String) -> Unit,
 ) {
     var isChecked by remember { mutableStateOf(false) }
     var expanded by remember { mutableStateOf(false) }
-    var selectedLanguage by remember { mutableStateOf(LocalizationHandler(context).getSavedLanguage()) }
+    var selectedLanguage by remember {
+        mutableStateOf(currentLan)
+    }
+    val languages = listOf("uk", "en")
 
-    val languages = listOf("en", "uk")
-
-    val languageHandler = LocalizationHandler(context)
+    val context = LocalContext.current
 
     Column {
         UserNameAndImageRow(userName, photo)
@@ -138,7 +145,7 @@ fun DrawerContent(
                             },
                         ) {
                             Text(
-                                text = selectedLanguage,
+                                text = currentLan,
                                 style = MaterialTheme.typography.bodyLarge.copy(
                                     fontWeight = FontWeight.Normal,
                                     fontSize = 16.sp
@@ -174,11 +181,9 @@ fun DrawerContent(
                         ) {
                             languages.forEach { language ->
                                 DropdownMenuItem(onClick = {
+                                    onLanguageChanged(language)
                                     selectedLanguage = language
                                     expanded = false
-                                    val languageCode = if (language == "English") "en" else "uk"
-                                    languageHandler.changeLanguage(languageCode)
-                                    languageHandler.setLocale(languageCode)
                                 }) {
                                     Text(
                                         text = language,
@@ -292,3 +297,4 @@ private fun DrawerItem(
     }
 
 }
+

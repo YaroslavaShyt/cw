@@ -1,45 +1,28 @@
 package com.example.cw.data.handlers
 
+import android.app.LocaleManager
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
+import android.os.LocaleList
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import com.example.cw.domain.handler.ILocalizationHandler
+import com.example.cw.domain.services.IUserService
 import java.util.Locale
 
-class LocalizationHandler(private val context: Context): ILocalizationHandler{
-    private val preferences: SharedPreferences =
-        context.getSharedPreferences("language_pref", Context.MODE_PRIVATE)
+class LocalizationHandler(private val context: Context, private val userService: IUserService){
+    suspend fun changeLocale(context: Context, localeString: String) {
+        org.koin.core.context.GlobalContext.stopKoin()
 
-    companion object {
-        const val LANGUAGE_KEY = "language_key"
-        const val DEFAULT_LANGUAGE = "en"
-    }
-
-    override fun getSavedLanguage(): String {
-        return preferences.getString(LANGUAGE_KEY, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
-    }
-
-    override fun saveLanguage(language: String) {
-        preferences.edit().putString(LANGUAGE_KEY, language).apply()
-    }
-
-    override fun setLocale(language: String) {
-        val locale = Locale(language)
-        Locale.setDefault(locale)
-
-        val config = context.resources.configuration
-        config.setLocale(locale)
-
-        context.createConfigurationContext(config)
-
-        saveLanguage(language)
-
-        if (context is AppCompatActivity) {
-            context.recreate()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.getSystemService(LocaleManager::class.java).applicationLocales =
+                LocaleList.forLanguageTags(localeString)
+        } else {
+            AppCompatDelegate
+                .setApplicationLocales(LocaleListCompat.forLanguageTags(localeString))
         }
-    }
-
-    override fun changeLanguage(language: String) {
-        setLocale(language)
+        userService.updateUserSettings(theme = null, locale = localeString)
     }
 }

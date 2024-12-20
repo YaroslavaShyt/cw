@@ -1,5 +1,8 @@
 package com.example.cw.screens.base
 
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +25,20 @@ import com.example.cw.screens.base.widgets.MainTopBar
 import com.example.cw.screens.base.home.widgets.BottomNavigationBar
 import com.example.cw.screens.base.drawer.DrawerContent
 import kotlinx.coroutines.launch
+
+
+class BaseActivity(navController: NavHostController) : ComponentActivity(){
+    val _navController: NavHostController = navController
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            val context = LocalContext.current
+            BaseFactory().Build(context=context, navHostController = _navController)
+        }
+    }
+
+}
 
 @Composable
 fun BaseScreen(

@@ -4,6 +4,12 @@ import com.example.cw.data.user.Address
 import com.example.cw.data.user.Address.Companion.toMap
 import com.example.cw.data.user.User
 import com.example.cw.data.user.User.Companion.toMap
+import com.example.cw.data.user.darkTheme
+import com.example.cw.data.user.enLocale
+import com.example.cw.data.user.lightTheme
+import com.example.cw.data.user.localeString
+import com.example.cw.data.user.themeString
+import com.example.cw.data.user.ukLocale
 import com.example.cw.domain.services.IUserService
 import com.example.cw.domain.user.IUserRepository
 import com.google.firebase.auth.FirebaseUser
@@ -89,6 +95,29 @@ class UserService(private val userRepository: IUserRepository) : KoinComponent, 
                     _user.value!!.toMap(),
                 )
             }
+        }
+    }
+
+
+    override suspend fun updateUserSettings(theme: String?, locale: String?){
+        if (_user.value != null) {
+            val settings = _user.value!!.settings.toMutableMap()
+            if(theme != null){
+                if(theme == darkTheme || theme == lightTheme){
+                    settings[themeString] = theme
+                }
+                return
+            }
+            if(locale != null){
+                if(locale == enLocale || locale == ukLocale){
+                    settings[localeString] = locale
+                }
+                return
+            }
+            userRepository.updateUserSettings(
+                id = _user.value!!.id,
+                setting = settings
+            )
         }
     }
 
