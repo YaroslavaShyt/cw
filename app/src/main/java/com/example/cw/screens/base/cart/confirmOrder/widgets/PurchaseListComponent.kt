@@ -1,8 +1,7 @@
-package com.example.cw.screens.base.cart.widgets.bottomSheet
+package com.example.cw.screens.base.cart.confirmOrder.widgets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -27,19 +25,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cw.core.widgets.NetworkImage
 import com.example.cw.data.plants.Plant
-import com.example.cw.ui.theme.like
 import com.example.cw.ui.theme.mainCard
 import com.example.cw.ui.theme.mainText
 import com.example.cw.ui.theme.mainWhite
 import com.example.cw.ui.theme.neatGreen
 import com.example.cw.ui.theme.olive
-import com.example.cw.ui.theme.unlike
 
 @Composable
 fun PurchaseListComponent(plant: Plant) {

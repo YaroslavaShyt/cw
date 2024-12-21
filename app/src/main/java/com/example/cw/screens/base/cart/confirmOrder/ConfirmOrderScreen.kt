@@ -1,4 +1,4 @@
-package com.example.cw.screens.base.cart.widgets.bottomSheet
+package com.example.cw.screens.base.cart.confirmOrder
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
@@ -14,9 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.cw.data.plants.Plant
+import com.example.cw.screens.base.cart.confirmOrder.widgets.PaymentForm
+import com.example.cw.screens.base.cart.confirmOrder.widgets.PurchaseListComponent
 
 @Composable
-fun PurchaseBottomSheet(order: List<Plant>) {
+fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
     Column(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -41,7 +43,7 @@ fun PurchaseBottomSheet(order: List<Plant>) {
                     .horizontalScroll(rememberScrollState())
                     .padding(8.dp)
             ) {
-                order.map { plant -> PurchaseListComponent(plant = plant) }
+                viewModel.order.map { plant -> PurchaseListComponent(plant = plant) }
             }
 
             Text(
