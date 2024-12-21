@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.appcompat)
     implementation(libs.sceneform.base)
+    implementation(libs.lottie.compose)
 
 
     testImplementation(libs.junit)

@@ -11,8 +11,12 @@ import kotlinx.coroutines.flow.StateFlow
 class ConfirmOrderViewModel(
     plants: List<Plant>,
     totalSum: Double,
-    userService: IUserService
+    userService: IUserService,
+    private val onSuccess: ()->Unit,
+    private val onToPurchases: ()->Unit,
+    private val isOrderSuccess: Boolean
 ) : ViewModel() {
+    val isSuccess = MutableStateFlow(isOrderSuccess)
     val shippingTypes = listOf(ShippingType.Standard, ShippingType.Fast)
 
     private val _selectedShipping = MutableStateFlow(ShippingType.Fast)
@@ -88,7 +92,8 @@ class ConfirmOrderViewModel(
 
     fun onConfirmButtonPressed() {
         if (isButtonActive.value) {
+            isSuccess.value = true
+            onSuccess()
         }
     }
-
 }

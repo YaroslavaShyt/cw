@@ -1,5 +1,7 @@
 package com.example.cw.screens.base.cart
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,25 +34,31 @@ import com.example.cw.screens.base.cart.widgets.CartPlantComponent
 import com.example.cw.screens.base.cart.widgets.MakePurchaseButton
 import com.example.cw.ui.theme.mainWhite
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(viewModel: CartViewModel) {
     val cartContent = viewModel.plants.collectAsState()
     var isBottomSheetOpen by remember { mutableStateOf(false) }
     val bottomSheet = rememberModalBottomSheetState(true)
-
+    var bottomSheetFraction by remember {
+        mutableStateOf(0.9f)
+    }
     BaseContent(viewModel = viewModel)
     PurchaseButton(viewModel = viewModel, onPressed = { isBottomSheetOpen = !isBottomSheetOpen })
 
     if (isBottomSheetOpen) {
         ModalBottomSheet(
             sheetState = bottomSheet,
-            modifier = Modifier.fillMaxHeight(0.9f),
+            modifier = Modifier.fillMaxHeight(bottomSheetFraction),
             containerColor = mainWhite,
             onDismissRequest = { isBottomSheetOpen = !isBottomSheetOpen }) {
             ConfirmOrderFactory(
+                onSuccess = { bottomSheetFraction = 0.7f },
+                onToPurchases = { isBottomSheetOpen = !isBottomSheetOpen },
                 plants = cartContent.value.keys.toList(),
-                totalSum = viewModel.sum.value ?: 0.0
+                totalSum = viewModel.sum.value ?: 0.0,
+                isOrderSuccess = bottomSheetFraction == 0.7f
             ).Build()
         }
     }
