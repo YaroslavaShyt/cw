@@ -38,3 +38,5 @@ val Green = Color(0xff34A853)
 
 val blueGray = Color(0xff98A2B3)
 val moreGray = Color(0xffd9d9d9)
+
+val inactive = Color(0xff8E918F)

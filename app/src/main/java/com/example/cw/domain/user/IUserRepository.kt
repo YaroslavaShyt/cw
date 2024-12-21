@@ -26,4 +26,9 @@ interface IUserRepository {
         id: String,
         setting: Map<String, Any>
     )
+
+    suspend fun updateUserOrder(
+        id: String,
+        order: Map<String, Any>
+    )
 }

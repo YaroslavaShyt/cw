@@ -2,6 +2,7 @@ package com.example.cw.data.services
 
 import com.example.cw.data.user.Address
 import com.example.cw.data.user.Address.Companion.toMap
+import com.example.cw.data.user.Order
 import com.example.cw.data.user.User
 import com.example.cw.data.user.User.Companion.toMap
 import com.example.cw.data.user.darkTheme
@@ -41,6 +42,21 @@ class UserService(private val userRepository: IUserRepository) : IUserService {
         }
 
     }
+
+    override suspend fun updateUserOrder(order: Order){
+        if (_user.value != null) {
+            _user.value!!.cart = emptyMap()
+            val mutList = _user.value!!.ordersHistory.toMutableList()
+            mutList.add(order)
+            _user.value!!.ordersHistory = mutList
+
+            userRepository.updateUserOrder(
+                _user.value!!.id,
+                _user.value!!.toMap(),
+            )
+        }
+    }
+
 
     override suspend fun updateUserAddresses(addresses: List<Address>) {
         if (_user.value != null) {

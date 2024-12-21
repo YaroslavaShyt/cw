@@ -86,7 +86,7 @@ class CartViewModel(plantsRepository: IPlantsRepository, userService: IUserServi
         }
     }
 
-    private fun getCartContent() {
+    fun getCartContent() {
         _loading.value = true
         _error.value = null
         if (_userService.user.value != null) {
