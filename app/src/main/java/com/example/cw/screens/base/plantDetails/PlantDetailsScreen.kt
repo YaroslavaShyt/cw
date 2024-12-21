@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.example.cw.core.widgets.NetworkImage
 import com.example.cw.screens.base.plantDetails.widgets.AddToCartButton
 import com.example.cw.screens.base.plantDetails.widgets.DetailsContainer
+import com.example.cw.screens.base.widgets.AuthDialog
 import com.example.cw.screens.base.widgets.MainBackButton
 import com.example.cw.ui.theme.mainWhite
 import com.example.cw.ui.theme.pink
@@ -44,6 +45,15 @@ fun PlantDetailsScreen(viewModel: PlantDetailsViewModel) {
     val maxHeight = 500.dp
     val minHeight = 400.dp
 
+    val isAuthPopupShown = remember { mutableStateOf(false) }
+    val isAuthorized = viewModel.isAuthorized
+
+    if (isAuthPopupShown.value) {
+        AuthDialog(
+            onAuthorize = { viewModel.onAuthButtonPressed() },
+            onDismiss = { isAuthPopupShown.value = false }
+        )
+    }
     Column(
         modifier = Modifier
             .background(pink)
@@ -132,13 +142,19 @@ fun PlantDetailsScreen(viewModel: PlantDetailsViewModel) {
                     .padding(bottom = 10.dp)
             ) {
                 AddToCartButton(
-                    isAddedToCart = cartState.value,
-                    onPressed = {
-                        if (cartState.value) viewModel.onToCartButtonPressed() else
+                    isAddedToCart = cartState.value
+                ) {
+                    if (cartState.value) {
+                        viewModel.onToCartButtonPressed()
+                    } else {
+                        if (isAuthorized) {
                             viewModel
                                 .onAddToCartButtonPressed()
-
-                    })
+                        } else {
+                            isAuthPopupShown.value = true
+                        }
+                    }
+                }
             }
         }
     }

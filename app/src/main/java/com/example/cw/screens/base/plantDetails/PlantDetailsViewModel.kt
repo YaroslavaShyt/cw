@@ -16,9 +16,12 @@ class PlantDetailsViewModel(
     userService: IUserService,
     plantRepository: IPlantsRepository,
     navHostController: NavHostController,
+    private val onAuth: () -> Unit
 ) : ViewModel() {
     private val _plantId = plantId
     private val _userService = userService
+
+    var isAuthorized: Boolean = _userService.user.value != null
 
     private val _navHostController = navHostController
 
@@ -37,6 +40,9 @@ class PlantDetailsViewModel(
     private val _isInCart = MutableStateFlow(false)
     val isInCart: StateFlow<Boolean> = _isInCart
 
+    fun onAuthButtonPressed() {
+        onAuth()
+    }
 
     fun onQuantityPlusTapped() {
         _quantity.value += 1
@@ -71,13 +77,15 @@ class PlantDetailsViewModel(
     }
 
     fun onAddToCartButtonPressed() {
-        _isInCart.value = true
-        viewModelScope.launch {
-            _userService.updateUserCart(mapOf(_plantId to _quantity.value))
+        if (_userService.user.value != null) {
+            _isInCart.value = true
+            viewModelScope.launch {
+                _userService.updateUserCart(mapOf(_plantId to _quantity.value))
+            }
         }
     }
 
-    fun onToCartButtonPressed(){
+    fun onToCartButtonPressed() {
         _navHostController.navigate(cartRoute)
     }
 }

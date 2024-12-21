@@ -10,6 +10,7 @@ import com.example.cw.data.handlers.LocalizationHandler
 import com.example.cw.data.user.localeString
 import com.example.cw.domain.services.IAuthService
 import com.example.cw.domain.services.IUserService
+import com.example.cw.screens.auth.AuthViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -18,7 +19,9 @@ import kotlinx.coroutines.launch
 class BaseViewModel(
     userService: IUserService,
     authService: IAuthService,
-    context: Context,
+    private val onAuth: () -> Unit,
+    private val authViewModel: AuthViewModel,
+  //  context: Context,
     private val navController: NavHostController
 ) :
     ViewModel() {
@@ -35,16 +38,20 @@ class BaseViewModel(
 
     init {
         viewModelScope.launch {
-            LocalizationHandler(userService).setLocale(
-                context,
-                false,
-            )
+//            LocalizationHandler(userService).setLocale(
+//                context,
+//                false,
+//            )
 
             authService.user.value?.let { userService.initUser(it.uid) }
             _userName.value = userService.user.value?.name
             _userPhoto.value = userService.user.value?.photo
             currentLanguage.value = userService.user.value?.settings?.get(localeString) ?: "en"
         }
+    }
+
+    fun onAuthButtonTapped(){
+        onAuth()
     }
 
     fun onAddressTapped(){

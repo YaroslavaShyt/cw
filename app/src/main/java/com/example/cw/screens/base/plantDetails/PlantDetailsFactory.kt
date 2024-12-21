@@ -4,7 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.example.cw.domain.di.AppContainer
 
-class PlantDetailsFactory(private val navHostController: NavHostController) {
+
+class PlantDetailsFactory(
+    private val navHostController: NavHostController,
+    private val onAuth: () -> Unit
+) {
 
     @Composable
     fun Build(plantId: String) {
@@ -13,7 +17,8 @@ class PlantDetailsFactory(private val navHostController: NavHostController) {
                 plantId = plantId,
                 plantRepository = AppContainer.plantsRepository(),
                 userService = AppContainer.userService,
-                navHostController = navHostController
+                navHostController = navHostController,
+                onAuth = onAuth
             )
         )
     }
