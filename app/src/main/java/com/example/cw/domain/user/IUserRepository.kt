@@ -14,7 +14,7 @@ interface IUserRepository {
 
     suspend fun updateUserFavorites(
         id: String,
-        favorites: List<String>
+        favorites: Map<String, Any>,
     )
 
     suspend fun updateUserCart(
