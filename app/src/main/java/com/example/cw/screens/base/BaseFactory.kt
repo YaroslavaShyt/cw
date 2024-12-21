@@ -9,13 +9,13 @@ import com.example.cw.screens.MainViewModel
 class BaseFactory(private val navHostController: NavHostController) {
 
     @Composable
-    fun Build(context: Context) {
+    fun Build() {
         BaseScreen(
             viewModel = BaseViewModel(
                 userService = AppContainer.userService,
                 authService = AppContainer.authService,
                 navController = navHostController,
-                context = context
+              //  context = context
             ),
             navHostController = navHostController,
             mainViewModel = MainViewModel(

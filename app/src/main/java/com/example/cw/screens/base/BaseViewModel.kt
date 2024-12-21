@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class BaseViewModel(
     userService: IUserService,
     authService: IAuthService,
-    context: Context,
+  //  context: Context,
     private val navController: NavHostController
 ) :
     ViewModel() {
@@ -35,10 +35,10 @@ class BaseViewModel(
 
     init {
         viewModelScope.launch {
-            LocalizationHandler(userService).setLocale(
-                context,
-                false,
-            )
+//            LocalizationHandler(userService).setLocale(
+//                context,
+//                false,
+//            )
 
             authService.user.value?.let { userService.initUser(it.uid) }
             _userName.value = userService.user.value?.name

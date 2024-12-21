@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.example.cw.domain.di.AppContainer
 
+
 class PlantDetailsFactory(private val navHostController: NavHostController) {
 
     @Composable
@@ -13,7 +14,7 @@ class PlantDetailsFactory(private val navHostController: NavHostController) {
                 plantId = plantId,
                 plantRepository = AppContainer.plantsRepository(),
                 userService = AppContainer.userService,
-                navHostController = navHostController
+                navHostController = navHostController,
             )
         )
     }

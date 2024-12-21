@@ -3,15 +3,17 @@ package com.example.cw.core.routing
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
-import com.example.cw.screens.base.home.widgets.BottomNavItem
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.cw.screens.auth.AuthFactory
+import com.example.cw.screens.base.BaseFactory
 import com.example.cw.screens.base.cart.CartFactory
-import com.example.cw.screens.base.favorite.FavoriteFactory
-import com.example.cw.screens.base.home.HomeFactory
 import com.example.cw.screens.base.drawer.ordersHistory.OrdersHistoryFactory
 import com.example.cw.screens.base.drawer.shippingAddresses.ShippingAddressesFactory
+import com.example.cw.screens.base.favorite.FavoriteFactory
+import com.example.cw.screens.base.home.HomeFactory
+import com.example.cw.screens.base.home.widgets.BottomNavItem
 import com.example.cw.screens.base.plantDetails.PlantDetailsFactory
 
 

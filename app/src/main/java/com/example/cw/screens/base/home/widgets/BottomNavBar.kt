@@ -2,10 +2,10 @@ package com.example.cw.screens.base.home.widgets
 
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -21,16 +21,26 @@ sealed class BottomNavItem(val route: String, val icon: ImageVector, val label: 
     data object Favorite : BottomNavItem("favorite", Icons.Rounded.Favorite, "Favorite")
 }
 
-class BottomNavBarFactory(private val navHostController: NavHostController){
+class BottomNavBarFactory(
+    private val navHostController: NavHostController,
+    private val isAuthorized: Boolean,
+    private val onNotAuthorized: () -> Unit
+) {
 
     @Composable
-    fun Build(){
-        BottomNavigationBar(navController = navHostController)
+    fun Build() {
+        BottomNavigationBar(
+            navController = navHostController, isAuthorized = isAuthorized,
+            onNotAuthorized = onNotAuthorized
+        )
     }
 }
 
 @Composable
-private fun BottomNavigationBar(navController: NavController) {
+private fun BottomNavigationBar(
+    navController: NavController, isAuthorized: Boolean,
+    onNotAuthorized: () -> Unit
+) {
     BottomNavigation(
         backgroundColor = mainWhite
     ) {
@@ -42,9 +52,13 @@ private fun BottomNavigationBar(navController: NavController) {
             BottomNavigationItem(
                 selected = isSelected,
                 onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
-                        launchSingleTop = true
+                    if (item.route == "favorite" && !isAuthorized) {
+                        onNotAuthorized()
+                    } else {
+                        navController.navigate(item.route) {
+                            popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                            launchSingleTop = true
+                        }
                     }
                 },
                 icon = {

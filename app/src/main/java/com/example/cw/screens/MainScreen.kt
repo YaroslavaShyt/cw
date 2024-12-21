@@ -17,12 +17,12 @@ fun MainScreen(navHostController: NavHostController, viewModel: MainViewModel) {
     val token = stringResource(R.string.default_web_client_id)
     val context = LocalContext.current
     if (user.value == null) {
-        return AuthFactory().Build {
+        return AuthFactory(navHostController).Build {
             viewModel.getSignInClient(token, context)?.let { launcher.launch(it.signInIntent) }
         }
     } else {
         viewModel.onAuthSuccess(user.value!!)
-        return BaseFactory(navHostController).Build(context = context)
+        return BaseFactory(navHostController).Build()
     }
 }
 
