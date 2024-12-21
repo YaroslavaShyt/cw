@@ -17,16 +17,16 @@ import com.example.cw.screens.base.home.widgets.BottomNavItem
 import com.example.cw.screens.base.plantDetails.PlantDetailsFactory
 
 
-class NavigationAppFactory(private val navHostController: NavHostController) {
+class NavigationAppFactory(private val navHostController: NavHostController, private val onAuth: () -> Unit) {
 
     @Composable
     fun Build() {
-        NavigationApp(navController = navHostController)
+        NavigationApp(navController = navHostController, onAuth)
     }
 }
 
 @Composable
-private fun NavigationApp(navController: NavHostController) {
+private fun NavigationApp(navController: NavHostController, onAuth: () -> Unit) {
     NavHost(navController = navController, startDestination = BottomNavItem.Home.route) {
         composable(BottomNavItem.Home.route)
         { HomeFactory(navController).Build() }
@@ -48,7 +48,7 @@ private fun NavigationApp(navController: NavHostController) {
             arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id") ?: ""
-            PlantDetailsFactory(navController).Build(plantId = id)
+            PlantDetailsFactory(navController, onAuth).Build(plantId = id)
         }
     }
 }

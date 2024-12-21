@@ -50,7 +50,7 @@ fun PlantDetailsScreen(viewModel: PlantDetailsViewModel) {
 
     if (isAuthPopupShown.value) {
         AuthDialog(
-            onAuthorize = {},
+            onAuthorize = { viewModel.onAuthButtonPressed() },
             onDismiss = { isAuthPopupShown.value = false }
         )
     }

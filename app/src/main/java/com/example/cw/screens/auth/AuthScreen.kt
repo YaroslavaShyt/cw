@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,9 +25,12 @@ import com.example.cw.ui.theme.Salmon
 
 @Composable
 fun AuthScreen(viewModel: AuthViewModel, navHostController: NavHostController) {
-    val isContinueAsGuest = remember { mutableStateOf(false) }
+    val isContinueAsGuest = viewModel.isContinueAsGuestState.collectAsState()
+
     if (isContinueAsGuest.value) {
-        BaseFactory(navHostController).Build()
+        BaseFactory(navHostController) {
+            viewModel.isContinueAsGuest.value = false
+        }.Build()
     } else {
         Scaffold { innerPadding ->
             Column(
@@ -50,7 +54,7 @@ fun AuthScreen(viewModel: AuthViewModel, navHostController: NavHostController) {
                         AuthButtons(
                             onGoogleAuthPressed = { viewModel.onSignInButtonPressed() },
                             onContinueAsGuestTapped = {
-                                isContinueAsGuest.value = true
+                                viewModel.isContinueAsGuest.value = true
                             }
                         )
                     }

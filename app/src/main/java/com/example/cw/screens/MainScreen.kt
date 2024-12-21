@@ -22,7 +22,7 @@ fun MainScreen(navHostController: NavHostController, viewModel: MainViewModel) {
         }
     } else {
         viewModel.onAuthSuccess(user.value!!)
-        return BaseFactory(navHostController).Build()
+        return BaseFactory(navHostController, {}).Build()
     }
 }
 

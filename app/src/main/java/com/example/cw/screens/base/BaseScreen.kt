@@ -44,7 +44,7 @@ fun BaseScreen(
 
     if (isAuthPopupShown.value) {
         AuthDialog(
-            onAuthorize = {},
+            onAuthorize = { viewModel.onAuthButtonTapped() },
             onDismiss = { isAuthPopupShown.value = false }
         )
     }
@@ -111,7 +111,7 @@ fun BaseScreen(
             }
         ) { paddingValues ->
             Column(modifier = Modifier.padding(paddingValues)) {
-                NavigationAppFactory(navHostController).Build()
+                NavigationAppFactory(navHostController) { viewModel.onAuthButtonTapped() }.Build()
             }
         }
     }

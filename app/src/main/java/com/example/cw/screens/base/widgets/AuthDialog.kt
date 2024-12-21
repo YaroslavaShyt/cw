@@ -31,7 +31,7 @@ fun AuthDialog(
                 colors = ButtonDefaults.buttonColors().copy(
                     containerColor = olive
                 ),
-                onClick = { onDismiss() }) {
+                onClick = { onAuthorize() }) {
                 Text(
                     "Authorize",
                     style = MaterialTheme.typography.bodySmall.copy(
@@ -42,7 +42,7 @@ fun AuthDialog(
             }
         },
         dismissButton = {
-            TextButton(onClick = { onAuthorize() }) {
+            TextButton(onClick = { onDismiss() }) {
                 Text(
                     "Cancel",
                     style = MaterialTheme.typography.bodySmall.copy(
