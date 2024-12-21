@@ -8,9 +8,8 @@ import androidx.compose.runtime.Composable
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.StateFlow
-import org.koin.core.component.KoinComponent
 
-interface IAuthService : KoinComponent {
+interface IAuthService {
     var user: StateFlow<FirebaseUser?>
 
     fun signInWithGoogle(token: String, context: Context): GoogleSignInClient?

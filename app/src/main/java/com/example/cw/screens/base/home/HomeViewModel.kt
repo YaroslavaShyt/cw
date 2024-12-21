@@ -3,7 +3,6 @@ package com.example.cw.screens.base.home
 import androidx.lifecycle.ViewModel
 import com.example.cw.data.plants.Plant
 import com.example.cw.domain.plants.IPlantsRepository
-import org.koin.core.component.KoinComponent
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.example.cw.domain.services.IUserService
@@ -19,7 +18,7 @@ class HomeViewModel(
     plantsRepository: IPlantsRepository,
     favoriteViewModel: FavoriteViewModel,
     navHostController: NavHostController
-) : ViewModel(), KoinComponent {
+) : ViewModel() {
     private val _navHostController: NavHostController = navHostController
     private val _plantsRepository: IPlantsRepository = plantsRepository
 

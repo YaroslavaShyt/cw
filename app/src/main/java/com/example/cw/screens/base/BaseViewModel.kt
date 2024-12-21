@@ -1,23 +1,27 @@
 package com.example.cw.screens.base
 
 import android.content.Context
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
+import com.example.cw.core.routing.addressesRoute
+import com.example.cw.core.routing.cartRoute
 import com.example.cw.data.handlers.LocalizationHandler
 import com.example.cw.data.user.localeString
-import com.example.cw.data.user.themeString
-import com.example.cw.domain.handler.ILocalizationHandler
 import com.example.cw.domain.services.IAuthService
 import com.example.cw.domain.services.IUserService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
 
-class BaseViewModel(userService: IUserService, authService: IAuthService, context: Context) :
-    ViewModel(),
-    KoinComponent {
+
+class BaseViewModel(
+    userService: IUserService,
+    authService: IAuthService,
+    context: Context,
+    private val navController: NavHostController
+) :
+    ViewModel() {
     private val languageHandler = LocalizationHandler(userService)
     val currentLanguage =
         MutableStateFlow("en")
@@ -41,6 +45,15 @@ class BaseViewModel(userService: IUserService, authService: IAuthService, contex
             _userPhoto.value = userService.user.value?.photo
             currentLanguage.value = userService.user.value?.settings?.get(localeString) ?: "en"
         }
+    }
+
+    fun onAddressTapped(){
+        navController.navigate(route = addressesRoute)
+
+    }
+
+    fun onCartTapped(){
+        navController.navigate(cartRoute)
     }
 
     fun changeLanguage(context: Context, language: String) {

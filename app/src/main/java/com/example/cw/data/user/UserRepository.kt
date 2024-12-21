@@ -4,15 +4,13 @@ import com.example.cw.data.user.User.Companion.toMap
 import com.example.cw.domain.networking.INetworkingClient
 import com.example.cw.domain.networking.userEnd
 import com.example.cw.domain.user.IUserRepository
-import org.koin.core.component.KoinComponent
 
 private const val addressString: String = "address"
 private const val favoritesString: String = "favorite"
 private const val cartString: String = "cart"
 
 
-class UserRepository(private val networkingClient: INetworkingClient) : IUserRepository,
-    KoinComponent {
+class UserRepository(private val networkingClient: INetworkingClient) : IUserRepository {
 
     override suspend fun addUser(user: User) {
         networkingClient.add(userEnd, newData = user.toMap())

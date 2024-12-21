@@ -2,15 +2,13 @@ package com.example.cw.screens.base.drawer.ordersHistory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cw.data.plants.Plant
 import com.example.cw.data.user.Order
 import com.example.cw.domain.services.IUserService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
 
-class OrdersHistoryViewModel(userService: IUserService) : ViewModel(), KoinComponent {
+class OrdersHistoryViewModel(userService: IUserService) : ViewModel() {
     private val _orders = MutableStateFlow<List<Order>>(emptyList())
     val orders: StateFlow<List<Order>> = _orders
 

@@ -66,8 +66,6 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.play.services.auth)
     implementation (libs.kotlinx.coroutines.android)
-    implementation (libs.koin.android)
-    implementation (libs.koin.core)
     implementation (libs.kotlinx.coroutines.core)
     implementation(libs.androidx.foundation)
     implementation(libs.androidx.foundation.layout)

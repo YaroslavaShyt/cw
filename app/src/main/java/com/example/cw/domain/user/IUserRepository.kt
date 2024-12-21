@@ -1,9 +1,8 @@
 package com.example.cw.domain.user
 
 import com.example.cw.data.user.User
-import org.koin.core.component.KoinComponent
 
-interface IUserRepository : KoinComponent {
+interface IUserRepository {
     suspend fun addUser(user: User)
 
     suspend fun getUser(id: String): User?

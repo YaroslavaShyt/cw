@@ -15,9 +15,8 @@ import com.example.cw.domain.user.IUserRepository
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import org.koin.core.component.KoinComponent
 
-class UserService(private val userRepository: IUserRepository) : KoinComponent, IUserService {
+class UserService(private val userRepository: IUserRepository) : IUserService {
     private var _user = MutableStateFlow<User?>(null)
     override var user: StateFlow<User?> = _user
 
@@ -99,7 +98,11 @@ class UserService(private val userRepository: IUserRepository) : KoinComponent, 
     }
 
 
-    override suspend fun updateUserSettings(theme: String?, locale: String?, isOnlineUpdate: Boolean) {
+    override suspend fun updateUserSettings(
+        theme: String?,
+        locale: String?,
+        isOnlineUpdate: Boolean
+    ) {
         if (_user.value != null) {
             val settings = _user.value!!.settings.toMutableMap()
             if (theme != null) {
@@ -119,7 +122,7 @@ class UserService(private val userRepository: IUserRepository) : KoinComponent, 
                 }
             }
             _user.value!!.settings = settings
-            if(isOnlineUpdate){
+            if (isOnlineUpdate) {
                 userRepository.updateUserSettings(
                     id = _user.value!!.id,
                     setting = _user.value!!.toMap()

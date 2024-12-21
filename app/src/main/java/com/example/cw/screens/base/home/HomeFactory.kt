@@ -2,27 +2,21 @@ package com.example.cw.screens.base.home
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import com.example.cw.domain.plants.IPlantsRepository
-import com.example.cw.domain.services.IUserService
+import com.example.cw.domain.di.AppContainer
 import com.example.cw.screens.base.favorite.FavoriteViewModel
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
-class HomeFactory(navHostController: NavHostController) : KoinComponent {
-    private val userService: IUserService by inject()
-    private val plantsRepository: IPlantsRepository by inject()
-    private val _navHostController: NavHostController = navHostController
+class HomeFactory(private val navHostController: NavHostController) {
 
     @Composable
-    fun build() {
+    fun Build() {
         HomeScreen(
             HomeViewModel(
-                plantsRepository = plantsRepository,
-                userService = userService,
-                navHostController = _navHostController,
+                plantsRepository = AppContainer.plantsRepository(),
+                userService = AppContainer.userService,
+                navHostController = navHostController,
                 favoriteViewModel = FavoriteViewModel(
-                    userService = userService,
-                    plantsRepository = plantsRepository
+                    userService = AppContainer.userService,
+                    plantsRepository = AppContainer.plantsRepository()
                 )
             )
         )

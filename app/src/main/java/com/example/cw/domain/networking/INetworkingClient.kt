@@ -1,8 +1,7 @@
 package com.example.cw.domain.networking
 
-import org.koin.core.component.KoinComponent
 
-interface INetworkingClient : KoinComponent {
+interface INetworkingClient {
     suspend fun get(
         endpoint: String,
         conditions: Map<String, Any>? = null,

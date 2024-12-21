@@ -1,24 +1,18 @@
 package com.example.cw.screens
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
-import com.example.cw.data.handlers.LocalizationHandler
-import com.example.cw.domain.services.IAuthService
-import com.example.cw.domain.services.IUserService
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import com.example.cw.domain.di.AppContainer
 
-class MainFactory : KoinComponent {
-    private val authService: IAuthService by inject()
+class MainFactory(private val navHostController: NavHostController) {
 
     @Composable
-    fun Build(navHostController: NavHostController) {
-
+    fun Build() {
         MainScreen(
             navHostController = navHostController,
             viewModel = MainViewModel(
-                _authService = authService,
+                _authService = AppContainer.authService,
+
             )
         )
     }

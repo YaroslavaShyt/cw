@@ -2,25 +2,18 @@ package com.example.cw.screens.base.plantDetails
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import com.example.cw.domain.plants.IPlantsRepository
-import com.example.cw.domain.services.IUserService
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import com.example.cw.domain.di.AppContainer
 
-class PlantDetailsFactory(navHostController: NavHostController) : KoinComponent {
-    private val plantsRepository: IPlantsRepository by inject()
-    private val _navHostController: NavHostController = navHostController
-    private val userService: IUserService by inject()
-
+class PlantDetailsFactory(private val navHostController: NavHostController) {
 
     @Composable
-    fun build(plantId: String) {
+    fun Build(plantId: String) {
         PlantDetailsScreen(
             viewModel = PlantDetailsViewModel(
                 plantId = plantId,
-                plantRepository = plantsRepository,
-                userService = userService,
-                navHostController = _navHostController
+                plantRepository = AppContainer.plantsRepository(),
+                userService = AppContainer.userService,
+                navHostController = navHostController
             )
         )
     }

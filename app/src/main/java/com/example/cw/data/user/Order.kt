@@ -27,7 +27,7 @@ data class Order(
             )
         }
 
-        fun Order.toMap() : Map<String, Any>{
+        fun Order.toMap(): Map<String, Any> {
             return mapOf(
                 OrderStrings.CODE to code,
                 OrderStrings.DATE to date,

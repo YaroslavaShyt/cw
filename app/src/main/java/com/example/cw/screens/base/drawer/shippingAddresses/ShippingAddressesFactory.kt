@@ -1,18 +1,16 @@
 package com.example.cw.screens.base.drawer.shippingAddresses
 
 import androidx.compose.runtime.Composable
-import com.example.cw.domain.services.IUserService
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import com.example.cw.domain.di.AppContainer
 
-class ShippingAddressesFactory : KoinComponent {
-    private val userService: IUserService by inject()
+
+class ShippingAddressesFactory {
 
     @Composable
-    fun build() {
+    fun Build() {
         ShippingAddressesScreen(
             viewModel = ShippingAddressesViewModel(
-                userService = userService
+                userService = AppContainer.userService
             )
         )
     }

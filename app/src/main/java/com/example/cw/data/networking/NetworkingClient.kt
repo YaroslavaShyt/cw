@@ -4,13 +4,11 @@ import com.example.cw.domain.networking.INetworkingClient
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
-import org.koin.core.component.KoinComponent
 
 private const val idString: String = "id"
 private const val dataString: String = "data"
 
-class NetworkingClient(private val firebaseFireStore: FirebaseFirestore) : INetworkingClient,
-    KoinComponent {
+class NetworkingClient(private val firebaseFireStore: FirebaseFirestore) : INetworkingClient {
 
     override suspend fun add(
         endpoint: String,

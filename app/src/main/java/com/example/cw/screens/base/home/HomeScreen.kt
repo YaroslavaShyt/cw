@@ -25,6 +25,7 @@ import com.example.cw.screens.base.home.widgets.Banner
 import com.example.cw.screens.base.home.widgets.CategoriesRow
 import com.example.cw.screens.base.home.widgets.PlantItem
 import com.example.cw.screens.base.home.widgets.SearchField
+import com.example.cw.screens.base.widgets.NothingFoundPlaceholder
 import com.example.cw.ui.theme.Salmon
 
 
@@ -52,11 +53,13 @@ fun HomeScreen(
     val isTextFieldFocused = remember { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier.fillMaxSize().pointerInput(Unit){
-            detectTapGestures {
-                focusRequester.freeFocus()
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    focusRequester.freeFocus()
+                }
             }
-        }
     ) {
         if (isTextFieldFocused.value) {
             bannerVisible.value = false
@@ -90,7 +93,7 @@ fun HomeScreen(
                 .onFocusChanged { focusState ->
                     isTextFieldFocused.value = focusState.isFocused
                     bannerVisible.value =
-                        !focusState.isFocused // При втраті фокусу банер з'являється
+                        !focusState.isFocused
                 }) {
                 SearchField(
                     searchQuery = searchQuery,
@@ -109,6 +112,9 @@ fun HomeScreen(
                 onTap = { viewModel.onCategorySelected(it) }
             )
 
+//            if (plantsFilteredState.value.isEmpty() && searchQuery.value.text.isNotEmpty()) {
+//                NothingFoundPlaceholder()
+//            }
             LazyVerticalGrid(
                 state = scrollState,
                 columns = GridCells.Fixed(2),
@@ -130,6 +136,8 @@ fun HomeScreen(
                     }
                 }
             }
+
+
         }
     }
 }

@@ -11,7 +11,7 @@ import com.example.cw.screens.base.BaseFactory
 
 
 @Composable
-fun MainScreen(viewModel: MainViewModel, navHostController: NavHostController) {
+fun MainScreen(navHostController: NavHostController, viewModel: MainViewModel) {
     val user = viewModel.user.collectAsState()
     val launcher = viewModel.getAuthFlow()
     val token = stringResource(R.string.default_web_client_id)
@@ -22,7 +22,7 @@ fun MainScreen(viewModel: MainViewModel, navHostController: NavHostController) {
         }
     } else {
         viewModel.onAuthSuccess(user.value!!)
-        return BaseFactory().Build(navHostController = navHostController, context = context)
+        return BaseFactory(navHostController).Build(context = context)
     }
 }
 

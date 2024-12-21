@@ -4,13 +4,11 @@ import com.example.cw.domain.networking.INetworkingClient
 import com.example.cw.domain.networking.plantsCategoriesEnd
 import com.example.cw.domain.networking.plantsEnd
 import com.example.cw.domain.plants.IPlantsRepository
-import org.koin.core.component.KoinComponent
 
 private const val nameString: String = "name"
 private const val dataString: String = "data"
 
-class PlantsRepository(private val networkingClient: INetworkingClient) : IPlantsRepository,
-    KoinComponent {
+class PlantsRepository(private val networkingClient: INetworkingClient) : IPlantsRepository {
     override suspend fun getAllPlants(): List<Plant> {
         val plantsData = networkingClient.get(plantsEnd)
 
@@ -20,7 +18,7 @@ class PlantsRepository(private val networkingClient: INetworkingClient) : IPlant
     }
 
     override suspend fun getPlantsById(ids: List<String>): List<Plant> {
-        if(ids.isNotEmpty()){
+        if (ids.isNotEmpty()) {
             val plantsData = networkingClient.get(plantsEnd, ids = ids)
 
             return plantsData.map { plantData ->

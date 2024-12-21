@@ -4,14 +4,13 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.cw.ui.theme.black
 import com.example.cw.ui.theme.icon
@@ -22,8 +21,16 @@ sealed class BottomNavItem(val route: String, val icon: ImageVector, val label: 
     data object Favorite : BottomNavItem("favorite", Icons.Rounded.Favorite, "Favorite")
 }
 
+class BottomNavBarFactory(private val navHostController: NavHostController){
+
+    @Composable
+    fun Build(){
+        BottomNavigationBar(navController = navHostController)
+    }
+}
+
 @Composable
-fun BottomNavigationBar(navController: NavController) {
+private fun BottomNavigationBar(navController: NavController) {
     BottomNavigation(
         backgroundColor = mainWhite
     ) {

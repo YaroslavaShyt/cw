@@ -1,19 +1,15 @@
 package com.example.cw.screens.base.drawer.shippingAddresses
 
-import android.provider.Telephony.Mms.Addr
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cw.data.user.Address
 import com.example.cw.domain.services.IUserService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 
-class ShippingAddressesViewModel(userService: IUserService) : ViewModel(), KoinComponent {
+class ShippingAddressesViewModel(userService: IUserService) : ViewModel() {
     private val _userService: IUserService = userService
 
     private val _selectedAddress: MutableStateFlow<Address> = MutableStateFlow(Address())

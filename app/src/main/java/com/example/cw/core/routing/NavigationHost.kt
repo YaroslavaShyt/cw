@@ -15,20 +15,38 @@ import com.example.cw.screens.base.drawer.shippingAddresses.ShippingAddressesFac
 import com.example.cw.screens.base.plantDetails.PlantDetailsFactory
 
 
+class NavigationAppFactory(private val navHostController: NavHostController) {
+
+    @Composable
+    fun Build() {
+        NavigationApp(navController = navHostController)
+    }
+}
+
 @Composable
-fun NavigationApp(navController: NavHostController) {
+private fun NavigationApp(navController: NavHostController) {
     NavHost(navController = navController, startDestination = BottomNavItem.Home.route) {
-        composable(BottomNavItem.Home.route) { HomeFactory(navHostController = navController).build() }
-        composable(BottomNavItem.Favorite.route) { FavoriteFactory().build() }
-        composable(addressesRoute) { ShippingAddressesFactory().build() }
-        composable(cartRoute) { CartFactory().build() }
-        composable(ordersHistoryRoute) { OrdersHistoryFactory().build() }
+        composable(BottomNavItem.Home.route)
+        { HomeFactory(navController).Build() }
+
+        composable(BottomNavItem.Favorite.route)
+        { FavoriteFactory().Build() }
+
+        composable(addressesRoute)
+        { ShippingAddressesFactory().Build() }
+
+        composable(cartRoute)
+        { CartFactory().Build() }
+
+        composable(ordersHistoryRoute)
+        { OrdersHistoryFactory().Build() }
+
         composable(
             route = plantDetailsRoute,
             arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id") ?: ""
-            PlantDetailsFactory(navHostController = navController).build(plantId = id)
+            PlantDetailsFactory(navController).Build(plantId = id)
         }
     }
 }

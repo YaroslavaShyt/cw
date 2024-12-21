@@ -1,21 +1,16 @@
 package com.example.cw.screens.base.cart
 
 import androidx.compose.runtime.Composable
-import com.example.cw.domain.plants.IPlantsRepository
-import com.example.cw.domain.services.IUserService
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import com.example.cw.domain.di.AppContainer
 
-class CartFactory : KoinComponent {
-    private val userService: IUserService by inject()
-    private val plantsRepository: IPlantsRepository by inject()
+class CartFactory {
 
     @Composable
-    fun build() {
+    fun Build() {
         CartScreen(
             viewModel = CartViewModel(
-                userService = userService,
-                plantsRepository = plantsRepository
+                userService = AppContainer.userService,
+                plantsRepository = AppContainer.plantsRepository()
             )
         )
     }

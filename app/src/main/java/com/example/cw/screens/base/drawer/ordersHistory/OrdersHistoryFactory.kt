@@ -1,19 +1,15 @@
 package com.example.cw.screens.base.drawer.ordersHistory
 
 import androidx.compose.runtime.Composable
-import com.example.cw.domain.services.IUserService
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import com.example.cw.domain.di.AppContainer
 
-class OrdersHistoryFactory : KoinComponent{
-    private val userService: IUserService by inject()
-
+class OrdersHistoryFactory {
 
     @Composable
-    fun build(){
+    fun Build() {
         OrdersHistoryScreen(
             viewModel = OrdersHistoryViewModel(
-                userService = userService
+                userService = AppContainer.userService
             )
         )
     }

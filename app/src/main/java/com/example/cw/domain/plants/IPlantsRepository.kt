@@ -1,9 +1,8 @@
 package com.example.cw.domain.plants
 
 import com.example.cw.data.plants.Plant
-import org.koin.core.component.KoinComponent
 
-interface IPlantsRepository: KoinComponent {
+interface IPlantsRepository{
     suspend fun getAllPlants(): List<Plant>
 
     suspend fun getPlantsById(ids: List<String>): List<Plant>

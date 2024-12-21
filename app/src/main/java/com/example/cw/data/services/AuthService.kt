@@ -22,10 +22,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import okhttp3.internal.wait
-import org.koin.core.component.KoinComponent
 
-class AuthService(private val userService: IUserService) : IAuthService, KoinComponent {
+
+class AuthService(private val userService: IUserService) : IAuthService {
     private var _user = MutableStateFlow(Firebase.auth.currentUser)
     private var _googleSignInClient: GoogleSignInClient? = null
 

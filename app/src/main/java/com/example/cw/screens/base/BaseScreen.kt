@@ -1,8 +1,5 @@
 package com.example.cw.screens.base
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,34 +14,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.cw.core.routing.NavigationApp
-import com.example.cw.core.routing.addressesRoute
-import com.example.cw.core.routing.cartRoute
+import com.example.cw.core.routing.NavigationAppFactory
 import com.example.cw.screens.MainViewModel
 import com.example.cw.screens.base.widgets.MainTopBar
-import com.example.cw.screens.base.home.widgets.BottomNavigationBar
 import com.example.cw.screens.base.drawer.DrawerContent
+import com.example.cw.screens.base.home.widgets.BottomNavBarFactory
 import kotlinx.coroutines.launch
 
-
-class BaseActivity(navController: NavHostController) : ComponentActivity() {
-    val _navController: NavHostController = navController
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            val context = LocalContext.current
-            BaseFactory().Build(context = context, navHostController = _navController)
-        }
-    }
-
-}
 
 @Composable
 fun BaseScreen(
     viewModel: BaseViewModel,
     mainViewModel: MainViewModel,
-    navController: NavHostController
+    navHostController: NavHostController,
 ) {
     val user = mainViewModel.user.collectAsState()
     val userName = viewModel.userName.collectAsState()
@@ -66,7 +48,7 @@ fun BaseScreen(
                     photo = userPhoto.value!!,
                     onAddressClick = {
                         coroutineScope.launch { drawerState.close() }
-                        navController.navigate(route = addressesRoute)
+                        viewModel.onAddressTapped()
                     },
                     onLanguageChanged = {
                         viewModel.changeLanguage(
@@ -95,13 +77,13 @@ fun BaseScreen(
                         }
                     }
                 }, onCartIconTapped = {
-                    navController.navigate(cartRoute)
+                    viewModel.onCartTapped()
                 })
             },
-            bottomBar = { BottomNavigationBar(navController = navController) }
+            bottomBar = { BottomNavBarFactory(navHostController).Build() }
         ) { paddingValues ->
             Column(modifier = Modifier.padding(paddingValues)) {
-                NavigationApp(navController = navController)
+                NavigationAppFactory(navHostController).Build()
             }
         }
     }
