@@ -1,10 +1,10 @@
 package com.example.cw.screens.base.home
 
 import androidx.lifecycle.ViewModel
-import com.example.cw.data.plants.Plant
-import com.example.cw.domain.plants.IPlantsRepository
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
+import com.example.cw.data.plants.Plant
+import com.example.cw.domain.plants.IPlantsRepository
 import com.example.cw.domain.services.IUserService
 import com.example.cw.screens.base.favorite.FavoriteViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import java.util.Locale
 
 
 class HomeViewModel(
-    userService: IUserService,
+    private val userService: IUserService,
     plantsRepository: IPlantsRepository,
     favoriteViewModel: FavoriteViewModel,
     navHostController: NavHostController
@@ -46,22 +46,12 @@ class HomeViewModel(
     private var searchQuery: String = ""
 
     init {
-        viewModelScope.launch {
-            userService.getUserData()
-        }
-        fetchPlants()
-    }
-
-    fun onPlantTapped(plantId: String){
-        _navHostController.navigate("plantDetails/$plantId")
-    }
-
-    private fun fetchPlants() {
         _loading.value = true
         _error.value = null
 
         viewModelScope.launch {
             try {
+                userService.getUserData()
                 val plantList = _plantsRepository.getAllPlants()
                 val categories = _plantsRepository.getPlantsCategories()
                 _plants.value = plantList
@@ -73,6 +63,10 @@ class HomeViewModel(
                 _loading.value = false
             }
         }
+    }
+
+    fun onPlantTapped(plantId: String) {
+        _navHostController.navigate("plantDetails/$plantId")
     }
 
     fun onCategorySelected(newCategory: String) {
@@ -94,15 +88,24 @@ class HomeViewModel(
     fun onSearchInputted(request: String) {
         searchQuery = request
         if (request.isEmpty()) {
-            _plantsFiltered.value = _plants.value
+            if (_selectedCategory.value == "All") {
+                _plantsFiltered.value = _plants.value
+            } else {
+                _plantsFiltered.value = _plants.value.filter { plant ->
+                    plant.category.lowercase() == _selectedCategory.value.lowercase()
+                }
+            }
         } else {
             _plantsFiltered.value =
                 _plants.value.filter { plant ->
                     plant.name.lowercase(Locale.ROOT)
-                        .contains(request.lowercase()) &&
-                            _selectedCategory.value.lowercase() == plant.category.lowercase()
+                        .contains(request.lowercase())
+                            &&
+                            (_selectedCategory.value.lowercase() == "all" ||
+                                    _selectedCategory.value.lowercase() == plant.category.lowercase()
+                                    )
+
                 }
         }
-
     }
 }
