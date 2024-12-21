@@ -39,7 +39,7 @@ fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
     val isOrderSuccess = viewModel.isSuccess.collectAsState()
     if (isOrderSuccess.value) {
         OrderOnTheWayPlaceholder(
-            onTextButtonTapped = {}
+            onTextButtonTapped = { viewModel.onToPurchasesTapped() }
         )
     } else {
         Column(

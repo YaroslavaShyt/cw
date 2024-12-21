@@ -21,6 +21,14 @@ class UserRepository(private val networkingClient: INetworkingClient) : IUserRep
         return if (userData != null) User.fromMap(userData) else null
     }
 
+    override suspend fun updateUserOrder(id: String, order: Map<String, Any>) {
+        networkingClient.update(
+            endpoint = userEnd,
+            updatedData = order,
+            condition = { data -> data["id"] == id }
+        )
+    }
+
 
     override suspend fun updateUserAddress(
         id: String,

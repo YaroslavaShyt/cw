@@ -32,6 +32,7 @@ import com.example.cw.R
 import com.example.cw.screens.base.cart.confirmOrder.ConfirmOrderFactory
 import com.example.cw.screens.base.cart.widgets.CartPlantComponent
 import com.example.cw.screens.base.cart.widgets.MakePurchaseButton
+import com.example.cw.screens.base.widgets.NothingFoundPlaceholder
 import com.example.cw.ui.theme.mainWhite
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -54,7 +55,10 @@ fun CartScreen(viewModel: CartViewModel) {
             containerColor = mainWhite,
             onDismissRequest = { isBottomSheetOpen = !isBottomSheetOpen }) {
             ConfirmOrderFactory(
-                onSuccess = { bottomSheetFraction = 0.7f },
+                onSuccess = {
+                    bottomSheetFraction = 0.7f
+                    viewModel.getCartContent()
+                },
                 onToPurchases = { isBottomSheetOpen = !isBottomSheetOpen },
                 plants = cartContent.value.keys.toList(),
                 totalSum = viewModel.sum.value ?: 0.0,
@@ -90,30 +94,33 @@ private fun BaseContent(viewModel: CartViewModel) {
                     sum.value
                 ) + "$",
                 style = MaterialTheme.typography.displayLarge.copy(
-                    fontSize = 20.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.W600
                 )
             )
 
         }
-
-        LazyColumn {
-            items(cartContent.value.toList()) { plant ->
-                CartPlantComponent(
-                    plant = plant.first,
-                    quantity = plant.second,
-                    onQuantityPlusTapped = {
-                        viewModel.onQuantityPlusTapped(
-                            plant.first.id
-                        )
-                    },
-                    onQuantityMinusTapped = {
-                        viewModel.onQuantityMinusTapped(
-                            plant.first.id
-                        )
-                    },
-                    onDeleteButtonTapped = { viewModel.onDeleteButtonTapped(plant.first.id) }
-                )
+        if (cartContent.value.isEmpty()) {
+            NothingFoundPlaceholder()
+        } else {
+            LazyColumn {
+                items(cartContent.value.toList()) { plant ->
+                    CartPlantComponent(
+                        plant = plant.first,
+                        quantity = plant.second,
+                        onQuantityPlusTapped = {
+                            viewModel.onQuantityPlusTapped(
+                                plant.first.id
+                            )
+                        },
+                        onQuantityMinusTapped = {
+                            viewModel.onQuantityMinusTapped(
+                                plant.first.id
+                            )
+                        },
+                        onDeleteButtonTapped = { viewModel.onDeleteButtonTapped(plant.first.id) }
+                    )
+                }
             }
         }
     }

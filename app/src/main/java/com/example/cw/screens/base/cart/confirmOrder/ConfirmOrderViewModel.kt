@@ -1,19 +1,26 @@
 package com.example.cw.screens.base.cart.confirmOrder
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.cw.data.plants.Plant
 import com.example.cw.data.user.Address
+import com.example.cw.data.user.Order
 import com.example.cw.data.user.ShippingType
 import com.example.cw.domain.services.IUserService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.util.UUID
 
 class ConfirmOrderViewModel(
-    plants: List<Plant>,
+    private val plants: List<Plant>,
     totalSum: Double,
-    userService: IUserService,
-    private val onSuccess: ()->Unit,
-    private val onToPurchases: ()->Unit,
+    private val userService: IUserService,
+    private val onSuccess: () -> Unit,
+    private val onToPurchases: () -> Unit,
     private val isOrderSuccess: Boolean
 ) : ViewModel() {
     val isSuccess = MutableStateFlow(isOrderSuccess)
@@ -89,9 +96,22 @@ class ConfirmOrderViewModel(
         return cvc.length == 3 && cvc.all { it.isDigit() }
     }
 
+    fun onToPurchasesTapped() {
+        onToPurchases()
+    }
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
     fun onConfirmButtonPressed() {
         if (isButtonActive.value) {
+            viewModelScope.launch {
+                userService.updateUserOrder(Order(
+                    code = UUID.randomUUID().toString(),
+                    date = LocalDate.now().toString(),
+                    status = "On the way",
+                    plants = plants.map { plant -> plant.id }
+                ))
+            }
             isSuccess.value = true
             onSuccess()
         }
