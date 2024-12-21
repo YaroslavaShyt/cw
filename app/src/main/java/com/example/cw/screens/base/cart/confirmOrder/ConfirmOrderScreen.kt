@@ -6,21 +6,33 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.cw.data.plants.Plant
+import com.example.cw.data.user.Address
+import com.example.cw.data.user.ShippingType
+import com.example.cw.screens.base.cart.confirmOrder.widgets.AddressContainer
+import com.example.cw.screens.base.cart.confirmOrder.widgets.ConfirmOrderButton
 import com.example.cw.screens.base.cart.confirmOrder.widgets.PaymentForm
 import com.example.cw.screens.base.cart.confirmOrder.widgets.PurchaseListComponent
+import com.example.cw.screens.base.cart.confirmOrder.widgets.ShippingContainer
+import com.example.cw.ui.theme.olive
 
 @Composable
 fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
+    val selectedAddress = viewModel.selectedAddress.collectAsState()
+    val selectedShipping = viewModel.selectedShipping.collectAsState()
+
     Column(
-        Modifier.fillMaxSize(),
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -32,12 +44,14 @@ fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
         Column(
             Modifier
                 .fillMaxSize()
-                .padding(10.dp),
+                .padding(16.dp),
         ) {
             Text(
                 text = "Articles",
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500)
-            )
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500),
+                modifier = Modifier.padding(vertical = 8.dp),
+
+                )
             Row(
                 modifier = Modifier
                     .horizontalScroll(rememberScrollState())
@@ -48,21 +62,66 @@ fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
 
             Text(
                 text = "Payment Info",
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500)
-            )
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500),
+                modifier = Modifier.padding(vertical = 8.dp),
+
+                )
             PaymentForm()
 
             Text(
                 text = "Shipping address",
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500)
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500),
+                modifier = Modifier.padding(vertical = 8.dp),
             )
-
+            Row(
+                modifier = Modifier
+                    .horizontalScroll(rememberScrollState())
+                    .padding(8.dp)
+            ) {
+                viewModel.addresses.map { address: Address ->
+                    AddressContainer(
+                        isSelected = address == selectedAddress.value,
+                        address = address,
+                        select = { viewModel.onAddressSelected(address) }
+                    )
+                }
+            }
             Text(
                 text = "Shipping type",
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500)
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500),
+                modifier = Modifier.padding(vertical = 8.dp),
             )
+            Row(
+                modifier = Modifier
+                    .horizontalScroll(rememberScrollState())
+            ) {
+                viewModel.shippingTypes.map { shippingType: ShippingType ->
+                    ShippingContainer(
+                        shippingType,
+                        isSelected = viewModel.selectedShipping.value == shippingType
+                    ) { viewModel.onShippingSelected(shippingType) }
+                }
+            }
+
+
+            Row(modifier = Modifier.padding(vertical = 10.dp)) {
+                Text(
+                    text = "Total: ",
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500),
+                )
+                Text(
+                    text = (viewModel.totalToPay + if (selectedShipping.value == ShippingType.Fast) 20 else 0).toString() + "$",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.W700,
+                        color = olive
+                    ),
+                )
+            }
         }
 
+        ConfirmOrderButton(isActive = viewModel.isButtonActive) {
+            viewModel.onConfirmButtonPressed()
+        }
 
     }
 }

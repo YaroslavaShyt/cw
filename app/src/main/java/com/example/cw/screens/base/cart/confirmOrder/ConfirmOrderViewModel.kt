@@ -13,7 +13,7 @@ class ConfirmOrderViewModel(
     totalSum: Double,
     userService: IUserService
 ) : ViewModel() {
-    val shippingTypes = ShippingType.entries.toTypedArray()
+    val shippingTypes = listOf(ShippingType.Standard, ShippingType.Fast)
 
     private val _selectedShipping = MutableStateFlow(ShippingType.Fast)
     val selectedShipping: StateFlow<ShippingType> = _selectedShipping
@@ -64,7 +64,8 @@ class ConfirmOrderViewModel(
 
 
     fun onConfirmButtonPressed() {
-
+        if (isButtonActive) {
+        }
     }
 
 }
