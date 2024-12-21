@@ -32,9 +32,13 @@ class ConfirmOrderViewModel(
     val totalToPay: Double = totalSum
     val addresses: List<Address> = userService.user.value?.addresses ?: emptyList()
 
-    val isButtonActive: Boolean =
-        _cvc.value.isNotEmpty() && _selectedAddress.value != null &&
-                _cardNumber.value.isNotEmpty() && _expireDate.value.isNotEmpty()
+    val isButtonActive = MutableStateFlow(false)
+
+    private fun isButtonActive(): Boolean {
+        return validateCVC(_cvc.value) && _selectedAddress.value != null &&
+                validateCardNumber(_cardNumber.value) && validateExpirationDate(_expireDate.value)
+    }
+
 
     init {
         if (addresses.isNotEmpty()) {
@@ -44,27 +48,46 @@ class ConfirmOrderViewModel(
 
     fun onAddressSelected(address: Address) {
         _selectedAddress.value = address
+        isButtonActive.value = isButtonActive()
     }
 
     fun onCardNumberChanged(input: String) {
         _cardNumber.value = input
+        isButtonActive.value = isButtonActive()
     }
 
     fun onCVCChanged(input: String) {
         _cvc.value = input
+        isButtonActive.value = isButtonActive()
     }
 
     fun onExpireDateChanged(input: String) {
         _expireDate.value = input
+        isButtonActive.value = isButtonActive()
     }
 
     fun onShippingSelected(shippingType: ShippingType) {
         _selectedShipping.value = shippingType
+        isButtonActive.value = isButtonActive()
+    }
+
+    private fun validateCardNumber(cardNumber: String): Boolean {
+        val cleaned = cardNumber.replace(" ", "")
+        return cleaned.length == 16 && cleaned.all { it.isDigit() }
+    }
+
+    private fun validateExpirationDate(expirationDate: String): Boolean {
+        val regex = Regex("\\d{2}/\\d{2}")
+        return regex.matches(expirationDate)
+    }
+
+    private fun validateCVC(cvc: String): Boolean {
+        return cvc.length == 3 && cvc.all { it.isDigit() }
     }
 
 
     fun onConfirmButtonPressed() {
-        if (isButtonActive) {
+        if (isButtonActive.value) {
         }
     }
 

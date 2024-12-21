@@ -17,9 +17,9 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.cw.data.user.Address
 import com.example.cw.ui.theme.CwTheme
-import com.example.cw.ui.theme.mainText
 import com.example.cw.ui.theme.mainWhite
 import com.example.cw.ui.theme.moreGray
 import com.example.cw.ui.theme.olive
@@ -45,19 +45,22 @@ fun AddressContainer(isSelected: Boolean, address: Address, select: (Address) ->
                 .padding(8.dp)
         ) {
             Text(
-                text = address.country, style = MaterialTheme.typography.bodyMedium,
+                text = address.country,
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
                 modifier = Modifier.padding(bottom = 2.dp),
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
             )
             Text(
-                text = address.city, style = MaterialTheme.typography.bodyMedium,
+                text = address.city,
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(bottom = 2.dp),
                 maxLines = 1
             )
             Text(
-                text = address.street, style = MaterialTheme.typography.bodyMedium,
+                text = address.street,
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
                 modifier = Modifier.padding(bottom = 2.dp),
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1

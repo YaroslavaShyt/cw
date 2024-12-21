@@ -3,6 +3,7 @@ package com.example.cw.screens.base.cart
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,6 +13,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -35,13 +37,15 @@ import com.example.cw.ui.theme.mainWhite
 fun CartScreen(viewModel: CartViewModel) {
     val cartContent = viewModel.plants.collectAsState()
     var isBottomSheetOpen by remember { mutableStateOf(false) }
-
+    val bottomSheet = rememberModalBottomSheetState(true)
 
     BaseContent(viewModel = viewModel)
     PurchaseButton(viewModel = viewModel, onPressed = { isBottomSheetOpen = !isBottomSheetOpen })
 
     if (isBottomSheetOpen) {
         ModalBottomSheet(
+            sheetState = bottomSheet,
+            modifier = Modifier.fillMaxHeight(0.9f),
             containerColor = mainWhite,
             onDismissRequest = { isBottomSheetOpen = !isBottomSheetOpen }) {
             ConfirmOrderFactory(

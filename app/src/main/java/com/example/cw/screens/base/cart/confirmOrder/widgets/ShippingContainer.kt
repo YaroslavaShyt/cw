@@ -1,5 +1,6 @@
 package com.example.cw.screens.base.cart.confirmOrder.widgets
 
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.example.cw.data.user.ShippingType
 import com.example.cw.ui.theme.olive
 
+@RequiresApi(android.os.Build.VERSION_CODES.O)
 @Composable
 fun ShippingContainer(
     shippingType: ShippingType,
@@ -56,7 +58,7 @@ fun ShippingContainer(
                     maxLines = 1
                 )
                 Text(
-                    text = shippingType.estimationDate,
+                    text = shippingType.getEstimatedShippingDate(),
                     style = MaterialTheme.typography.bodyMedium.copy(fontSize = 10.sp),
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.padding(bottom = 2.dp),

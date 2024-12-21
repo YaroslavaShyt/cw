@@ -28,6 +28,10 @@ import com.example.cw.ui.theme.olive
 fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
     val selectedAddress = viewModel.selectedAddress.collectAsState()
     val selectedShipping = viewModel.selectedShipping.collectAsState()
+    val cardNumber = viewModel.cardNumber.collectAsState()
+    val cvc = viewModel.cvc.collectAsState()
+    val expirationDate = viewModel.expireDate.collectAsState()
+    val isButtonActive = viewModel.isButtonActive.collectAsState()
 
     Column(
         Modifier
@@ -40,16 +44,15 @@ fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.W600),
             modifier = Modifier.padding(bottom = 6.dp)
         )
-
         Column(
             Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 10.dp),
         ) {
             Text(
                 text = "Articles",
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500),
-                modifier = Modifier.padding(vertical = 8.dp),
+                modifier = Modifier.padding(8.dp),
 
                 )
             Row(
@@ -63,15 +66,20 @@ fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
             Text(
                 text = "Payment Info",
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500),
-                modifier = Modifier.padding(vertical = 8.dp),
-
+                modifier = Modifier.padding(8.dp),
                 )
-            PaymentForm()
-
+            PaymentForm(
+                cardNumber = cardNumber.value,
+                onCardNumberInputted = { viewModel.onCardNumberChanged(it) },
+                cvc = cvc.value,
+                onCVVInputted = { viewModel.onCVCChanged(it) },
+                expirationDate = expirationDate.value,
+                onExpirationDateInputted = { viewModel.onExpireDateChanged(it) }
+            )
             Text(
                 text = "Shipping address",
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500),
-                modifier = Modifier.padding(vertical = 8.dp),
+                modifier = Modifier.padding(8.dp),
             )
             Row(
                 modifier = Modifier
@@ -89,7 +97,7 @@ fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
             Text(
                 text = "Shipping type",
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500),
-                modifier = Modifier.padding(vertical = 8.dp),
+                modifier = Modifier.padding(8.dp),
             )
             Row(
                 modifier = Modifier
@@ -104,7 +112,7 @@ fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
             }
 
 
-            Row(modifier = Modifier.padding(vertical = 10.dp)) {
+            Row(modifier = Modifier.padding(vertical = 10.dp, horizontal = 8.dp)) {
                 Text(
                     text = "Total: ",
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500),
@@ -119,7 +127,7 @@ fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
             }
         }
 
-        ConfirmOrderButton(isActive = viewModel.isButtonActive) {
+        ConfirmOrderButton(isActive = isButtonActive.value) {
             viewModel.onConfirmButtonPressed()
         }
 
