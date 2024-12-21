@@ -29,8 +29,12 @@ class UserRepository(private val networkingClient: INetworkingClient) : IUserRep
         networkingClient.update(userEnd, id = id, updatedData = mapOf(addressString to addresses))
     }
 
-    override suspend fun updateUserFavorites(id: String, favorites: List<String>) {
-        networkingClient.update(userEnd, id = id, updatedData = mapOf(favoritesString to favorites))
+    override suspend fun updateUserFavorites(id: String, favorites:  Map<String, Any>) {
+        networkingClient.update(
+            endpoint= userEnd,
+            updatedData = favorites,
+            condition = { data -> data["id"] == id }
+        )
     }
 
     override suspend fun updateUserCart(id: String, cart: Map<String, Any>) {

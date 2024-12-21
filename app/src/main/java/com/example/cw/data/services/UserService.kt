@@ -60,7 +60,7 @@ class UserService(private val userRepository: IUserRepository) : IUserService {
 
             userRepository.updateUserFavorites(
                 _user.value!!.id,
-                _user.value!!.favorite,
+                _user.value!!.toMap(),
             )
         }
 
