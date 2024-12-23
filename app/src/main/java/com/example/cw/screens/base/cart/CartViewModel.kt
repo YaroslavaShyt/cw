@@ -5,12 +5,18 @@ import androidx.lifecycle.viewModelScope
 import com.example.cw.data.plants.Plant
 import com.example.cw.domain.plants.IPlantsRepository
 import com.example.cw.domain.services.IUserService
+import com.example.cw.screens.base.favorite.FavoriteViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class CartViewModel(plantsRepository: IPlantsRepository, userService: IUserService) : ViewModel(){
 
+class CartViewModel(
+    plantsRepository: IPlantsRepository,
+    userService: IUserService,
+    favorites: FavoriteViewModel,
+) : ViewModel() {
+    val favoriteViewModel = favorites
     private val _plantsRepository: IPlantsRepository = plantsRepository
     private val _userService: IUserService = userService
 
@@ -28,6 +34,10 @@ class CartViewModel(plantsRepository: IPlantsRepository, userService: IUserServi
 
     init {
         getCartContent()
+    }
+
+    fun markAsFavorite(plant: Plant) {
+        favoriteViewModel.onLikeTapped(plant)
     }
 
     fun onQuantityPlusTapped(id: String) {
@@ -49,7 +59,7 @@ class CartViewModel(plantsRepository: IPlantsRepository, userService: IUserServi
         }
     }
 
-    fun onDeleteButtonTapped(id: String){
+    fun onDeleteButtonTapped(id: String) {
         println("tapped")
         viewModelScope.launch {
             _userService.removeFromCart(id)

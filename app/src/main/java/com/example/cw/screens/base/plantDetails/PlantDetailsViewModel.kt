@@ -7,6 +7,7 @@ import com.example.cw.core.routing.cartRoute
 import com.example.cw.data.plants.Plant
 import com.example.cw.domain.plants.IPlantsRepository
 import com.example.cw.domain.services.IUserService
+import com.example.cw.screens.base.favorite.FavoriteViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -39,6 +40,8 @@ class PlantDetailsViewModel(
 
     private val _isInCart = MutableStateFlow(false)
     val isInCart: StateFlow<Boolean> = _isInCart
+
+
 
     fun onAuthButtonPressed() {
         onAuth()

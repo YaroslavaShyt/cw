@@ -45,6 +45,7 @@ fun CartScreen(viewModel: CartViewModel) {
     var bottomSheetFraction by remember {
         mutableStateOf(0.9f)
     }
+
     BaseContent(viewModel = viewModel)
     PurchaseButton(viewModel = viewModel, onPressed = { isBottomSheetOpen = !isBottomSheetOpen })
 
@@ -74,6 +75,7 @@ fun CartScreen(viewModel: CartViewModel) {
 private fun BaseContent(viewModel: CartViewModel) {
     val cartContent = viewModel.plants.collectAsState()
     val sum = viewModel.sum.collectAsState()
+    val likedPlants = viewModel.favoriteViewModel.likedPlants.collectAsState()
 
     Column(modifier = Modifier.padding(start = 20.dp, top = 20.dp, end = 20.dp)) {
         Row(
@@ -108,6 +110,10 @@ private fun BaseContent(viewModel: CartViewModel) {
                     CartPlantComponent(
                         plant = plant.first,
                         quantity = plant.second,
+                        isLiked = likedPlants.value.contains(plant.first),
+                        onLikeTapped = {
+                            viewModel.markAsFavorite(plant.first)
+                        },
                         onQuantityPlusTapped = {
                             viewModel.onQuantityPlusTapped(
                                 plant.first.id
