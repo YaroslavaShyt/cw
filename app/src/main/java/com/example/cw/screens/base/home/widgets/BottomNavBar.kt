@@ -3,8 +3,8 @@ package com.example.cw.screens.base.home.widgets
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,13 +12,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.cw.ui.theme.black
-import com.example.cw.ui.theme.icon
 import com.example.cw.ui.theme.mainWhite
 
 sealed class BottomNavItem(val route: String, val icon: ImageVector, val label: String) {
-    data object Home : BottomNavItem("home", Icons.Rounded.Home, "Home")
-    data object Favorite : BottomNavItem("favorite", Icons.Rounded.Favorite, "Favorite")
+    data object Home : BottomNavItem("home", Icons.Outlined.Home, "Home")
+    data object Favorite : BottomNavItem("favorite", Icons.Outlined.Favorite, "Favorite")
 }
 
 class BottomNavBarFactory(
@@ -65,7 +63,6 @@ private fun BottomNavigationBar(
                     Icon(
                         item.icon,
                         contentDescription = null,
-                        tint = if (isSelected) black else icon
                     )
                 },
             )

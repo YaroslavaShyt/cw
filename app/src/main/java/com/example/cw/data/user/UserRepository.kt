@@ -5,10 +5,6 @@ import com.example.cw.domain.networking.INetworkingClient
 import com.example.cw.domain.networking.userEnd
 import com.example.cw.domain.user.IUserRepository
 
-private const val addressString: String = "address"
-private const val favoritesString: String = "favorite"
-private const val cartString: String = "cart"
-
 
 class UserRepository(private val networkingClient: INetworkingClient) : IUserRepository {
 
@@ -29,12 +25,15 @@ class UserRepository(private val networkingClient: INetworkingClient) : IUserRep
         )
     }
 
-
     override suspend fun updateUserAddress(
         id: String,
-        addresses: List<Map<String, Any>>
+        addresses: Map<String, Any>
     ) {
-        networkingClient.update(userEnd, id = id, updatedData = mapOf(addressString to addresses))
+        networkingClient.update(
+            endpoint = userEnd,
+            updatedData = addresses,
+            condition = { data -> data["id"] == id }
+        )
     }
 
     override suspend fun updateUserFavorites(id: String, favorites:  Map<String, Any>) {

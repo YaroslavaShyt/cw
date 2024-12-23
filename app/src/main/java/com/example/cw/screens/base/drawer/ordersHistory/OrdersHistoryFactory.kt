@@ -9,7 +9,8 @@ class OrdersHistoryFactory {
     fun Build() {
         OrdersHistoryScreen(
             viewModel = OrdersHistoryViewModel(
-                userService = AppContainer.userService
+                userService = AppContainer.userService,
+                plantsRepository = AppContainer.plantsRepository()
             )
         )
     }

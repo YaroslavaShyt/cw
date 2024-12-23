@@ -1,39 +1,28 @@
 package com.example.cw.screens.base.drawer
 
-import android.app.LocaleManager
-import android.content.Context
-import android.os.Build
-import android.os.LocaleList
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuDefaults
 import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material3.Switch
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,23 +33,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.os.LocaleListCompat
-import com.example.cw.core.widgets.NetworkImage
-import com.example.cw.ui.theme.icon
-import com.example.cw.ui.theme.lightGray
-import com.example.cw.ui.theme.mainWhite
-import com.example.cw.ui.theme.olive
 import com.example.cw.R
-import com.example.cw.data.handlers.LocalizationHandler
+import com.example.cw.core.widgets.NetworkImage
 import com.example.cw.ui.theme.commonGray
 import com.example.cw.ui.theme.mainText
+import com.example.cw.ui.theme.mainWhite
 import com.example.cw.ui.theme.neatGreen
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -69,6 +51,7 @@ fun DrawerContent(
     userName: String, photo: String,
     onAddressClick: () -> Unit = {},
     onLogoutTapped: () -> Unit = {},
+    onOrdersHistoryTapped: () -> Unit = {},
     currentLan: String,
     onLanguageChanged: (String) -> Unit,
 ) {
@@ -88,16 +71,20 @@ fun DrawerContent(
             ) {
                 Box(modifier = Modifier.width(210.dp)) {
                     DrawerItem(
-                        title = "Theme",
+                        title = "Theme - Coming soon!",
+                        isActive = false,
                     )
                 }
                 MainSwitch(
                     isChecked = isChecked,
-                    onCheckedChange = { isChecked = it })
+                    onCheckedChange = { })
             }
 
             HorizontalDivider()
-            DrawerItem(title = stringResource(id = R.string.ordersHistory))
+            DrawerItem(
+                title = stringResource(id = R.string.ordersHistory),
+                onItemClick = onOrdersHistoryTapped
+            )
             HorizontalDivider()
 
             Row(modifier = Modifier
@@ -115,7 +102,7 @@ fun DrawerContent(
                             expanded = !expanded
                         }
                     },
-                    value = stringResource(id = R.string.language),
+                    value = "Language - Coming soon!",
                     colors = TextFieldDefaults.textFieldColors(
                         backgroundColor = Color.Transparent,
                         focusedIndicatorColor = Color.Transparent,
@@ -127,18 +114,14 @@ fun DrawerContent(
                     ),
                     textStyle = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.Normal,
-                        fontSize = 18.sp
+                        fontSize = 18.sp,
+                        color = commonGray.copy(alpha = 0.5f),
                     ),
                     onValueChange = {},
                     readOnly = true,
                     trailingIcon = {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.pointerInput(Unit) {
-                                detectTapGestures {
-                                    expanded = !expanded
-                                }
-                            },
                         ) {
                             Text(
                                 text = currentLan,
@@ -262,6 +245,7 @@ private fun UserNameAndImageRow(userName: String, photo: String) {
 
 @Composable
 private fun DrawerItem(
+    isActive: Boolean = true,
     title: String,
     widget: @Composable (() -> Unit)? = null,
     onItemClick: () -> Unit = {}
@@ -284,7 +268,10 @@ private fun DrawerItem(
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 18.sp),
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontSize = 18.sp,
+                    color = if (isActive) mainText else commonGray.copy(alpha = 0.5f)
+                ),
                 modifier = Modifier.padding(end = 20.dp)
             )
             widget?.let { it() }

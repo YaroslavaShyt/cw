@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-
 class ShippingAddressesViewModel(userService: IUserService) : ViewModel() {
     private val _userService: IUserService = userService
 
@@ -24,58 +23,73 @@ class ShippingAddressesViewModel(userService: IUserService) : ViewModel() {
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
+    private val _snackbarMessage = MutableStateFlow<String?>(null)
+    val snackbarMessage: StateFlow<String?> = _snackbarMessage
+
     init {
         fetchAddresses()
     }
 
     fun onAddressSelected(selectedAddress: Address) {
-        _selectedAddress.value = _addresses.value.first { address ->
-            selectedAddress == address
+        try {
+            _selectedAddress.value = _addresses.value.first { address ->
+                selectedAddress == address
+            }
+        } catch (e: NoSuchElementException) {
+            _error.value = "Адреса не знайдена"
         }
     }
 
     fun onAddAddressPressed(country: String, city: String, street: String) {
         viewModelScope.launch {
-            _addresses.value += Address(country = country, city = city, street = street)
-            _userService.updateUserAddresses(_addresses.value)
-        }
+            try {
+                val newAddress = Address(country = country, city = city, street = street)
 
+                if (_addresses.value.any { it == newAddress }) {
+                    _snackbarMessage.value = "Ця адреса вже існує"
+                    return@launch
+                }
+
+                _addresses.value += newAddress
+                _userService.updateUserAddresses(_addresses.value)
+            } catch (e: Exception) {
+                _error.value = "Не вдалося додати адресу: ${e.localizedMessage}"
+            }
+        }
     }
 
     fun onDeleteAddressPressed(address: Address) {
         viewModelScope.launch {
-            _addresses.value -= address
-            _userService.updateUserAddresses(_addresses.value)
+            try {
+                _addresses.value -= address
+                _userService.updateUserAddresses(_addresses.value)
+            } catch (e: Exception) {
+                _error.value = "Не вдалося видалити адресу: ${e.localizedMessage}"
+            }
         }
-
     }
 
-    // TODO: does not work
-    fun onEditAddressPressed(country: String, city: String, street: String) {
-        viewModelScope.launch {
-            _addresses.value -= _selectedAddress.value
-            _addresses.value += Address(country = country, city = city, street = street)
-            _userService.updateUserAddresses(_addresses.value)
-        }
+    fun clearSnackbarMessage() {
+        _snackbarMessage.value = null
     }
 
     private fun fetchAddresses() {
         _loading.value = true
         _error.value = null
 
-        if (_userService.user.value != null) {
-            viewModelScope.launch {
-                try {
-                    _addresses.value = _userService.user.value!!.addresses
-
-                } catch (e: Exception) {
-                    _error.value = e.localizedMessage
-                } finally {
-                    _loading.value = false
+        viewModelScope.launch {
+            try {
+                val user = _userService.user.value
+                if (user != null) {
+                    _addresses.value = user.addresses
+                } else {
+                    _error.value = "Користувач не знайдений"
                 }
+            } catch (e: Exception) {
+                _error.value = "Не вдалося завантажити адреси: ${e.localizedMessage}"
+            } finally {
+                _loading.value = false
             }
         }
-
     }
-
 }

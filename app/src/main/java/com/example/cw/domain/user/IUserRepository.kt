@@ -9,7 +9,7 @@ interface IUserRepository {
 
     suspend fun updateUserAddress(
         id: String,
-        addresses: List<Map<String, Any>>
+        addresses: Map<String, Any>
     )
 
     suspend fun updateUserFavorites(

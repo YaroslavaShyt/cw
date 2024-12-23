@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.example.cw.core.routing.addressesRoute
 import com.example.cw.core.routing.cartRoute
+import com.example.cw.core.routing.ordersHistoryRoute
 import com.example.cw.data.handlers.LocalizationHandler
 import com.example.cw.data.user.localeString
 import com.example.cw.domain.services.IAuthService
@@ -21,7 +22,6 @@ class BaseViewModel(
     authService: IAuthService,
     private val onAuth: () -> Unit,
     private val authViewModel: AuthViewModel,
-  //  context: Context,
     private val navController: NavHostController
 ) :
     ViewModel() {
@@ -38,16 +38,15 @@ class BaseViewModel(
 
     init {
         viewModelScope.launch {
-//            LocalizationHandler(userService).setLocale(
-//                context,
-//                false,
-//            )
-
             authService.user.value?.let { userService.initUser(it.uid) }
             _userName.value = userService.user.value?.name
             _userPhoto.value = userService.user.value?.photo
             currentLanguage.value = userService.user.value?.settings?.get(localeString) ?: "en"
         }
+    }
+
+    fun onOrderHistoryTapped(){
+        navController.navigate(ordersHistoryRoute)
     }
 
     fun onAuthButtonTapped(){

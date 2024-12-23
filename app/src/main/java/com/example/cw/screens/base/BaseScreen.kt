@@ -31,7 +31,6 @@ fun BaseScreen(
     mainViewModel: MainViewModel,
     navHostController: NavHostController,
 ) {
-    val user = mainViewModel.user.collectAsState()
     val userName = viewModel.userName.collectAsState()
     val userPhoto = viewModel.userPhoto.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -73,6 +72,10 @@ fun BaseScreen(
                         coroutineScope.launch { drawerState.close() }
                         mainViewModel.onLogout()
                         viewModel.cleanData()
+                    },
+                    onOrdersHistoryTapped = {
+                        coroutineScope.launch { drawerState.close() }
+                        viewModel.onOrderHistoryTapped()
                     }
                 )
             }

@@ -1,7 +1,6 @@
 package com.example.cw.data.services
 
 import com.example.cw.data.user.Address
-import com.example.cw.data.user.Address.Companion.toMap
 import com.example.cw.data.user.Order
 import com.example.cw.data.user.User
 import com.example.cw.data.user.User.Companion.toMap
@@ -40,7 +39,6 @@ class UserService(private val userRepository: IUserRepository) : IUserService {
         if (_user.value != null) {
             _user.value = userRepository.getUser(_user.value!!.id)
         }
-
     }
 
     override suspend fun updateUserOrder(order: Order){
@@ -64,7 +62,7 @@ class UserService(private val userRepository: IUserRepository) : IUserService {
 
             userRepository.updateUserAddress(
                 _user.value!!.id,
-                _user.value!!.addresses.map { address -> address.toMap() }
+                _user.value!!.toMap()
             )
         }
 
