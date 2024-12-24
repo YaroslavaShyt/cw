@@ -28,7 +28,8 @@ fun FavoriteScreen(viewModel: FavoriteViewModel) {
     Scaffold { paddingValues ->
         Column(Modifier.padding(paddingValues)) {
             if (loadingState.value) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.CenterHorizontally))
             }
 
             errorState.value?.let {

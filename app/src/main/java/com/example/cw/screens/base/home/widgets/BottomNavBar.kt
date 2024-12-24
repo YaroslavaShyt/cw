@@ -36,7 +36,8 @@ class BottomNavBarFactory(
 
 @Composable
 private fun BottomNavigationBar(
-    navController: NavController, isAuthorized: Boolean,
+    navController: NavController,
+    isAuthorized: Boolean,
     onNotAuthorized: () -> Unit
 ) {
     BottomNavigation(
@@ -50,12 +51,14 @@ private fun BottomNavigationBar(
             BottomNavigationItem(
                 selected = isSelected,
                 onClick = {
-                    if (item.route == "favorite" && !isAuthorized) {
-                        onNotAuthorized()
-                    } else {
-                        navController.navigate(item.route) {
-                            popUpTo(navController.graph.startDestinationId) { inclusive = true }
-                            launchSingleTop = true
+                    if (currentRoute != item.route) {
+                        if (item.route == "favorite" && !isAuthorized) {
+                            onNotAuthorized()
+                        } else {
+                            navController.navigate(item.route) {
+                                popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                                launchSingleTop = true
+                            }
                         }
                     }
                 },
@@ -69,5 +72,6 @@ private fun BottomNavigationBar(
         }
     }
 }
+
 
 

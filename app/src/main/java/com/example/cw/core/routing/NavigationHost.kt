@@ -1,5 +1,7 @@
 package com.example.cw.core.routing
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -19,12 +21,14 @@ import com.example.cw.screens.base.plantDetails.PlantDetailsFactory
 
 class NavigationAppFactory(private val navHostController: NavHostController, private val onAuth: () -> Unit) {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @Composable
     fun Build() {
         NavigationApp(navController = navHostController, onAuth)
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun NavigationApp(navController: NavHostController, onAuth: () -> Unit) {
     NavHost(navController = navController, startDestination = BottomNavItem.Home.route) {

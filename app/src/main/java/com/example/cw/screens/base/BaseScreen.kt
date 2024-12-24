@@ -1,5 +1,7 @@
 package com.example.cw.screens.base
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,6 +27,7 @@ import com.example.cw.screens.base.widgets.MainTopBar
 import kotlinx.coroutines.launch
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BaseScreen(
     viewModel: BaseViewModel,
@@ -33,13 +36,15 @@ fun BaseScreen(
 ) {
     val userName = viewModel.userName.collectAsState()
     val userPhoto = viewModel.userPhoto.collectAsState()
+    val isAuthorized = userName.value != null && userPhoto.value != null
+
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+
     val language = viewModel.currentLanguage.collectAsState()
     val isAuthPopupShown = remember { mutableStateOf(false) }
 
-    val isAuthorized = userName.value != null && userPhoto.value != null
 
     if (isAuthPopupShown.value) {
         AuthDialog(
@@ -51,7 +56,6 @@ fun BaseScreen(
     ModalDrawer(
         drawerShape = RoundedCornerShape(20.dp),
         drawerState = drawerState,
-        gesturesEnabled = drawerState.isOpen,
         drawerContent = {
             if (userName.value != null && userPhoto.value != null) {
                 DrawerContent(
@@ -80,8 +84,6 @@ fun BaseScreen(
                 )
             }
         }) {
-
-
         Scaffold(
             topBar = {
                 MainTopBar(onMenuIconTapped = {

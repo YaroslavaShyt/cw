@@ -64,11 +64,13 @@ fun HomeScreen(viewModel: HomeViewModel) {
     val bannerVisible = remember { mutableStateOf(true) }
     val focusManager = androidx.compose.ui.platform.LocalFocusManager.current
     val isTextFieldFocused = remember { mutableStateOf(false) }
-    val firstVisibleItemIndex = remember { derivedStateOf { scrollState.firstVisibleItemIndex } }
 
-    LaunchedEffect(firstVisibleItemIndex) {
-        bannerVisible.value = firstVisibleItemIndex.value == 0
+    LaunchedEffect(remember { derivedStateOf { scrollState.firstVisibleItemIndex } }) {
+        if (bannerVisible.value != (scrollState.firstVisibleItemIndex == 0)) {
+            bannerVisible.value = scrollState.firstVisibleItemIndex == 0
+        }
     }
+
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -169,21 +171,25 @@ private fun BuildBody(
     if (plantsFilteredState.value.isEmpty() && searchQuery.value.text.isNotEmpty()) {
         NothingFoundPlaceholder()
     } else {
+        val plantsToDisplay = remember(plantsFilteredState.value) { plantsFilteredState.value }
         LazyVerticalGrid(
             state = scrollState, columns = GridCells.Fixed(2), modifier = Modifier.fillMaxSize()
         ) {
-            items(plantsFilteredState.value) { plant ->
+            items(plantsToDisplay) { plant ->
                 Box(
                     modifier = Modifier.pointerInput(Unit) {
                         detectTapGestures(onTap = { onPlantTapped(plant.id) })
                     },
                 ) {
-                    PlantItem(plant,
+                    PlantItem(
+                        plant,
                         isLiked = likedPlants.value.contains(plant),
-                        onLikeTapped = { onLikeTapped(plant) })
+                        onLikeTapped = { onLikeTapped(plant) }
+                    )
                 }
             }
         }
+
     }
 }
 

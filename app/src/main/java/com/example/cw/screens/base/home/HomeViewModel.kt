@@ -7,6 +7,7 @@ import com.example.cw.data.plants.Plant
 import com.example.cw.domain.plants.IPlantsRepository
 import com.example.cw.domain.services.IUserService
 import com.example.cw.screens.base.favorite.FavoriteViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -46,17 +47,17 @@ class HomeViewModel(
     private var searchQuery: String = ""
 
     init {
-        _loading.value = true
-        _error.value = null
-
         viewModelScope.launch {
             try {
-                userService.getUserData()
-                val plantList = _plantsRepository.getAllPlants()
+                _loading.value = true
+                delay(200)
+                val plants = _plantsRepository.getAllPlants()
                 val categories = _plantsRepository.getPlantsCategories()
-                _plants.value = plantList
-                _plantsFiltered.value = _plants.value
+
+                _plants.value = plants
+                _plantsFiltered.value = plants
                 _categories.value = categories
+
             } catch (e: Exception) {
                 _error.value = e.localizedMessage
             } finally {
@@ -64,6 +65,7 @@ class HomeViewModel(
             }
         }
     }
+
 
     fun onPlantTapped(plantId: String) {
         _navHostController.navigate("plantDetails/$plantId")
