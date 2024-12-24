@@ -49,7 +49,7 @@ fun PlantDetailsScreen(viewModel: PlantDetailsViewModel) {
     val minHeight = 400.dp
 
     val isAuthPopupShown = remember { mutableStateOf(false) }
-    val isAuthorized = viewModel.isAuthorized
+    val isAuthorized = viewModel.isAuthorized.collectAsState()
 
     if (isAuthPopupShown.value) {
         AuthDialog(
@@ -160,7 +160,7 @@ fun PlantDetailsScreen(viewModel: PlantDetailsViewModel) {
                     if (cartState.value) {
                         viewModel.onToCartButtonPressed()
                     } else {
-                        if (isAuthorized) {
+                        if (isAuthorized.value) {
                             viewModel
                                 .onAddToCartButtonPressed()
                         } else {

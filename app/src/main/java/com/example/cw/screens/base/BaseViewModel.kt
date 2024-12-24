@@ -73,6 +73,7 @@ class BaseViewModel(
     fun cleanData() {
         _userName.value = null
         _userPhoto.value = null
+
     }
 
 }

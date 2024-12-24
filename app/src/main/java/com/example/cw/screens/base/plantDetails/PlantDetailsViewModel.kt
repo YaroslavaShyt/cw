@@ -7,7 +7,7 @@ import com.example.cw.core.routing.cartRoute
 import com.example.cw.data.plants.Plant
 import com.example.cw.domain.plants.IPlantsRepository
 import com.example.cw.domain.services.IUserService
-import com.example.cw.screens.base.favorite.FavoriteViewModel
+import com.example.cw.screens.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -17,12 +17,13 @@ class PlantDetailsViewModel(
     userService: IUserService,
     plantRepository: IPlantsRepository,
     navHostController: NavHostController,
+    private val baseViewModel: BaseViewModel,
     private val onAuth: () -> Unit
 ) : ViewModel() {
     private val _plantId = plantId
     private val _userService = userService
 
-    var isAuthorized: Boolean = _userService.user.value != null
+    var isAuthorized = MutableStateFlow(false)
 
     private val _navHostController = navHostController
 
@@ -40,7 +41,6 @@ class PlantDetailsViewModel(
 
     private val _isInCart = MutableStateFlow(false)
     val isInCart: StateFlow<Boolean> = _isInCart
-
 
 
     fun onAuthButtonPressed() {
@@ -64,6 +64,8 @@ class PlantDetailsViewModel(
             _error.value = null
             viewModelScope.launch {
                 try {
+                    isAuthorized.value =
+                        baseViewModel.userName.value != null && baseViewModel.userPhoto.value != null
                     _plant.value = plantRepository.getPlantsById(listOf(plantId)).first()
                     _isInCart.value = userService.user.value?.cart?.containsKey(plantId) ?: false
                 } catch (e: Exception) {
