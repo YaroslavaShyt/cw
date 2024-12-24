@@ -98,7 +98,8 @@ fun PlantItem(plant: Plant, isLiked: Boolean = false, onLikeTapped: () -> Unit =
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(100.dp)
+                    .height(100.dp),
+                contentAlignment = Alignment.Center
             ) {
                 NetworkImage(url = plant.image)
             }

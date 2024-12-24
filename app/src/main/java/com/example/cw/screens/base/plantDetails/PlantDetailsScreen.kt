@@ -60,12 +60,16 @@ fun PlantDetailsScreen(viewModel: PlantDetailsViewModel) {
     Column(
         modifier = Modifier
             .background(pink)
+            .fillMaxWidth()
+            .height(500.dp)
     ) {
 
         Column(
             modifier = Modifier
                 .padding(20.dp)
                 .background(pink)
+                .height(500.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (loadingState.value) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
@@ -76,7 +80,13 @@ fun PlantDetailsScreen(viewModel: PlantDetailsViewModel) {
             }
 
             if (plant.value != null) {
-                NetworkImage(url = plant.value!!.image)
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(500.dp), contentAlignment = Alignment.Center
+                ) {
+                    NetworkImage(url = plant.value!!.image, modifier = Modifier.height(400.dp))
+                }
             }
         }
 

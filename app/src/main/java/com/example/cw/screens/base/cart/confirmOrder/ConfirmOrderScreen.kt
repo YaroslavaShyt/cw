@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.cw.R
 import com.example.cw.data.user.Address
 import com.example.cw.data.user.ShippingType
 import com.example.cw.screens.base.cart.confirmOrder.widgets.AddressContainer
@@ -26,6 +27,7 @@ import com.example.cw.screens.base.cart.confirmOrder.widgets.OrderOnTheWayPlaceh
 import com.example.cw.screens.base.cart.confirmOrder.widgets.PaymentForm
 import com.example.cw.screens.base.cart.confirmOrder.widgets.PurchaseListComponent
 import com.example.cw.screens.base.cart.confirmOrder.widgets.ShippingContainer
+import com.example.cw.ui.theme.commonGray
 import com.example.cw.ui.theme.olive
 
 
@@ -59,7 +61,7 @@ fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
             Column(
                 Modifier
                     .fillMaxSize()
-                    .padding(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 10.dp),
+                    .padding(start = 16.dp, end = 16.dp, bottom = 10.dp),
             ) {
                 Text(
                     text = stringResource(id = com.example.cw.R.string.articles),
@@ -98,13 +100,23 @@ fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
                         .horizontalScroll(rememberScrollState())
                         .padding(8.dp)
                 ) {
-                    viewModel.addresses.map { address: Address ->
-                        AddressContainer(
-                            isSelected = address == selectedAddress.value,
-                            address = address,
-                            select = { viewModel.onAddressSelected(address) }
+                    if (viewModel.addresses.isEmpty()) {
+                        Text(
+                            text = stringResource(id = R.string.add_address_in_menu),
+                            style = MaterialTheme.typography.labelMedium.copy(
+                                color = commonGray
+                            )
                         )
+                    } else {
+                        viewModel.addresses.map { address: Address ->
+                            AddressContainer(
+                                isSelected = address == selectedAddress.value,
+                                address = address,
+                                select = { viewModel.onAddressSelected(address) }
+                            )
+                        }
                     }
+
                 }
                 Text(
                     text = stringResource(id = com.example.cw.R.string.shipping_type),

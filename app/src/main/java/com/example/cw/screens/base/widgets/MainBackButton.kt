@@ -2,9 +2,7 @@ package com.example.cw.screens.base.widgets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -32,21 +30,14 @@ fun MainBackButton(onTapped: () -> Unit) {
                 detectTapGestures {
                     onTapped()
                 }
-            }
-
+            },
+        contentAlignment = Alignment.Center
     ) {
-
-        Column (
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ){
-            Icon(
-                imageVector = Icons.Rounded.KeyboardArrowLeft,
-                contentDescription = null,
-                tint = mainWhite,
-                modifier = Modifier.size(40.dp)
-            )
-        }
-
+        Icon(
+            imageVector = Icons.Rounded.KeyboardArrowLeft,
+            contentDescription = null,
+            tint = mainWhite,
+            modifier = Modifier.size(40.dp)
+        )
     }
 }

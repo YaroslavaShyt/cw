@@ -127,7 +127,8 @@ fun DrawerContent(
                                 text = currentLan,
                                 style = MaterialTheme.typography.bodyLarge.copy(
                                     fontWeight = FontWeight.Normal,
-                                    fontSize = 16.sp
+                                    fontSize = 16.sp,
+                                    color = commonGray
                                 ),
                                 modifier = Modifier.pointerInput(Unit) {
                                     detectTapGestures {

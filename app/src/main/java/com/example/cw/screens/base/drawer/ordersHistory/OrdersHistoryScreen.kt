@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.example.cw.R
 import com.example.cw.screens.base.cart.confirmOrder.widgets.PurchaseListComponent
 import com.example.cw.screens.base.widgets.NothingFoundPlaceholder
+import com.example.cw.ui.theme.olive
 
 @Composable
 fun OrdersHistoryScreen(viewModel: OrdersHistoryViewModel) {
@@ -39,11 +40,18 @@ fun OrdersHistoryScreen(viewModel: OrdersHistoryViewModel) {
         )
 
         if (loading.value) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 20.dp)
-            )
+            Column(
+                Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator(
+                    color = olive,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(top = 20.dp)
+                )
+            }
         }
 
         error.value?.let { errorMessage ->

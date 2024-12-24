@@ -40,7 +40,7 @@ fun FavoriteScreen(viewModel: FavoriteViewModel) {
             ) {
                 Text(
                     text = stringResource(id = R.string.favorite),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleLarge
                 )
 
                 if (likedPlants.value.isEmpty()) {

@@ -52,6 +52,8 @@
     <string name="shipping_type">Shipping type</string>
     <string name="card_number">Card number</string>
     <string name="expires">Expires</string>
+    <string name="add_address_in_menu">Please, add address in menu</string>
+
 
     <string name="your_parcel">Your parcel</string>
     <string name="is_on_the_way">is on the way!</string>

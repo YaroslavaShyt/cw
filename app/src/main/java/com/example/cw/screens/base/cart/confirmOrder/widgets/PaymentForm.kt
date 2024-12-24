@@ -50,7 +50,7 @@ fun PaymentForm(
     ) {
 
         Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .horizontalScroll(rememberScrollState())

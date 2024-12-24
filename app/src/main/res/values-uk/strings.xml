@@ -51,6 +51,8 @@
     <string name="shipping_type">Тип доставки</string>
     <string name="card_number">Номер картки</string>
     <string name="expires">Дійсна до</string>
+    <string name="add_address_in_menu">Будь ласка, додайте адресу через меню</string>
+
 
     <string name="your_parcel">Твоя посилка</string>
     <string name="is_on_the_way">уже в дорозі!</string>
