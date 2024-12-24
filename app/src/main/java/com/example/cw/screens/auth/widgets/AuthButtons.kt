@@ -9,16 +9,18 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cw.R
 import com.example.cw.ui.theme.mainText
 
 @Composable
 fun AuthButtons(
     onGoogleAuthPressed: () -> Unit,
     onContinueAsGuestTapped: () -> Unit,
-){
+) {
     Box(
         modifier = Modifier.padding(horizontal = 70.dp, vertical = 10.dp),
     ) {
@@ -29,7 +31,7 @@ fun AuthButtons(
                 onGoogleAuthPressed()
             }
             Text(
-                text = "or",
+                text = stringResource(id = R.string.or),
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = mainText.copy(alpha = 0.5f),
                     fontSize = 14.sp
@@ -37,7 +39,7 @@ fun AuthButtons(
             )
             TextButton(onClick = { onContinueAsGuestTapped() }) {
                 Text(
-                    text = "Continue as guest",
+                    text = stringResource(id = R.string.continue_as_guest),
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = mainText.copy(alpha = 0.5f),
                         fontSize = 14.sp,

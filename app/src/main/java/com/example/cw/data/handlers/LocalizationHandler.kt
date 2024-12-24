@@ -5,13 +5,15 @@ import android.content.Context
 import android.os.Build
 import android.os.LocaleList
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.intl.Locale
 import androidx.core.os.LocaleListCompat
 import com.example.cw.domain.services.IUserService
 
 class LocalizationHandler(private val userService: IUserService) {
+
     suspend fun changeLocale(context: Context, localeString: String, isOnlineUpdate: Boolean) {
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             context.getSystemService(LocaleManager::class.java).applicationLocales =
                 LocaleList.forLanguageTags(localeString)

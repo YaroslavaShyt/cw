@@ -11,9 +11,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cw.R
 import com.example.cw.ui.theme.DarkGrey
 import com.example.cw.ui.theme.mainText
 
@@ -28,7 +30,7 @@ fun AuthText() {
                 .padding(top = 30.dp)
         ) {
             Text(
-                text = "Shop anywhere and",
+                text = stringResource(id = R.string.shop_anywhere),
                 style = MaterialTheme.typography.titleLarge.copy(
                     color = DarkGrey,
                     fontSize = 24.sp,
@@ -36,7 +38,7 @@ fun AuthText() {
                 ),
             )
             Text(
-                text = "everywhere with",
+                text = stringResource(id = R.string.everywhere),
                 style = MaterialTheme.typography.titleLarge.copy(
                     color = DarkGrey,
                     fontSize = 24.sp,

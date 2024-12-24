@@ -14,7 +14,9 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.cw.R
 import com.example.cw.ui.theme.mainWhite
 import com.example.cw.ui.theme.olive
 
@@ -35,7 +37,7 @@ fun AddAddressDialog(
         onDismissRequest = onCancel,
         title = {
             Text(
-                text = "Add New Address",
+                text = stringResource(id = R.string.add_new_address),
                 style = MaterialTheme.typography.bodyMedium
             )
         },
@@ -55,7 +57,7 @@ fun AddAddressDialog(
                     onValueChange = onCountryChange,
                     label = {
                         Text(
-                            "Country",
+                            stringResource(id = R.string.country),
                             style = MaterialTheme.typography.titleSmall
                         )
                     },
@@ -80,7 +82,7 @@ fun AddAddressDialog(
                     onValueChange = onCityChange,
                     label = {
                         Text(
-                            "City",
+                            stringResource(id = R.string.city),
                             style = MaterialTheme.typography.titleSmall
                         )
                     },
@@ -105,7 +107,7 @@ fun AddAddressDialog(
                     onValueChange = onStreetChange,
                     label = {
                         Text(
-                            "Street",
+                            stringResource(id = R.string.street),
                             style = MaterialTheme.typography.titleSmall
                         )
                     },
@@ -120,12 +122,18 @@ fun AddAddressDialog(
             TextButton(onClick = {
                 onSave()
             }) {
-                Text("Save", style = MaterialTheme.typography.titleSmall.copy(color = olive))
+                Text(
+                    stringResource(id = R.string.save),
+                    style = MaterialTheme.typography.titleSmall.copy(color = olive)
+                )
             }
         },
         dismissButton = {
             TextButton(onClick = onCancel) {
-                Text("Cancel", style = MaterialTheme.typography.titleSmall.copy(color = olive))
+                Text(
+                    stringResource(id = R.string.cancel),
+                    style = MaterialTheme.typography.titleSmall.copy(color = olive)
+                )
             }
         }
     )

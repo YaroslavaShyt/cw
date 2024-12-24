@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.CircularProgressIndicator
@@ -22,10 +20,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cw.R
 import com.example.cw.screens.base.drawer.shippingAddresses.widgets.AddAddressDialog
 import com.example.cw.screens.base.drawer.shippingAddresses.widgets.AddressRow
+import com.example.cw.screens.base.widgets.NothingFoundPlaceholder
 import com.example.cw.ui.theme.neatGreen
 
 @Composable
@@ -46,12 +47,12 @@ fun ShippingAddressesScreen(viewModel: ShippingAddressesViewModel) {
     val scaffoldState = remember { androidx.compose.material3.SnackbarHostState() }
 
     Column(modifier = Modifier.padding(20.dp)) {
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(bottom = 15.dp)
         ) {
             Text(
-                text = "My shipping addresses",
+                text = stringResource(id = R.string.my_addresses),
                 style = MaterialTheme.typography.bodyLarge.copy(fontSize = 26.sp),
             )
 
@@ -67,7 +68,11 @@ fun ShippingAddressesScreen(viewModel: ShippingAddressesViewModel) {
         }
 
         errorState.value?.let {
-            Text(text = "Error: $it")
+            Text(text = "${stringResource(id = R.string.error)}: $it")
+        }
+
+        if (addressesState.value.isEmpty()) {
+            NothingFoundPlaceholder()
         }
 
         LazyColumn {

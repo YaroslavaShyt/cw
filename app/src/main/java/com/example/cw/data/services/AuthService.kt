@@ -44,7 +44,6 @@ class AuthService(private val userService: IUserService) : IAuthService {
         Firebase.auth.signOut()
         _googleSignInClient?.signOut()?.await()
         _user.value = null
-        System.out.println(user.value?.uid)
     }
 
     @Composable

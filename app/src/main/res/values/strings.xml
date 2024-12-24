@@ -9,9 +9,60 @@
     <string name="total">Total</string>
 
     <string name="ordersHistory">Orders history</string>
-    <string name="language">Language</string>
 
     <string name="default_web_client_id">611156907554-6cbvpkfdsakoo05qo92bs66ba9h94q0e.apps.googleusercontent.com</string>
 
+    <string name="nothing_found">Nothing found</string>
+
+    <string name="authorization">Authorization</string>
+    <string name="authorize">Authorize</string>
+    <string name="to_proceede">To proceed please authorize with google</string>
+    <string name="cancel">Cancel</string>
+    <string name="error">Error</string>
+
+    <string name="care">Care</string>
+    <string name="water">WATER</string>
+    <string name="light">LIGHT</string>
+    <string name="fertilizer">FERTILIZER</string>
+
+    <string name="to_cart">To cart</string>
+    <string name="add_to_cart">Add to cart</string>
+
+    <string name="about_plant">About plant</string>
+
+    <string name="favorite">Favorite</string>
+
+    <string name="theme">Theme - Soon!</string>
+    <string name="language">Language - Soon!</string>
+    <string name="my_addresses">My addresses</string>
+    <string name="logout">Logout</string>
+
+    <string name="add_new_address">Add New Address</string>
+    <string name="country">Country</string>
+    <string name="city">City</string>
+    <string name="street">Street</string>
+    <string name="save">Save</string>
+
+    <string name="make_purchase">Make Purchase</string>
+
+    <string name="confirm_order">Confirm order</string>
+    <string name="articles">Articles</string>
+    <string name="payment_info">Payment Info</string>
+    <string name="shipping_address">Shipping Address</string>
+    <string name="shipping_type">Shipping type</string>
+    <string name="card_number">Card number</string>
+    <string name="expires">Expires</string>
+
+    <string name="your_parcel">Your parcel</string>
+    <string name="is_on_the_way">is on the way!</string>
+    <string name="to_purchases">To purchases</string>
+
+    <string name="confirm">Confirm</string>
+
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="shop_anywhere">Shop anywhere and</string>
+    <string name="everywhere">everywhere with</string>
+    <string name="or">or</string>
+    <string name="continue_as_guest">Continue as guest</string>
 
 </resources>

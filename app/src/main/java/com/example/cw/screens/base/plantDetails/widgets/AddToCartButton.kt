@@ -20,8 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cw.R
 import com.example.cw.ui.theme.mainWhite
 
 @Composable
@@ -42,7 +44,9 @@ fun AddToCartButton(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = if (isAddedToCart) "To cart" else "Add to cart",
+                text = if (isAddedToCart) stringResource(id = R.string.to_cart) else stringResource(
+                    id = R.string.add_to_cart
+                ),
                 color = mainWhite,
                 fontSize = 18.sp,
                 modifier = Modifier.padding(end = 20.dp)

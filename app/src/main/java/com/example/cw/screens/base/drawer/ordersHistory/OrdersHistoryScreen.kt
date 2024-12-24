@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.cw.R
 import com.example.cw.screens.base.cart.confirmOrder.widgets.PurchaseListComponent
+import com.example.cw.screens.base.widgets.NothingFoundPlaceholder
 
 @Composable
 fun OrdersHistoryScreen(viewModel: OrdersHistoryViewModel) {
@@ -54,6 +55,10 @@ fun OrdersHistoryScreen(viewModel: OrdersHistoryViewModel) {
                     .padding(top = 16.dp)
                     .align(Alignment.CenterHorizontally)
             )
+        }
+
+        if (orders.value.isEmpty()) {
+            NothingFoundPlaceholder()
         }
 
         if (!loading.value && orders.value.isNotEmpty()) {
@@ -101,7 +106,7 @@ fun OrdersHistoryScreen(viewModel: OrdersHistoryViewModel) {
                             val plant = plants.value.find { it.id == plantId }
                             if (plant != null) {
                                 PurchaseListComponent(plant = plant)
-                            } 
+                            }
                         }
                     }
                 }

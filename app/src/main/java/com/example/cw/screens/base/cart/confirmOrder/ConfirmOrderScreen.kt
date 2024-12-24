@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.cw.data.user.Address
@@ -26,6 +27,7 @@ import com.example.cw.screens.base.cart.confirmOrder.widgets.PaymentForm
 import com.example.cw.screens.base.cart.confirmOrder.widgets.PurchaseListComponent
 import com.example.cw.screens.base.cart.confirmOrder.widgets.ShippingContainer
 import com.example.cw.ui.theme.olive
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -50,7 +52,7 @@ fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
         ) {
 
             Text(
-                text = "Confirm order",
+                text = stringResource(id = com.example.cw.R.string.confirm_order),
                 style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.W600),
                 modifier = Modifier.padding(bottom = 6.dp)
             )
@@ -60,7 +62,7 @@ fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
                     .padding(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 10.dp),
             ) {
                 Text(
-                    text = "Articles",
+                    text = stringResource(id = com.example.cw.R.string.articles),
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500),
                     modifier = Modifier.padding(8.dp),
 
@@ -74,7 +76,7 @@ fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
                 }
 
                 Text(
-                    text = "Payment Info",
+                    text = stringResource(id = com.example.cw.R.string.payment_info),
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500),
                     modifier = Modifier.padding(8.dp),
                 )
@@ -87,7 +89,7 @@ fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
                     onExpirationDateInputted = { viewModel.onExpireDateChanged(it) }
                 )
                 Text(
-                    text = "Shipping address",
+                    text = stringResource(id = com.example.cw.R.string.shipping_address),
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500),
                     modifier = Modifier.padding(8.dp),
                 )
@@ -105,7 +107,7 @@ fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
                     }
                 }
                 Text(
-                    text = "Shipping type",
+                    text = stringResource(id = com.example.cw.R.string.shipping_type),
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500),
                     modifier = Modifier.padding(8.dp),
                 )
@@ -124,7 +126,7 @@ fun ConfirmOrderScreen(viewModel: ConfirmOrderViewModel) {
 
                 Row(modifier = Modifier.padding(vertical = 10.dp, horizontal = 8.dp)) {
                     Text(
-                        text = "Total: ",
+                        text = "${stringResource(id = com.example.cw.R.string.total)}: ",
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.W500),
                     )
                     Text(

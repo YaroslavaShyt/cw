@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LanguageDropdown() {
-    var expanded by remember { mutableStateOf(false) } // Стан для відкриття/закриття меню
-    var selectedLanguage by remember { mutableStateOf("en") } // Початковий вибір мови
+    var expanded by remember { mutableStateOf(false) }
+    var selectedLanguage by remember { mutableStateOf("en") }
 
     ExposedDropdownMenuBox(
         expanded = expanded,

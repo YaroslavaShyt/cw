@@ -21,13 +21,13 @@ class CustomShape : Shape {
         density: androidx.compose.ui.unit.Density
     ): androidx.compose.ui.graphics.Outline {
         val path = Path().apply {
-            moveTo(0f, size.height * 0.15f) // Початок верхньої дуги
+            moveTo(0f, size.height * 0.15f)
             quadraticBezierTo(
-                size.width / 2, 0f, // Верхня середина
-                size.width, size.height * 0.15f // Завершення дуги
+                size.width / 2, 0f,
+                size.width, size.height * 0.15f
             )
-            lineTo(size.width, size.height + 600) // Правий нижній кут
-            lineTo(0f, size.height + 600) // Лівий нижній кут
+            lineTo(size.width, size.height + 600)
+            lineTo(0f, size.height + 600)
             close()
         }
         return androidx.compose.ui.graphics.Outline.Generic(path)
@@ -36,7 +36,7 @@ class CustomShape : Shape {
 
 @Composable
 fun CustomShapeContainer() {
-    Column (Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom){
+    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
         Box(
             modifier = Modifier
                 .size(height = 400.dp, width = 800.dp)
@@ -54,7 +54,7 @@ fun PreviewCustomShapeContainer() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Gray) // Сірий фон для контрасту
+            .background(Color.Gray)
     ) {
         CustomShapeContainer()
     }

@@ -1,5 +1,6 @@
 package com.example.cw.screens.base.plantDetails
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +26,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.cw.R
 import com.example.cw.core.widgets.NetworkImage
 import com.example.cw.screens.base.plantDetails.widgets.AddToCartButton
 import com.example.cw.screens.base.plantDetails.widgets.DetailsContainer
@@ -69,7 +72,7 @@ fun PlantDetailsScreen(viewModel: PlantDetailsViewModel) {
             }
 
             errorState.value?.let {
-                Text(text = "Error: $it")
+                Text(text = "${stringResource(id = R.string.error)}: $it")
             }
 
             if (plant.value != null) {

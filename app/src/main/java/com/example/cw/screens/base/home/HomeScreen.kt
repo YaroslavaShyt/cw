@@ -38,8 +38,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import com.example.cw.R
 import com.example.cw.data.plants.Plant
 import com.example.cw.screens.base.home.widgets.Banner
 import com.example.cw.screens.base.home.widgets.CategoriesRow
@@ -88,7 +90,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
             )
         } else if (errorState.value != null && errorState.value!!.isNotEmpty()) {
             errorState.value?.let {
-                Text(text = "Oops!")
+                Text(text = stringResource(id = R.string.error))
             }
         } else {
             Column(modifier = Modifier.padding(horizontal = 20.dp)) {

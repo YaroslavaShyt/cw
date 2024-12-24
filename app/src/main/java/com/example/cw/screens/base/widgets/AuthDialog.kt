@@ -7,10 +7,13 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
+import com.example.cw.R
 import com.example.cw.ui.theme.mainText
 import com.example.cw.ui.theme.mainWhite
 import com.example.cw.ui.theme.olive
+
 
 @Composable
 fun AuthDialog(
@@ -18,10 +21,15 @@ fun AuthDialog(
     onDismiss: () -> Unit,
 ) {
     AlertDialog(
-        title = { Text(text = "Authorization", style = MaterialTheme.typography.bodyMedium) },
+        title = {
+            Text(
+                text = stringResource(id = R.string.authorization),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        },
         text = {
             Text(
-                text = "To proceed please authorize with google",
+                text = stringResource(id = R.string.to_proceede),
                 style = MaterialTheme.typography.bodySmall.copy(fontSize = 18.sp)
             )
         },
@@ -33,7 +41,7 @@ fun AuthDialog(
                 ),
                 onClick = { onAuthorize() }) {
                 Text(
-                    "Authorize",
+                    stringResource(id = R.string.authorize),
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = mainWhite,
                         fontSize = 18.sp
@@ -44,7 +52,7 @@ fun AuthDialog(
         dismissButton = {
             TextButton(onClick = { onDismiss() }) {
                 Text(
-                    "Cancel",
+                    stringResource(id = R.string.cancel),
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = mainText,
                         fontSize = 18.sp

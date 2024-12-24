@@ -9,11 +9,59 @@
     <string name="cart">Кошик</string>
 
     <string name="total">Загальна сума</string>
-
     <string name="ordersHistory">Історія замовлень</string>
-
-    <string name="language">Мова</string>
-
     <string name="default_web_client_id">611156907554-6cbvpkfdsakoo05qo92bs66ba9h94q0e.apps.googleusercontent.com</string>
+
+    <string name="nothing_found">Нічого не знайдено</string>
+    <string name="authorize">Авторизуватись</string>
+    <string name="authorization">Авторизація</string>
+    <string name="to_proceede">Щоб продовжити авторизуйтесь через google</string>
+    <string name="cancel">Відміна</string>
+    <string name="error">Помилка</string>
+
+    <string name="care">Догляд</string>
+    <string name="water">ВОДА</string>
+    <string name="light">СВІТЛО</string>
+    <string name="fertilizer">ДОБРИВО</string>
+
+    <string name="to_cart">У кошик</string>
+    <string name="add_to_cart">Додати в кошик</string>
+
+    <string name="about_plant">Про рослину</string>
+
+    <string name="favorite">Вподобані</string>
+
+    <string name="theme">Тема - Скоро!</string>
+    <string name="language">Мова - Скоро!</string>
+    <string name="my_addresses">Мої адреси</string>
+    <string name="logout">Вихід</string>
+
+    <string name="add_new_address">Додати нову адресу</string>
+    <string name="country">Країна</string>
+    <string name="city">Місто</string>
+    <string name="street">Вулиця</string>
+    <string name="save">Зберегти</string>
+
+    <string name="make_purchase">Купити</string>
+
+    <string name="confirm_order">Підтвердити покупку</string>
+    <string name="articles">Товари</string>
+    <string name="payment_info">Платіжні дані</string>
+    <string name="shipping_address">Адреса доставки</string>
+    <string name="shipping_type">Тип доставки</string>
+    <string name="card_number">Номер картки</string>
+    <string name="expires">Дійсна до</string>
+
+    <string name="your_parcel">Твоя посилка</string>
+    <string name="is_on_the_way">уже в дорозі!</string>
+    <string name="to_purchases">До покупок</string>
+
+    <string name="confirm">Підтвердити</string>
+
+    <string name="sign_in_with_google">Увійти з Google</string>
+    <string name="shop_anywhere">Купуйте будь-де та</string>
+    <string name="everywhere">всюди з</string>
+    <string name="or">або</string>
+    <string name="continue_as_guest">Продовжити як гість</string>
 
 </resources>

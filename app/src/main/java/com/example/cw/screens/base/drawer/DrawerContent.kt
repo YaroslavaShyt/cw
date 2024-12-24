@@ -55,7 +55,7 @@ fun DrawerContent(
     currentLan: String,
     onLanguageChanged: (String) -> Unit,
 ) {
-    var isChecked by remember { mutableStateOf(false) }
+    val isChecked by remember { mutableStateOf(false) }
     var expanded by remember { mutableStateOf(false) }
     val languages = listOf("uk", "en")
 
@@ -71,7 +71,7 @@ fun DrawerContent(
             ) {
                 Box(modifier = Modifier.width(210.dp)) {
                     DrawerItem(
-                        title = "Theme - Coming soon!",
+                        title = stringResource(id = R.string.theme),
                         isActive = false,
                     )
                 }
@@ -102,7 +102,7 @@ fun DrawerContent(
                             expanded = !expanded
                         }
                     },
-                    value = "Language - Coming soon!",
+                    value = stringResource(id = R.string.language),
                     colors = TextFieldDefaults.textFieldColors(
                         backgroundColor = Color.Transparent,
                         focusedIndicatorColor = Color.Transparent,
@@ -131,7 +131,6 @@ fun DrawerContent(
                                 ),
                                 modifier = Modifier.pointerInput(Unit) {
                                     detectTapGestures {
-                                        expanded = !expanded
                                     }
                                 },
                             )
@@ -179,14 +178,13 @@ fun DrawerContent(
             }
             HorizontalDivider()
             DrawerItem(
-                title = "My shipping address",
+                title = stringResource(id = R.string.my_addresses),
                 onItemClick = onAddressClick,
             )
             HorizontalDivider()
-            DrawerItem(title = "Logout", onItemClick = onLogoutTapped)
+            DrawerItem(title = stringResource(id = R.string.logout), onItemClick = onLogoutTapped)
             HorizontalDivider()
         }
-
     }
 }
 
@@ -200,8 +198,8 @@ private fun MainSwitch(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
             checkedThumbColor = mainWhite,
             checkedTrackColor = neatGreen,
             uncheckedThumbColor = mainWhite,
-            uncheckedTrackColor = mainText,
-            uncheckedBorderColor = mainText
+            uncheckedTrackColor = commonGray,
+            uncheckedBorderColor = commonGray
         ),
     )
 }

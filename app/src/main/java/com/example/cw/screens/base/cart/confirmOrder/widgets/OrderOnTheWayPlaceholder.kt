@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,18 +36,18 @@ fun OrderOnTheWayPlaceholder(
             )
 
             Text(
-                text = "Your parcel",
+                text = stringResource(id = R.string.your_parcel),
                 style = MaterialTheme.typography.bodyLarge.copy(fontSize = 30.sp),
                 modifier = Modifier.padding(top = 10.dp)
             )
             Text(
-                text = "is on the way!",
+                text = stringResource(id = R.string.is_on_the_way),
                 style = MaterialTheme.typography.bodyLarge.copy(fontSize = 30.sp),
                 modifier = Modifier.padding(top = 5.dp)
             )
             TextButton(onClick = { onTextButtonTapped() }) {
                 Text(
-                    text = "To purchases",
+                    text = stringResource(id = R.string.to_purchases),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontSize = 20.sp,
                         color = DarkGrey

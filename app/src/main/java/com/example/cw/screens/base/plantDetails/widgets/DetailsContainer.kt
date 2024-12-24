@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -70,7 +71,7 @@ fun DetailsContainer(
 
             }
             Text(
-                text = "Care",
+                text = stringResource(id = R.string.care),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.W500,
                 color = mainText,
@@ -80,10 +81,10 @@ fun DetailsContainer(
                 horizontalArrangement = Arrangement.SpaceAround,
                 modifier = Modifier.padding(bottom = 10.dp)
             ) {
-                CareComponent(label = "WATER", value = plant.water, image = R.drawable.drop)
-                CareComponent(label = "LIGHT", value = plant.light, image = R.drawable.sun)
+                CareComponent(label = stringResource(id = R.string.water), value = plant.water, image = R.drawable.drop)
+                CareComponent(label = stringResource(id = R.string.light), value = plant.light, image = R.drawable.sun)
                 CareComponent(
-                    label = "FERTILIZER",
+                    label = stringResource(id = R.string.fertilizer),
                     value = plant.fertilizer,
                     image = R.drawable.fertilizer
                 )
