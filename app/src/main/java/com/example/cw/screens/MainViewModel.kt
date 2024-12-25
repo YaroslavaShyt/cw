@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cw.domain.services.IAuthService
+import com.example.cw.domain.services.IUserService
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val _authService: IAuthService,
+    private val _userService: IUserService
 ) : ViewModel() {
     private val _user = MutableStateFlow(Firebase.auth.currentUser)
     val user: StateFlow<FirebaseUser?> = _user
@@ -33,6 +35,11 @@ class MainViewModel(
 
     fun onAuthSuccess(user: FirebaseUser) {
         _user.value = user
+    }
+
+    fun onAuth(){
+        _user.value = null
+        _userService.cleanData()
     }
 
 

@@ -89,7 +89,9 @@ fun HomeScreen(viewModel: HomeViewModel) {
                 viewModel.hideDetails()
             },
             viewModel.navHostController,
-            {}).Build(plantId = tappedPlantID.value)
+            {
+                viewModel.authorize()
+            }).Build(plantId = tappedPlantID.value)
     } else {
         if (isContentVisible) {
             Column(

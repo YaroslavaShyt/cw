@@ -18,7 +18,8 @@ class HomeViewModel(
     private val userService: IUserService,
     plantsRepository: IPlantsRepository,
     favoriteViewModel: FavoriteViewModel,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    private val onAuth: () -> Unit,
 ) : ViewModel() {
     private val _navHostController: NavHostController = navHostController
     val navHostController = _navHostController
@@ -74,6 +75,9 @@ class HomeViewModel(
         }
     }
 
+    fun authorize(){
+        onAuth()
+    }
 
     fun hideDetails(){
         _isDetails.value = false

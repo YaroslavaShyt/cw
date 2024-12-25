@@ -11,8 +11,6 @@ import androidx.compose.material.rememberDrawerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -22,7 +20,6 @@ import com.example.cw.core.routing.NavigationAppFactory
 import com.example.cw.screens.MainViewModel
 import com.example.cw.screens.base.drawer.DrawerContent
 import com.example.cw.screens.base.home.widgets.BottomNavBarFactory
-import com.example.cw.screens.base.home.widgets.BottomNavigationBar
 import com.example.cw.screens.base.widgets.AuthDialog
 import com.example.cw.screens.base.widgets.MainTopBar
 import kotlinx.coroutines.launch
@@ -42,9 +39,8 @@ fun BaseScreen(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
-
     val language = viewModel.currentLanguage.collectAsState()
-    val isAuthPopupShown = remember { mutableStateOf(false) }
+    val isAuthPopupShown = viewModel.isAuthPopupShown.collectAsState()
 
     ModalDrawer(
         drawerShape = RoundedCornerShape(20.dp),
@@ -90,14 +86,14 @@ fun BaseScreen(
                             }
                         }
                     } else {
-                        isAuthPopupShown.value = true
+                        viewModel.show()
                     }
                 }, onCartIconTapped = {
                     if (isAuthorized) {
                         viewModel.onCartTapped()
 
                     } else {
-                        isAuthPopupShown.value = true
+                        viewModel.show()
                     }
                 })
             },
@@ -106,18 +102,23 @@ fun BaseScreen(
                 BottomNavBarFactory(
                     navHostController,
                     isAuthorized,
-                    onNotAuthorized = { isAuthPopupShown.value = true },
+                    onNotAuthorized = {
+                        viewModel.show()
+                    },
                 ).Build()
             }
         ) { paddingValues ->
-            AuthPopupHandler(
-                isAuthPopupShown = isAuthPopupShown.value,
-                onAuthorize = { viewModel.onAuthButtonTapped() },
-                onDismiss = { isAuthPopupShown.value = false }
-            )
+
             Column(modifier = Modifier.padding(paddingValues)) {
                 NavigationAppFactory(navHostController) { viewModel.onAuthButtonTapped() }.Build()
             }
+            AuthPopupHandler(
+                isAuthPopupShown = isAuthPopupShown.value,
+                onAuthorize = { viewModel.onAuthButtonTapped() },
+                onDismiss = {
+                    viewModel.hide()
+                }
+            )
         }
 
     }

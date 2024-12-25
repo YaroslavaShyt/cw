@@ -26,6 +26,7 @@ class BaseFactory(
             navHostController = navHostController,
             mainViewModel = MainViewModel(
                 AppContainer.authService,
+                _userService = AppContainer.userService
             ),
         )
     }

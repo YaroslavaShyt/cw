@@ -28,6 +28,8 @@ class BaseViewModel(
     private val languageHandler = LocalizationHandler(userService)
     val currentLanguage =
         MutableStateFlow("en")
+    private val _isAuthPopupShown = MutableStateFlow(false)
+    val isAuthPopupShown = _isAuthPopupShown
 
     private val _userName = MutableStateFlow<String?>(null)
     val userName: StateFlow<String?> = _userName
@@ -35,6 +37,14 @@ class BaseViewModel(
     private val _userPhoto = MutableStateFlow<String?>(null)
     val userPhoto: StateFlow<String?> = _userPhoto
 
+
+    fun show() {
+        _isAuthPopupShown.value = true
+    }
+
+    fun hide(){
+        _isAuthPopupShown.value = false
+    }
 
     init {
         viewModelScope.launch {
@@ -45,20 +55,20 @@ class BaseViewModel(
         }
     }
 
-    fun onOrderHistoryTapped(){
+    fun onOrderHistoryTapped() {
         navController.navigate(ordersHistoryRoute)
     }
 
-    fun onAuthButtonTapped(){
+    fun onAuthButtonTapped() {
         onAuth()
     }
 
-    fun onAddressTapped(){
+    fun onAddressTapped() {
         navController.navigate(route = addressesRoute)
 
     }
 
-    fun onCartTapped(){
+    fun onCartTapped() {
         navController.navigate(cartRoute)
     }
 

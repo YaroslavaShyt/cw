@@ -1,26 +1,23 @@
 package com.example.cw.core.routing
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import com.example.cw.screens.auth.AuthFactory
-import com.example.cw.screens.base.BaseFactory
 import com.example.cw.screens.base.cart.CartFactory
 import com.example.cw.screens.base.drawer.ordersHistory.OrdersHistoryFactory
 import com.example.cw.screens.base.drawer.shippingAddresses.ShippingAddressesFactory
 import com.example.cw.screens.base.favorite.FavoriteFactory
 import com.example.cw.screens.base.home.HomeFactory
 import com.example.cw.screens.base.home.widgets.BottomNavItem
-import com.example.cw.screens.base.plantDetails.PlantDetailsFactory
 
 
-class NavigationAppFactory(private val navHostController: NavHostController, private val onAuth: () -> Unit) {
+class NavigationAppFactory(
+    private val navHostController: NavHostController,
+    private val onAuth: () -> Unit,
+) {
 
     @RequiresApi(Build.VERSION_CODES.O)
     @Composable
@@ -34,16 +31,10 @@ class NavigationAppFactory(private val navHostController: NavHostController, pri
 private fun NavigationApp(navController: NavHostController, onAuth: () -> Unit) {
     NavHost(navController = navController, startDestination = BottomNavItem.Home.route) {
         composable(BottomNavItem.Home.route)
-        {
-            Log.d("NAVTEST", "navigation to home")
-
-            HomeFactory(navController).Build() }
+        { HomeFactory(navController, onAuth = onAuth).Build() }
 
         composable(BottomNavItem.Favorite.route)
-        {
-            Log.d("NAVTEST", "navigation to favorite")
-
-            FavoriteFactory().Build() }
+        { FavoriteFactory().Build() }
 
         composable(addressesRoute)
         { ShippingAddressesFactory().Build() }

@@ -1,5 +1,7 @@
 package com.example.cw.screens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
@@ -10,6 +12,7 @@ import com.example.cw.screens.auth.AuthFactory
 import com.example.cw.screens.base.BaseFactory
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreen(navHostController: NavHostController, viewModel: MainViewModel) {
     val user = viewModel.user.collectAsState()
@@ -22,7 +25,7 @@ fun MainScreen(navHostController: NavHostController, viewModel: MainViewModel) {
         }
     } else {
         viewModel.onAuthSuccess(user.value!!)
-        return BaseFactory(navHostController, {}).Build()
+        return BaseFactory(navHostController) { viewModel.onAuth() }.Build()
     }
 }
 

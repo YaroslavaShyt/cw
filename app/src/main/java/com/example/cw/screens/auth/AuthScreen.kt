@@ -1,5 +1,7 @@
 package com.example.cw.screens.auth
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +25,7 @@ import com.example.cw.screens.auth.widgets.CustomShapeContainer
 import com.example.cw.screens.base.BaseFactory
 import com.example.cw.ui.theme.Salmon
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AuthScreen(viewModel: AuthViewModel, navHostController: NavHostController) {
     val isContinueAsGuest = viewModel.isContinueAsGuestState.collectAsState()
