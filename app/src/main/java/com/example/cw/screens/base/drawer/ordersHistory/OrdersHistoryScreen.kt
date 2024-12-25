@@ -32,7 +32,9 @@ fun OrdersHistoryScreen(viewModel: OrdersHistoryViewModel) {
     val error = viewModel.error.collectAsState()
 
     Column(
-        Modifier.padding(start = 15.dp, top = 15.dp, end = 15.dp)
+        Modifier
+            .padding(start = 15.dp, top = 15.dp, end = 15.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         Text(
             text = stringResource(id = R.string.ordersHistory),
