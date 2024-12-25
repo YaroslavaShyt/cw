@@ -35,7 +35,7 @@ class BottomNavBarFactory(
 }
 
 @Composable
-private fun BottomNavigationBar(
+fun BottomNavigationBar(
     navController: NavController,
     isAuthorized: Boolean,
     onNotAuthorized: () -> Unit

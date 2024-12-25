@@ -11,9 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface IAuthService {
     var user: StateFlow<FirebaseUser?>
-
     fun signInWithGoogle(token: String, context: Context): GoogleSignInClient?
-
     suspend fun  signOut()
 
     @Composable

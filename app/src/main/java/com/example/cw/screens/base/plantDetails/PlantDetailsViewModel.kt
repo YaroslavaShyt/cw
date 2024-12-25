@@ -36,7 +36,7 @@ class PlantDetailsViewModel(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
-    private val _loading = MutableStateFlow(false)
+    private val _loading = MutableStateFlow(true)
     val loading: StateFlow<Boolean> = _loading
 
     private val _isInCart = MutableStateFlow(false)
@@ -64,6 +64,7 @@ class PlantDetailsViewModel(
             _error.value = null
             viewModelScope.launch {
                 try {
+                    _userService.getUserData()
                     isAuthorized.value =
                         baseViewModel.userName.value != null && baseViewModel.userPhoto.value != null
                     _plant.value = plantRepository.getPlantsById(listOf(plantId)).first()

@@ -1,5 +1,6 @@
 package com.example.cw.screens.base
 
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.example.cw.domain.di.AppContainer
@@ -11,6 +12,7 @@ class BaseFactory(
     private val onAuth: () -> Unit
 ) {
 
+    @RequiresApi(android.os.Build.VERSION_CODES.O)
     @Composable
     fun Build() {
         BaseScreen(

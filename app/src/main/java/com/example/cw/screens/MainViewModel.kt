@@ -43,7 +43,7 @@ class MainViewModel(
     fun onLogout() {
         viewModelScope.launch {
             _authService.signOut()
+            _user.value = null
         }
-        _user.value = null
     }
 }

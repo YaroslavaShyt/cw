@@ -120,7 +120,9 @@ fun AddAddressDialog(
         },
         confirmButton = {
             TextButton(onClick = {
-                onSave()
+                if (street.isNotEmpty() && country.isNotEmpty() && city.isNotEmpty()) {
+                    onSave()
+                }
             }) {
                 Text(
                     stringResource(id = R.string.save),

@@ -22,6 +22,7 @@ import com.example.cw.core.routing.NavigationAppFactory
 import com.example.cw.screens.MainViewModel
 import com.example.cw.screens.base.drawer.DrawerContent
 import com.example.cw.screens.base.home.widgets.BottomNavBarFactory
+import com.example.cw.screens.base.home.widgets.BottomNavigationBar
 import com.example.cw.screens.base.widgets.AuthDialog
 import com.example.cw.screens.base.widgets.MainTopBar
 import kotlinx.coroutines.launch
@@ -44,14 +45,6 @@ fun BaseScreen(
 
     val language = viewModel.currentLanguage.collectAsState()
     val isAuthPopupShown = remember { mutableStateOf(false) }
-
-
-    if (isAuthPopupShown.value) {
-        AuthDialog(
-            onAuthorize = { viewModel.onAuthButtonTapped() },
-            onDismiss = { isAuthPopupShown.value = false }
-        )
-    }
 
     ModalDrawer(
         drawerShape = RoundedCornerShape(20.dp),
@@ -84,6 +77,7 @@ fun BaseScreen(
                 )
             }
         }) {
+
         Scaffold(
             topBar = {
                 MainTopBar(onMenuIconTapped = {
@@ -108,6 +102,7 @@ fun BaseScreen(
                 })
             },
             bottomBar = {
+
                 BottomNavBarFactory(
                     navHostController,
                     isAuthorized,
@@ -115,11 +110,32 @@ fun BaseScreen(
                 ).Build()
             }
         ) { paddingValues ->
+            AuthPopupHandler(
+                isAuthPopupShown = isAuthPopupShown.value,
+                onAuthorize = { viewModel.onAuthButtonTapped() },
+                onDismiss = { isAuthPopupShown.value = false }
+            )
             Column(modifier = Modifier.padding(paddingValues)) {
                 NavigationAppFactory(navHostController) { viewModel.onAuthButtonTapped() }.Build()
             }
         }
+
     }
+
 
 }
 
+
+@Composable
+fun AuthPopupHandler(
+    isAuthPopupShown: Boolean,
+    onAuthorize: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    if (isAuthPopupShown) {
+        AuthDialog(
+            onAuthorize = onAuthorize,
+            onDismiss = onDismiss
+        )
+    }
+}

@@ -39,7 +39,9 @@ fun AuthDialog(
                 colors = ButtonDefaults.buttonColors().copy(
                     containerColor = olive
                 ),
-                onClick = { onAuthorize() }) {
+                onClick = {
+                    onAuthorize()
+                }) {
                 Text(
                     stringResource(id = R.string.authorize),
                     style = MaterialTheme.typography.bodySmall.copy(

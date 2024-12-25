@@ -8,6 +8,7 @@ import com.example.cw.screens.base.BaseViewModel
 
 
 class PlantDetailsFactory(
+    private val onBackTapped: () -> Unit,
     private val navHostController: NavHostController,
     private val onAuth: () -> Unit
 ) {
@@ -15,6 +16,7 @@ class PlantDetailsFactory(
     @Composable
     fun Build(plantId: String) {
         PlantDetailsScreen(
+            onBackTapped = onBackTapped,
             viewModel = PlantDetailsViewModel(
                 plantId = plantId,
                 plantRepository = AppContainer.plantsRepository(),

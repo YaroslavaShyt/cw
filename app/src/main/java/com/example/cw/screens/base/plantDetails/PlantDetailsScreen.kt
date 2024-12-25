@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,10 +36,12 @@ import com.example.cw.screens.base.plantDetails.widgets.DetailsContainer
 import com.example.cw.screens.base.widgets.AuthDialog
 import com.example.cw.screens.base.widgets.MainBackButton
 import com.example.cw.ui.theme.mainWhite
+import com.example.cw.ui.theme.olive
 import com.example.cw.ui.theme.pink
+import kotlinx.coroutines.delay
 
 @Composable
-fun PlantDetailsScreen(viewModel: PlantDetailsViewModel) {
+fun PlantDetailsScreen(viewModel: PlantDetailsViewModel, onBackTapped: () -> Unit) {
     val plant = viewModel.plant.collectAsState()
     val quantity = viewModel.quantity.collectAsState()
     val loadingState = viewModel.loading.collectAsState()
@@ -51,130 +54,147 @@ fun PlantDetailsScreen(viewModel: PlantDetailsViewModel) {
     val isAuthPopupShown = remember { mutableStateOf(false) }
     val isAuthorized = viewModel.isAuthorized.collectAsState()
 
+
     if (isAuthPopupShown.value) {
         AuthDialog(
             onAuthorize = { viewModel.onAuthButtonPressed() },
             onDismiss = { isAuthPopupShown.value = false }
         )
     }
-    Column(
-        modifier = Modifier
-            .background(pink)
-            .fillMaxWidth()
-            .height(500.dp)
-    ) {
 
+    if (loadingState.value) {
         Column(
-            modifier = Modifier
-                .padding(20.dp)
-                .background(pink)
-                .height(500.dp),
+            Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (loadingState.value) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-            }
-
-            errorState.value?.let {
-                Text(text = "${stringResource(id = R.string.error)}: $it")
-            }
-
-            if (plant.value != null) {
-                Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(500.dp), contentAlignment = Alignment.Center
-                ) {
-                    NetworkImage(url = plant.value!!.image, modifier = Modifier.height(400.dp))
-                }
-            }
+            CircularProgressIndicator(
+                color = olive,
+            )
         }
 
-
-    }
-
-    Column(
-        verticalArrangement = Arrangement.Bottom,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        if (plant.value != null) {
-            Column(
-                verticalArrangement = Arrangement.Bottom,
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .pointerInput(Unit) {
-                        detectDragGestures { _, dragAmount ->
-                            containerHeight =
-                                (containerHeight - dragAmount.y.dp).coerceIn(
-                                    minHeight,
-                                    maxHeight
-                                )
-                        }
-                    }
-            ) {
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
-                        .height(containerHeight)
-                ) {
-                    DetailsContainer(
-                        plant.value!!,
-                        isAddedToCart = cartState.value,
-                        quantity = quantity.value,
-                        onQuantityPlusTapped = { viewModel.onQuantityPlusTapped() },
-                        onQuantityMinusTapped = { viewModel.onQuantityMinusTapped() }
-
-                    )
-                }
-            }
-        }
-    }
-
-    Column(
-        verticalArrangement = Arrangement.Bottom,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Box(
+    } else{
+        Column(
             modifier = Modifier
+                .background(pink)
                 .fillMaxWidth()
-                .height(100.dp)
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Color.Transparent,
-                            mainWhite,
-                        ),
-                    )
-                )
+                .height(500.dp)
         ) {
+
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 10.dp)
+                    .padding(20.dp)
+                    .background(pink)
+                    .height(500.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                AddToCartButton(
-                    isAddedToCart = cartState.value
+
+                errorState.value?.let {
+                    Text(text = "${stringResource(id = R.string.error)}: $it")
+                }
+
+                if (plant.value != null) {
+                    Box(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(500.dp), contentAlignment = Alignment.Center
+                    ) {
+                        NetworkImage(url = plant.value!!.image, modifier = Modifier.height(400.dp))
+                    }
+                }
+            }
+
+
+        }
+
+        Column(
+            verticalArrangement = Arrangement.Bottom,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            if (plant.value != null) {
+                Column(
+                    verticalArrangement = Arrangement.Bottom,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .pointerInput(Unit) {
+                            detectDragGestures { _, dragAmount ->
+                                containerHeight =
+                                    (containerHeight - dragAmount.y.dp).coerceIn(
+                                        minHeight,
+                                        maxHeight
+                                    )
+                            }
+                        }
                 ) {
-                    if (cartState.value) {
-                        viewModel.onToCartButtonPressed()
-                    } else {
-                        if (isAuthorized.value) {
-                            viewModel
-                                .onAddToCartButtonPressed()
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
+                            .height(containerHeight)
+                    ) {
+                        DetailsContainer(
+                            plant.value!!,
+                            isAddedToCart = cartState.value,
+                            quantity = quantity.value,
+                            onQuantityPlusTapped = { viewModel.onQuantityPlusTapped() },
+                            onQuantityMinusTapped = { viewModel.onQuantityMinusTapped() }
+
+                        )
+                    }
+                }
+            }
+        }
+        Column(
+            verticalArrangement = Arrangement.Bottom,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                mainWhite,
+                            ),
+                        )
+                    )
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 10.dp)
+                ) {
+                    AddToCartButton(
+                        isAddedToCart = cartState.value
+                    ) {
+                        if (cartState.value) {
+                            viewModel.onToCartButtonPressed()
                         } else {
-                            isAuthPopupShown.value = true
+                            if (isAuthorized.value) {
+                                viewModel
+                                    .onAddToCartButtonPressed()
+                            } else {
+                                isAuthPopupShown.value = true
+                            }
                         }
                     }
                 }
             }
         }
     }
+
+
+
+
 
     Box(modifier = Modifier.padding(start = 20.dp)) {
         MainBackButton {
-            viewModel.onBackButtonTapped()
+            onBackTapped()
+            // viewModel.onBackButtonTapped()
         }
     }
 

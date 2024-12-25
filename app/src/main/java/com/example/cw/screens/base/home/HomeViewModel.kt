@@ -21,6 +21,7 @@ class HomeViewModel(
     navHostController: NavHostController
 ) : ViewModel() {
     private val _navHostController: NavHostController = navHostController
+    val navHostController = _navHostController
     private val _plantsRepository: IPlantsRepository = plantsRepository
 
     private val _favoriteViewModel: FavoriteViewModel = favoriteViewModel
@@ -43,6 +44,13 @@ class HomeViewModel(
 
     private val _selectedCategory = MutableStateFlow("All")
     val selectedCategory: StateFlow<String> = _selectedCategory
+
+    private val _isDetails = MutableStateFlow(false)
+    val isDetails: StateFlow<Boolean> = _isDetails
+
+    private val _tappedPlantID = MutableStateFlow<String>("")
+    val tappedPlantID: StateFlow<String> = _tappedPlantID
+
 
     private var searchQuery: String = ""
 
@@ -67,8 +75,14 @@ class HomeViewModel(
     }
 
 
+    fun hideDetails(){
+        _isDetails.value = false
+        _tappedPlantID.value = ""
+    }
+
     fun onPlantTapped(plantId: String) {
-        _navHostController.navigate("plantDetails/$plantId")
+        _tappedPlantID.value = plantId
+        _isDetails.value = true
     }
 
     fun onCategorySelected(newCategory: String) {

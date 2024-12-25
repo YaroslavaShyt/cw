@@ -1,6 +1,7 @@
 package com.example.cw.core.routing
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -33,10 +34,16 @@ class NavigationAppFactory(private val navHostController: NavHostController, pri
 private fun NavigationApp(navController: NavHostController, onAuth: () -> Unit) {
     NavHost(navController = navController, startDestination = BottomNavItem.Home.route) {
         composable(BottomNavItem.Home.route)
-        { HomeFactory(navController).Build() }
+        {
+            Log.d("NAVTEST", "navigation to home")
+
+            HomeFactory(navController).Build() }
 
         composable(BottomNavItem.Favorite.route)
-        { FavoriteFactory().Build() }
+        {
+            Log.d("NAVTEST", "navigation to favorite")
+
+            FavoriteFactory().Build() }
 
         composable(addressesRoute)
         { ShippingAddressesFactory().Build() }
@@ -46,14 +53,6 @@ private fun NavigationApp(navController: NavHostController, onAuth: () -> Unit) 
 
         composable(ordersHistoryRoute)
         { OrdersHistoryFactory().Build() }
-
-        composable(
-            route = plantDetailsRoute,
-            arguments = listOf(navArgument("id") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val id = backStackEntry.arguments?.getString("id") ?: ""
-            PlantDetailsFactory(navController, onAuth).Build(plantId = id)
-        }
     }
 }
 

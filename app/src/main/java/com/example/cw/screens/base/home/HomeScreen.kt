@@ -30,8 +30,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,9 +49,11 @@ import com.example.cw.screens.base.home.widgets.Banner
 import com.example.cw.screens.base.home.widgets.CategoriesRow
 import com.example.cw.screens.base.home.widgets.PlantItem
 import com.example.cw.screens.base.home.widgets.SearchField
+import com.example.cw.screens.base.plantDetails.PlantDetailsFactory
 import com.example.cw.screens.base.widgets.NothingFoundPlaceholder
 import com.example.cw.ui.theme.Salmon
 import com.example.cw.ui.theme.olive
+import kotlinx.coroutines.delay
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
@@ -64,6 +68,14 @@ fun HomeScreen(viewModel: HomeViewModel) {
     val bannerVisible = remember { mutableStateOf(true) }
     val focusManager = androidx.compose.ui.platform.LocalFocusManager.current
     val isTextFieldFocused = remember { mutableStateOf(false) }
+    val isDetailsShown = viewModel.isDetails.collectAsState()
+    val tappedPlantID = viewModel.tappedPlantID.collectAsState()
+
+    var isContentVisible by remember { mutableStateOf(false) }
+    LaunchedEffect(true) {
+        delay(900)
+        isContentVisible = true
+    }
 
     LaunchedEffect(remember { derivedStateOf { scrollState.firstVisibleItemIndex } }) {
         if (bannerVisible.value != (scrollState.firstVisibleItemIndex == 0)) {
@@ -71,60 +83,73 @@ fun HomeScreen(viewModel: HomeViewModel) {
         }
     }
 
-
-    Column(
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .pointerInput(Unit) {
-                detectTapGestures {
-                    focusManager.clearFocus()
+    if (isDetailsShown.value) {
+        PlantDetailsFactory(
+            onBackTapped = {
+                viewModel.hideDetails()
+            },
+            viewModel.navHostController,
+            {}).Build(plantId = tappedPlantID.value)
+    } else {
+        if (isContentVisible) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pointerInput(Unit) {
+                        detectTapGestures {
+                            focusManager.clearFocus()
+                        }
+                    }) {
+                if (isTextFieldFocused.value) {
+                    bannerVisible.value = false
                 }
-            }) {
-        if (isTextFieldFocused.value) {
-            bannerVisible.value = false
+
+                if (loadingState.value) {
+                    CircularProgressIndicator(
+                        color = olive,
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                    )
+                } else if (errorState.value != null && errorState.value!!.isNotEmpty()) {
+                    errorState.value?.let {
+                        Text(text = stringResource(id = R.string.error))
+                    }
+                } else {
+                    Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+                        BuildBanner(isVisible = bannerVisible.value)
+                        Spacer(modifier = Modifier.padding(bottom = 20.dp))
+                        BuildSearchField(
+                            onFocusChanged = {
+                                isTextFieldFocused.value = it.isFocused
+                                bannerVisible.value = !it.isFocused
+                            },
+                            searchQuery = searchQuery,
+                            onValueChange = {
+                                searchQuery.value = TextFieldValue(text = it)
+                                viewModel.onSearchInputted(searchQuery.value.text)
+                            },
+                        )
+                        CategoriesRow(categories = categoriesState.value,
+                            selectedCategory = selectedCategoryState.value,
+                            onTap = { viewModel.onCategorySelected(it) })
+                        BuildBody(
+                            plantsFilteredState = plantsFilteredState,
+                            searchQuery = searchQuery,
+                            likedPlants = likedPlants,
+                            scrollState = scrollState,
+                            onPlantTapped = {
+                                viewModel.onPlantTapped(it)
+                            },
+                            onLikeTapped = { viewModel.favoriteViewModel.onLikeTapped(it) },
+                        )
+                    }
+                }
+            }
         }
 
-        if (loadingState.value) {
-            CircularProgressIndicator(
-                color = olive,
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-            )
-        } else if (errorState.value != null && errorState.value!!.isNotEmpty()) {
-            errorState.value?.let {
-                Text(text = stringResource(id = R.string.error))
-            }
-        } else {
-            Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-                BuildBanner(isVisible = bannerVisible.value)
-                Spacer(modifier = Modifier.padding(bottom = 20.dp))
-                BuildSearchField(
-                    onFocusChanged = {
-                        isTextFieldFocused.value = it.isFocused
-                        bannerVisible.value = !it.isFocused
-                    },
-                    searchQuery = searchQuery,
-                    onValueChange = {
-                        searchQuery.value = TextFieldValue(text = it)
-                        viewModel.onSearchInputted(searchQuery.value.text)
-                    },
-                )
-                CategoriesRow(categories = categoriesState.value,
-                    selectedCategory = selectedCategoryState.value,
-                    onTap = { viewModel.onCategorySelected(it) })
-                BuildBody(
-                    plantsFilteredState = plantsFilteredState,
-                    searchQuery = searchQuery,
-                    likedPlants = likedPlants,
-                    scrollState = scrollState,
-                    onPlantTapped = {
-                        viewModel.onPlantTapped(it)
-                    },
-                    onLikeTapped = { viewModel.favoriteViewModel.onLikeTapped(it) },
-                )
-            }
-        }
     }
+
+
 }
 
 @Composable
@@ -168,6 +193,8 @@ private fun BuildBody(
     onLikeTapped: (Plant) -> Unit,
     scrollState: LazyGridState,
 ) {
+
+
     if (plantsFilteredState.value.isEmpty() && searchQuery.value.text.isNotEmpty()) {
         NothingFoundPlaceholder()
     } else {
@@ -189,8 +216,9 @@ private fun BuildBody(
                 }
             }
         }
-
     }
+
+
 }
 
 
